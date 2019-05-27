@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <link rel='stylesheet' type='text/css' href='css/libs/font-awesome.min.css?version=1'>
+        <link rel='stylesheet' type='text/css' href='css/main/style.css?version=1'>
+        <script src='js/libs/msg.min.js'></script>
+        <script src='js/libs/colorlib.js'></script>
+        <script src='js/libs/handlebars.js'></script>
+        <script src='js/main/base.js'></script>
+
+        <script>
+            window.onload = function()
+            {
+                Bone.init()
+            }
+        </script>
+    </head>
+
+    <body>
+        <div id='main_container'>
+            <div id='top_panel' class='unselectable'>
+                <i id='menu_icon' class='fas fa-th-large top_panel_icon action'></i>
+            </div>
+            <div id='webview_container'></div>
+        </div>
+
+        <script id='template_webview' type='text/x-handlebars-template' class='template'>
+            <webview class='webview' id='webview_{{num}}' webpreferences='allowRunningInsecureContent'></webview>
+        </script>
+
+        <script id='template_menu_window' type='text/x-handlebars-template' class='template'>
+            <div id='menu_window_container' class='unselectable'>
+                <div class='menu_window_item'>
+                    <div class='menu_window_label'>Layout</div>
+                    <div id='menu_window_layout_container'>
+                        <div class='menu_window_layout_container_item'>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                        </div>
+                        <div class='menu_window_layout_container_item'>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                        </div>
+                        <div class='menu_window_layout_container_item'>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                        </div>
+                        <div class='menu_window_layout_container_item'>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                            <div class='menu_window_layout_item action_2'></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id='menu_window_webview_controls' class='menu_window_item'></div>
+
+                <div class='menu_window_item'>
+                    <div><div id='menu_window_save_preset' class='action inline'>Save Preset</div></div>
+                    <div id='menu_window_preset_container'></div>
+                </div>
+
+                <div class='menu_window_item'>
+                    <div class='menu_window_label'>Theme</div>
+                    <input type='color' id='menu_window_theme_color_picker'>
+                </div>
+            </div>
+        </script>
+
+        <script id='template_webview_control' type='text/x-handlebars-template' class='template'>
+            <div class='menu_window_webview_control'>
+                <div class='menu_window_label'>Webview {{num}}</div>
+                <input type='text' id='menu_window_url_{{num}}' class='menu_window_url_input menu_window_input_text'>
+                <div class='menu_window_zoom_controls'>
+                    <i class='fas fa-minus menu_window_zoom_icon action webview_zoom_icon_minus'></i>
+                    <div id='webview_{{num}}_zoom_label' class='webview_zoom_label action'>Zoom</div>
+                    <i class='fas fa-plus menu_window_zoom_icon action webview_zoom_icon_plus'></i>
+                </div>
+            </div>
+        </script>
+
+        <script id='template_create_preset' type='text/x-handlebars-template' class='template'>
+            <input type='text' id='create_preset_name' placeholder='Name'>
+            <div><div id='create_preset_submit' class='action inline'>Save</div></div>
+        </script>
+    </body>
+
+</html>
