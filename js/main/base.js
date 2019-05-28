@@ -806,7 +806,7 @@ Bone.setup_handle_preset = function()
     {
         if(confirm('Are you sure?'))
         {
-            Bone.delete_preset(Bone.$('#handle_preset_name').value)
+            Bone.delete_preset(Bone.handled_preset)
             Bone.update_presets()
             Bone.msg_handle_preset.close()
         }
@@ -976,6 +976,7 @@ Bone.delete_preset = function(name)
     }
 
     delete Bone.storage.presets[name]
+    Bone.save_local_storage()
 }
 
 // Applies the configured sizes to the webviews
