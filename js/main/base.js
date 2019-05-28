@@ -25,6 +25,7 @@ Bone.init = function()
     Bone.update_menu_window_widgets()
     Bone.setup_top_panel()
     Bone.setup_create_preset()
+    Bone.setup_edit_preset()
     Bone.update_presets()
     Bone.apply_theme()
     Bone.setup_webviews()
@@ -67,8 +68,18 @@ Bone.create_windows = function()
         }
     })
 
+    Bone.msg_edit_preset = Msg.factory
+    ({
+        class: 'black',
+        after_close: function()
+        {
+            Bone.$('#edit_preset_name').value = ''
+        }
+    })
+
     Bone.msg_menu_window.set(Bone.template_menu_window())
     Bone.msg_create_preset.set(Bone.template_create_preset())
+    Bone.msg_edit_preset.set(Bone.template_edit_preset())
 }
 
 // Create some utilities
@@ -316,6 +327,38 @@ Bone.setup_menu_window = function()
             Bone.focused_webview.goForward()
             Bone.msg_menu_window.close()
         }
+    })
+
+    Bone.$('#menu_window_save_preset').addEventListener('click', function()
+    {
+        Bone.msg_create_preset.show(function()
+        {
+            Bone.$('#create_preset_name').focus()
+        })
+    })
+
+    Bone.$('#menu_window_preset_container').addEventListener('click', function(e)
+    {
+        if(!e.target.classList.contains('menu_window_preset_item'))
+        {
+            return false
+        }
+
+        Bone.apply_preset(e.target.dataset.name)
+        Bone.msg_menu_window.close()
+    })
+
+    Bone.$('#menu_window_preset_container').addEventListener('auxclick', function(e)
+    {
+        if(!e.target.classList.contains('menu_window_preset_item'))
+        {
+            return false
+        }
+
+        Bone.msg_edit_preset.show(function()
+        {
+            Bone.show_edit_preset(e.target.dataset.name)
+        })
     })
 }
 
@@ -729,39 +772,6 @@ Bone.setup_top_panel = function()
             Bone.apply_layout()
         }
     })
-
-    Bone.$('#menu_window_save_preset').addEventListener('click', function()
-    {
-        Bone.msg_create_preset.show(function()
-        {
-            Bone.$('#create_preset_name').focus()
-        })
-    })
-
-    Bone.$('#menu_window_preset_container').addEventListener('click', function(e)
-    {
-        if(!e.target.classList.contains('menu_window_preset_item'))
-        {
-            return false
-        }
-
-        Bone.apply_preset(e.target.dataset.name)
-        Bone.msg_menu_window.close()
-    })
-
-    Bone.$('#menu_window_preset_container').addEventListener('auxclick', function(e)
-    {
-        if(!e.target.classList.contains('menu_window_preset_item'))
-        {
-            return false
-        }
-
-        if(e.which === 2)
-        {
-            Bone.delete_preset(e.target.dataset.name)
-            Bone.update_presets()
-        }
-    })
 }
 
 // Setups the create preset window
@@ -769,21 +779,59 @@ Bone.setup_create_preset = function()
 {
     Bone.$('#create_preset_submit').addEventListener('click', function()
     {
-        let name = Bone.$('#create_preset_name').value
-        Bone.save_preset(name)
-        Bone.update_presets()
-        Bone.msg_create_preset.close()
+        Bone.do_create_preset(Bone.$('#create_preset_name').value)
     })
 
     Bone.$('#create_preset_name').addEventListener('keyup', function(e)
     {
         if(e.key === 'Enter')
         {
-            Bone.save_preset(this.value)
-            Bone.update_presets()
-            Bone.msg_create_preset.close()
+            Bone.do_create_preset(this.value)
         }
     })
+}
+
+// Does the create preset action
+Bone.do_create_preset = function(name)
+{
+    Bone.save_preset(name)
+    Bone.update_presets()
+    Bone.msg_create_preset.close()
+}
+
+// Setups the edit preset window
+Bone.setup_edit_preset = function()
+{
+    Bone.$('#edit_preset_submit').addEventListener('click', function()
+    {
+        Bone.do_edit_preset(Bone.$('#edit_preset_name').value)
+    })
+
+    Bone.$('#edit_preset_delete').addEventListener('click', function()
+    {
+        if(confirm('Are you sure?'))
+        {
+            Bone.delete_preset(Bone.$('#edit_preset_name').value)
+            Bone.update_presets()
+            Bone.msg_edit_preset.close()
+        }
+    })
+
+    Bone.$('#edit_preset_name').addEventListener('keyup', function(e)
+    {
+        if(e.key === 'Enter')
+        {
+            Bone.do_edit_preset(this.value)
+        }
+    })
+}
+
+// Does the edit preset action
+Bone.do_edit_preset = function(name)
+{
+    Bone.save_preset(name, Bone.preset_edited)
+    Bone.update_presets()
+    Bone.msg_edit_preset.close()
 }
 
 // Updates the presets container
@@ -800,7 +848,6 @@ Bone.update_presets = function()
         el.classList.add('action')
         el.innerHTML = name
         el.dataset.name = name
-        el.title = 'Middle Click To Delete'
         el0.append(el)
         c.prepend(el0)
     }
@@ -883,9 +930,21 @@ Bone.apply_theme = function()
 }
 
 // Saves a preset based on current state
-Bone.save_preset = function(name)
+Bone.save_preset = function(name, replace=false)
 {
+    console.log(replace)
     name = name.trim()
+
+    if(!name)
+    {
+        return false
+    }
+
+    if(replace && name !== replace)
+    {
+        delete Bone.storage.presets[replace]
+    }
+
     let obj = Bone.clone_object(Bone.storage)
     obj.presets = undefined
     Bone.storage.presets[name] = obj
@@ -914,6 +973,13 @@ Bone.apply_preset = function(name)
 // Deletes a preset
 Bone.delete_preset = function(name)
 {
+    name = name.trim()
+
+    if(!name)
+    {
+        return false
+    }
+
     delete Bone.storage.presets[name]
 }
 
@@ -1184,4 +1250,12 @@ Bone.show_menu_window = function()
             Bone.$('#menu_window_forward').classList.add('disabled')
         }
     })
+}
+
+// Shows and prepares the edit preset window
+Bone.show_edit_preset = function(name)
+{
+    Bone.preset_edited = name
+    Bone.$('#edit_preset_name').value = name
+    Bone.$('#edit_preset_name').focus()
 }

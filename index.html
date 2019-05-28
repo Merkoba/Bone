@@ -95,8 +95,17 @@
         </script>
 
         <script id='template_create_preset' type='text/x-handlebars-template' class='template'>
-            <input type='text' id='create_preset_name' placeholder='Name'>
-            <div><div id='create_preset_submit' class='action inline'>Save</div></div>
+            <input type='text' id='create_preset_name' class='preset_input' placeholder='Name'>
+            <div><div id='create_preset_submit' class='preset_button action inline'>Save</div></div>
+        </script>
+
+        <script id='template_edit_preset' type='text/x-handlebars-template' class='template'>
+            <input type='text' id='edit_preset_name' class='preset_input' placeholder='Name'>
+            <div>
+                <div id='edit_preset_submit' class='preset_button action inline'>Update</div>
+                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                <div id='edit_preset_delete' class='preset_button action inline'>Delete</div>
+            </div>
         </script>
     </body>
 

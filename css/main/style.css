@@ -269,7 +269,7 @@ body, html
     cursor: pointer;
 }
 
-#create_preset_name
+.preset_input
 {
     font-size: 1.1rem;
     width: 350px;
@@ -277,7 +277,7 @@ body, html
     text-align: center;
 }
 
-#create_preset_submit
+.preset_button
 {
     font-size: 1.2rem;
     margin-top: 1rem;
