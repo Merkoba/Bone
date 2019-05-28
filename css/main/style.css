@@ -48,6 +48,7 @@ body, html
     justify-content: center;
     flex-grow: 0;
     flex-shrink: 0;
+    overflow: hidden;
 }
 
 #webview_container
@@ -95,6 +96,9 @@ body, html
 #menu_icon
 {
     cursor: pointer;
+    padding: 2rem;
+    padding-left: 10rem;
+    padding-right: 10rem;
 }
 
 .action, .action_2
