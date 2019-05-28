@@ -16,14 +16,15 @@ Proportions for each tiled webview can be configured.
 
 Creating a build is recommended so the application's config files don't reside in the generic Electron directory.
 There is a script to create a build (create_builds.sh)
-You can modify this to target your platform or architecture.
-You will need to install electron-packager before running the script:
->npm install -g electron-packager
+You can modify this to target your platform or architecture:
+>npm install
+>Check/Edit create_builds.sh
+>chmod +x create_builds.sh
+>./create_builds.sh
 
-Building it is optional.
-To run it manually with Electron:
->npm install -g electron
->electron index.js
+To run it without building it
+>npm install
+>npm start
 
 ### Screenshots
 
