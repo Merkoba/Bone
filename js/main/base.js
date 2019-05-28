@@ -2,7 +2,7 @@
 
 let Bone = {}
 
-Bone.ls_name = 'boneless_v18'
+Bone.ls_name = 'boneless_v20'
 
 Bone.layouts =
 [
@@ -28,7 +28,8 @@ Bone.init = function()
     Bone.update_presets()
     Bone.apply_theme()
     Bone.setup_webviews()
-    Bone.apply_layout()
+    Bone.apply_layout(false)
+    Bone.apply_size()
 
     Bone.$('#menu_icon').addEventListener('click', function()
     {
@@ -86,6 +87,16 @@ Bone.setup_utils = function()
     Bone.clone_object = function(obj)
     {
         return JSON.parse(JSON.stringify(obj))
+    }
+
+    Bone.round = function(value, decimals)
+    {
+        return Number(Math.round(value+'e'+decimals)+'e-'+decimals)
+    }
+
+    Bone.get_percentage = function(n1, n2)
+    {
+        return (n1 / n2) * 100
     }
 }
 
@@ -226,20 +237,38 @@ Bone.setup_menu_window = function()
         let el = document.createElement('div')
         el.innerHTML = h
         let wvc = el.querySelector('.menu_window_webview_control')
+        let zoom = wvc.querySelector('.menu_window_zoom_controls')
 
-        wvc.querySelector('.webview_zoom_icon_minus').addEventListener('click', function()
+        zoom.querySelector('.webview_control_icon_minus').addEventListener('click', function()
         {
             Bone.decrease_zoom_level(i)
         })
 
-        wvc.querySelector('.webview_zoom_icon_plus').addEventListener('click', function()
+        zoom.querySelector('.webview_control_icon_plus').addEventListener('click', function()
         {
             Bone.increase_zoom_level(i)
         })
 
-        wvc.querySelector('.webview_zoom_label').addEventListener('click', function()
+        zoom.querySelector('.webview_control_label').addEventListener('click', function()
         {
             Bone.reset_zoom_level(i)
+        })
+
+        let size = wvc.querySelector('.menu_window_size_controls')
+
+        size.querySelector('.webview_control_icon_minus').addEventListener('click', function()
+        {
+            Bone.decrease_size(i)
+        })
+
+        size.querySelector('.webview_control_icon_plus').addEventListener('click', function()
+        {
+            Bone.increase_size(i)
+        })
+
+        size.querySelector('.webview_control_label').addEventListener('click', function()
+        {
+            Bone.reset_size(i)
         })
 
         webview_controls.appendChild(wvc)
@@ -288,6 +317,7 @@ Bone.update_menu_window_widgets = function()
     for(let i=1; i<=4; i++)
     {
         Bone.set_zoom_level_label(i)
+        Bone.set_size_label(i)
     }
 }
 
@@ -334,22 +364,26 @@ Bone.get_local_storage = function()
             webview_1:
             {
                 url: 'https://mastodon.social',
-                zoom: 1
+                zoom: 1,
+                size: 1
             },
             webview_2:
             {
                 url: 'https://www.dubtrack.fm/join/the-underground',
-                zoom: 1
+                zoom: 1,
+                size: 1
             },
             webview_3:
             {
                 url: 'http://lab.serotoninphobia.info/',
-                zoom: 1
+                zoom: 1,
+                size: 1
             },
             webview_4:
             {
                 url: 'https://arisuchan.jp/',
-                zoom: 1
+                zoom: 1,
+                size: 1
             }
         }
 
@@ -401,7 +435,7 @@ Bone.setup_webviews = function()
 }
 
 // Applies webview layout setup from current layout
-Bone.apply_layout = function()
+Bone.apply_layout = function(reset_size=true)
 {
     let layout = Bone.storage.layout
     let c = Bone.$('#webview_container')
@@ -427,6 +461,14 @@ Bone.apply_layout = function()
 
     c.classList.remove('webview_container_row')
     c.classList.remove('webview_container_column')
+
+    if(reset_size)
+    {
+        Bone.reset_size(1, false)
+        Bone.reset_size(2, false)
+        Bone.reset_size(3, false)
+        Bone.reset_size(4, false)
+    }
 
     if(layout === 'single')
     {
@@ -610,6 +652,7 @@ Bone.decrease_zoom_level = function(num)
     Bone.storage[`webview_${num}`].zoom = zoom
     Bone.apply_zoom_level(num)
     Bone.set_zoom_level_label(num)
+    Bone.save_local_storage()
 }
 
 // Increases a webview zoom level by 0.1
@@ -619,6 +662,7 @@ Bone.increase_zoom_level = function(num)
     Bone.storage[`webview_${num}`].zoom = zoom
     Bone.apply_zoom_level(num)
     Bone.set_zoom_level_label(num)
+    Bone.save_local_storage()
 }
 
 // Resets a webview zoom level to 1
@@ -627,12 +671,7 @@ Bone.reset_zoom_level = function(num)
     Bone.storage[`webview_${num}`].zoom = 1
     Bone.apply_zoom_level(num)
     Bone.set_zoom_level_label(num)
-}
-
-// Util to round decimals
-Bone.round = function(value, decimals)
-{
-    return Number(Math.round(value+'e'+decimals)+'e-'+decimals)
+    Bone.save_local_storage()
 }
 
 // Setups top panel
@@ -794,6 +833,11 @@ Bone.apply_theme = function()
         box-shadow: 0 0 2px ${font_color_1} !important;
     }
 
+    .layout_selected
+    {
+        background-color: ${bg_color_3} !important;
+    }
+
     .Msg-container ::-webkit-scrollbar-thumb
     {
         background-color: ${bg_color_3} !important;
@@ -838,12 +882,248 @@ Bone.apply_preset = function(name)
 
     Bone.save_local_storage()
     Bone.update_menu_window_widgets()
-    Bone.apply_layout()
+    Bone.apply_layout(false)
     Bone.apply_theme()
+    Bone.apply_size()
 }
 
 // Deletes a preset
 Bone.delete_preset = function(name)
 {
     delete Bone.storage.presets[name]
+}
+
+// Applies the configured sizes to the webviews
+Bone.apply_size = function()
+{
+    let layout = Bone.storage.layout
+
+    let w1 = Bone.$('#webview_1')
+    let w2 = Bone.$('#webview_2')
+    let w3 = Bone.$('#webview_3')
+    let w4 = Bone.$('#webview_4')
+
+    let s1 = Bone.storage.webview_1.size
+    let s2 = Bone.storage.webview_2.size
+    let s3 = Bone.storage.webview_3.size
+    let s4 = Bone.storage.webview_4.size
+
+    let c = Bone.$('#webview_container')
+    let cheight = c.clientHeight
+    let cwidth = c.clientWidth
+
+    if(layout === 'single')
+    {
+        // Do nothing
+    }
+
+    else if(layout === '2_column')
+    {
+        let sum = s1 + s2
+        w1.style.height = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.height = `${Bone.get_percentage(s2, sum)}%`
+    }
+
+    else if(layout === '3_column')
+    {
+        let sum = s1 + s2 + s3
+        w1.style.height = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.height = `${Bone.get_percentage(s2, sum)}%`
+        w3.style.height = `${Bone.get_percentage(s3, sum)}%`
+    }
+
+    else if(layout === '4_column')
+    {
+        let sum = s1 + s2 + s3 + s4
+        w1.style.height = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.height = `${Bone.get_percentage(s2, sum)}%`
+        w3.style.height = `${Bone.get_percentage(s3, sum)}%`
+        w4.style.height = `${Bone.get_percentage(s4, sum)}%`
+    }
+
+    else if(layout === '2_row')
+    {
+        let sum = s1 + s2
+        w1.style.width = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.width = `${Bone.get_percentage(s2, sum)}%`
+    }
+    
+    else if(layout === '3_row')
+    {
+        let sum = s1 + s2 + s3
+        w1.style.width = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.width = `${Bone.get_percentage(s2, sum)}%`
+        w3.style.width = `${Bone.get_percentage(s3, sum)}%`
+    }
+
+    else if(layout === '4_row')
+    {
+        let sum = s1 + s2 + s3 + s4
+        w1.style.width = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.width = `${Bone.get_percentage(s2, sum)}%`
+        w3.style.width = `${Bone.get_percentage(s3, sum)}%`
+        w4.style.width = `${Bone.get_percentage(s4, sum)}%`
+    }
+
+    else if(layout === '1_top_2_bottom')
+    {
+        let sum = s1 + 1
+        w1.style.height = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.height = `${Bone.get_percentage(1, sum)}%`
+        w3.style.height = `${Bone.get_percentage(1, sum)}%`
+
+        let sum_2 = s2 + s3
+        w2.style.width = `${Bone.get_percentage(s2, sum_2)}%`
+        w3.style.width = `${Bone.get_percentage(s3, sum_2)}%`
+    }
+
+    else if(layout === '1_top_3_bottom')
+    {
+        let sum = s1 + 1
+        w1.style.height = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.height = `${Bone.get_percentage(1, sum)}%`
+        w3.style.height = `${Bone.get_percentage(1, sum)}%`
+        w4.style.height = `${Bone.get_percentage(1, sum)}%`
+
+        let sum_2 = s2 + s3 + s4
+        w2.style.width = `${Bone.get_percentage(s2, sum_2)}%`
+        w3.style.width = `${Bone.get_percentage(s3, sum_2)}%`
+        w4.style.width = `${Bone.get_percentage(s4, sum_2)}%`
+    }
+
+    else if(layout === '2_top_1_bottom')
+    {
+        let sum = s3 + 1
+        w3.style.height = `${Bone.get_percentage(s3, sum)}%`
+        w1.style.height = `${Bone.get_percentage(1, sum)}%`
+        w2.style.height = `${Bone.get_percentage(1, sum)}%`
+
+        let sum_2 = s1 + s2
+        w1.style.width = `${Bone.get_percentage(s1, sum_2)}%`
+        w2.style.width = `${Bone.get_percentage(s2, sum_2)}%`
+    }
+
+    else if(layout === '3_top_1_bottom')
+    {
+        let sum = s4 + 1
+        w4.style.height = `${Bone.get_percentage(s4, sum)}%`
+        w1.style.height = `${Bone.get_percentage(1, sum)}%`
+        w2.style.height = `${Bone.get_percentage(1, sum)}%`
+        w3.style.height = `${Bone.get_percentage(1, sum)}%`
+
+        let sum_2 = s1 + s2 + s3
+        w1.style.width = `${Bone.get_percentage(s1, sum_2)}%`
+        w2.style.width = `${Bone.get_percentage(s2, sum_2)}%`
+        w3.style.width = `${Bone.get_percentage(s3, sum_2)}%`
+    }
+
+    else if(layout === '2_top_2_bottom')
+    {
+        let sum = s1 + s2
+        w1.style.width = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.width = `${Bone.get_percentage(s2, sum)}%`
+
+        let sum_2 = s3 + s4
+        w3.style.width = `${Bone.get_percentage(s3, sum_2)}%`
+        w4.style.width = `${Bone.get_percentage(s4, sum_2)}%`
+    }
+
+    else if(layout === '1_left_2_right')
+    {
+        let sum = s1 + 1
+        w1.style.width = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.width = `${Bone.get_percentage(1, sum)}%`
+        w3.style.width = `${Bone.get_percentage(1, sum)}%`
+
+        let sum_2 = s2 + s3
+        w2.style.height = `${Bone.get_percentage(s2, sum_2)}%`
+        w3.style.height = `${Bone.get_percentage(s3, sum_2)}%`
+    }
+
+    else if(layout === '1_left_3_right')
+    {
+        let sum = s1 + 1
+        w1.style.width = `${Bone.get_percentage(s1, sum)}%`
+        w2.style.width = `${Bone.get_percentage(1, sum)}%`
+        w3.style.width = `${Bone.get_percentage(1, sum)}%`
+        w4.style.width = `${Bone.get_percentage(1, sum)}%`
+
+        let sum_2 = s2 + s3 + s4
+        w2.style.height = `${Bone.get_percentage(s2, sum_2)}%`
+        w3.style.height = `${Bone.get_percentage(s3, sum_2)}%`
+        w4.style.height = `${Bone.get_percentage(s4, sum_2)}%`
+    }
+
+    else if(layout === '2_left_1_right')
+    {
+        let sum = s3 + 1
+        w3.style.width = `${Bone.get_percentage(s3, sum)}%`
+        w1.style.width = `${Bone.get_percentage(1, sum)}%`
+        w2.style.width = `${Bone.get_percentage(1, sum)}%`
+
+        let sum_2 = s1 + s2
+        w1.style.height = `${Bone.get_percentage(s1, sum_2)}%`
+        w2.style.height = `${Bone.get_percentage(s2, sum_2)}%`
+    }
+
+    else if(layout === '3_left_1_right')
+    {
+        let sum = s4 + 1
+        w4.style.width = `${Bone.get_percentage(s4, sum)}%`
+        w1.style.width = `${Bone.get_percentage(1, sum)}%`
+        w2.style.width = `${Bone.get_percentage(1, sum)}%`
+        w3.style.width = `${Bone.get_percentage(1, sum)}%`
+
+        let sum_2 = s1 + s2 + s3
+        w1.style.height = `${Bone.get_percentage(s1, sum_2)}%`
+        w2.style.height = `${Bone.get_percentage(s2, sum_2)}%`
+        w3.style.height = `${Bone.get_percentage(s3, sum_2)}%`
+    }
+}
+
+// Sets the size to a webview
+Bone.set_size_label = function(num)
+{
+    let size = Bone.storage[`webview_${num}`].size
+    Bone.$(`#webview_${num}_size_label`).textContent = `Size (${size})`
+}
+
+// Decreases a webview size by 0.1
+Bone.decrease_size = function(num)
+{
+    let size = Bone.round(Bone.storage[`webview_${num}`].size - 0.1, 1)
+
+    if(size <= 0)
+    {
+        return false
+    }
+
+    Bone.storage[`webview_${num}`].size = size
+    Bone.apply_size(num)
+    Bone.set_size_label(num)
+    Bone.save_local_storage()
+}
+
+// Increases a webview size by 0.1
+Bone.increase_size = function(num)
+{
+    let size = Bone.round(Bone.storage[`webview_${num}`].size + 0.1, 1)
+    Bone.storage[`webview_${num}`].size = size
+    Bone.apply_size(num)
+    Bone.set_size_label(num)
+    Bone.save_local_storage()
+}
+
+// Resets a webview size to 1
+Bone.reset_size = function(num, apply=true)
+{
+    Bone.storage[`webview_${num}`].size = 1
+    Bone.set_size_label(num)
+    Bone.save_local_storage()
+
+    if(apply)
+    {
+        Bone.apply_size(num)
+    }
+    
 }

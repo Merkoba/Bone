@@ -234,12 +234,7 @@ body, html
     user-select: none;
 }
 
-.layout_selected
-{
-    background-color: rgb(77, 87, 99);
-}
-
-.menu_window_zoom_controls
+.menu_window_webview_controls
 {
     display: grid;
     grid-gap: 20px;
@@ -263,12 +258,12 @@ body, html
     width: 100%;
 }
 
-.menu_window_zoom_icon
+.menu_window_control_icon
 {
     cursor: pointer;
 }
 
-.webview_zoom_label
+.webview_control_label
 {
     width: 6rem;
     cursor: pointer;

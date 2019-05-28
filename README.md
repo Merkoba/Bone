@@ -8,6 +8,8 @@ It supports saving configurations as presets, to easily jump between different e
 
 It supports changing the theme color, which affects the top panel and application windows.
 
+Proportions for each tiled webview can be configured.
+
 ### Installation
 
 Currently there is no build. To run it you must execute it manually with Electron.

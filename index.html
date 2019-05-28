@@ -1,7 +1,7 @@
 <html>
     <head>
-        <link rel='stylesheet' type='text/css' href='css/libs/font-awesome.min.css?version=1'>
-        <link rel='stylesheet' type='text/css' href='css/main/style.css?version=1'>
+        <link rel='stylesheet' type='text/css' href='css/libs/font-awesome.min.css'>
+        <link rel='stylesheet' type='text/css' href='css/main/style.css'>
         <script src='js/libs/msg.min.js'></script>
         <script src='js/libs/colorlib.js'></script>
         <script src='js/libs/handlebars.js'></script>
@@ -77,10 +77,16 @@
             <div class='menu_window_webview_control'>
                 <div class='menu_window_label'>Webview {{num}}</div>
                 <input type='text' id='menu_window_url_{{num}}' class='menu_window_url_input menu_window_input_text'>
-                <div class='menu_window_zoom_controls'>
-                    <i class='fas fa-minus menu_window_zoom_icon action webview_zoom_icon_minus'></i>
-                    <div id='webview_{{num}}_zoom_label' class='webview_zoom_label action'>Zoom</div>
-                    <i class='fas fa-plus menu_window_zoom_icon action webview_zoom_icon_plus'></i>
+                <div class='menu_window_zoom_controls menu_window_webview_controls'>
+                    <i class='fas fa-minus menu_window_control_icon action webview_control_icon_minus'></i>
+                    <div id='webview_{{num}}_zoom_label' class='webview_control_label action'>Zoom</div>
+                    <i class='fas fa-plus menu_window_control_icon action webview_control_icon_plus'></i>
+                </div>
+
+                <div class='menu_window_size_controls menu_window_webview_controls'>
+                    <i class='fas fa-minus menu_window_control_icon action webview_control_icon_minus'></i>
+                    <div id='webview_{{num}}_size_label' class='webview_control_label action'>Size</div>
+                    <i class='fas fa-plus menu_window_control_icon action webview_control_icon_plus'></i>
                 </div>
             </div>
         </script>
