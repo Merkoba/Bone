@@ -33,7 +33,7 @@ Bone.init = function()
 
     Bone.$('#menu_icon').addEventListener('click', function()
     {
-        Bone.msg_menu_window.show()
+        Bone.show_menu_window()
     })
 
     console.info('Boneless started')
@@ -299,6 +299,24 @@ Bone.setup_menu_window = function()
         Bone.save_local_storage()
         Bone.apply_theme()
     })
+
+    Bone.$('#menu_window_back').addEventListener('click', function()
+    {
+        if(Bone.focused_webview && Bone.focused_webview.canGoBack())
+        {
+            Bone.focused_webview.goBack()
+            Bone.msg_menu_window.close()
+        }
+    })
+
+    Bone.$('#menu_window_forward').addEventListener('click', function()
+    {
+        if(Bone.focused_webview && Bone.focused_webview.canGoForward())
+        {
+            Bone.focused_webview.goForward()
+            Bone.msg_menu_window.close()
+        }
+    })
 }
 
 // Updates widgest in the menu window
@@ -415,6 +433,11 @@ Bone.create_webview = function(num)
     wv.addEventListener('dom-ready', function()
     {
         Bone.apply_zoom_level(num)
+    })
+
+    wv.addEventListener('focus', function()
+    {
+        Bone.focused_webview = this
     })
 
     return wv
@@ -723,6 +746,7 @@ Bone.setup_top_panel = function()
         }
 
         Bone.apply_preset(e.target.dataset.name)
+        Bone.msg_menu_window.close()
     })
 
     Bone.$('#menu_window_preset_container').addEventListener('auxclick', function(e)
@@ -1124,6 +1148,40 @@ Bone.reset_size = function(num, apply=true)
     if(apply)
     {
         Bone.apply_size(num)
-    }
-    
+    }  
+}
+
+// Shows the menu window
+Bone.show_menu_window = function()
+{
+    Bone.msg_menu_window.show(function()
+    {
+        let disable_back = true
+        let disable_forward = true
+
+        if(Bone.focused_webview)
+        {
+            if(Bone.focused_webview.canGoBack())
+            {
+                Bone.$('#menu_window_back').classList.remove('disabled')
+                disable_back = false
+            }
+
+            if(Bone.focused_webview.canGoForward())
+            {
+                Bone.$('#menu_window_forward').classList.remove('disabled')
+                disable_forward = false
+            }
+        }
+
+        if(disable_back)
+        {
+            Bone.$('#menu_window_back').classList.add('disabled')
+        }
+
+        if(disable_forward)
+        {
+            Bone.$('#menu_window_forward').classList.add('disabled')
+        }
+    })
 }
