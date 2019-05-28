@@ -12,6 +12,7 @@ Bone.layouts =
 ]
 
 Bone.colorlib = ColorLib()
+Bone.preset_index = -1
 
 // This gets called when body loads
 // First function that is called
@@ -758,29 +759,7 @@ Bone.setup_top_panel = function()
     {
         if(e.which === 2)
         {
-            let num = 0
-
-            for(let i=0; i<Bone.layouts.length; i++)
-            {
-                let layout = Bone.layouts[i]
-
-                if(layout === Bone.storage.layout)
-                {
-                    num = i
-                    break
-                }
-            }
-
-            let new_num = num + 1
-
-            if(new_num > Bone.layouts.length - 1)
-            {
-                new_num = 0
-            }
-
-            Bone.storage.layout = Bone.layouts[new_num]
-            Bone.save_local_storage()
-            Bone.apply_layout()
+            Bone.cycle_presets()
         }
     })
 }
@@ -984,6 +963,18 @@ Bone.apply_preset = function(name)
     Bone.apply_layout(false)
     Bone.apply_theme()
     Bone.apply_size()
+
+    let index = 0
+
+    for(let name_2 in Bone.storage.presets)
+    {
+        if(name === name_2)
+        {
+            break
+        }
+
+        index += 1
+    }
 }
 
 // Deletes a preset
@@ -1281,4 +1272,27 @@ Bone.show_handle_preset = function(name)
 Bone.close_all_windows = function()
 {
     Bone.msg_menu_window.close_all()
+}
+
+// Cycles between presets
+Bone.cycle_presets = function()
+{
+    let presets = Object.keys(Bone.storage.presets)
+
+    if(presets.length === 0)
+    {
+        return false
+    }
+
+    if(Bone.preset_index >= presets.length - 1)
+    {
+        Bone.preset_index = 0
+    }
+
+    else
+    {
+        Bone.preset_index += 1
+    }
+
+    Bone.apply_preset(presets[Bone.preset_index])
 }
