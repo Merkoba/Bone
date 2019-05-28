@@ -24,6 +24,6 @@ Then just do: electron index.js
 
 ![](https://i.imgur.com/AsiATvR.jpg)
 
-![](https://i.imgur.com/pvQoeYW.png)
+![](https://i.imgur.com/ObhnEyN.png)
 
-![](https://i.imgur.com/YaSnRki.png)
+![](https://i.imgur.com/wLuuIqH.png)
