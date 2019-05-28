@@ -14,11 +14,11 @@ Proportions for each tiled webview can be configured.
 
 ### Installation
 
-Currently there is no build. To run it you must execute it manually with Electron.
+There is a linux x64 build in /builds
 
-To install electron do: npm install -g electron
-
-Then just do: electron index.js
+To run it manually with Electron:
+>npm install -g electron
+>electron index.js
 
 ### Screenshots
 
