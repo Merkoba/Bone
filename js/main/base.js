@@ -293,13 +293,14 @@ Bone.setup_menu_window = function()
 
         input.addEventListener('blur', function()
         {
-            let url = this.value.trim()
+            Bone.do_url_change(this.value, num)
+        })
 
-            if(Bone.storage[`webview_${num}`].url !== url)
+        input.addEventListener('keyup', function(e)
+        {
+            if(e.key === "Enter")
             {
-                Bone.storage[`webview_${num}`].url = url
-                Bone.save_local_storage()
-                Bone.apply_url(num)
+                Bone.do_url_change(this.value, num)
             }
         })
     }
@@ -382,6 +383,19 @@ Bone.update_selected_layout = function()
     }
 
     Bone.$(`#layout_${Bone.storage.layout}`).classList.add('layout_selected')
+}
+
+// Handles url changes in the interface
+Bone.do_url_change = function(url, num)
+{
+    url = url.trim()
+
+    if(Bone.storage[`webview_${num}`].url !== url)
+    {
+        Bone.storage[`webview_${num}`].url = url
+        Bone.save_local_storage()
+        Bone.apply_url(num)
+    }
 }
 
 // Get the local storage data
@@ -649,13 +663,21 @@ Bone.apply_layout = function(reset_size=true)
 Bone.apply_url = function(num)
 {
     let webview = Bone.$(`#webview_${num}`)
+    let url = Bone.storage[`webview_${num}`].url
 
     if(webview.style.display === 'none')
     {
         return false
     }
 
-    let url = Bone.storage[`webview_${num}`].url
+    else
+    {
+        if(!url)
+        {
+            Bone.remake_webview(num, false)
+            return false
+        }
+    }
 
     if(!url || webview.src === url)
     {
@@ -927,7 +949,6 @@ Bone.apply_theme = function()
 // Saves a preset based on current state
 Bone.save_preset = function(name, replace=false)
 {
-    console.log(replace)
     name = name.trim()
 
     if(!name)
