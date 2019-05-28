@@ -1,5 +1,7 @@
 Boneless is meant as a tool to display websites without the overhead of tabs, decorations, and other interface elements that can make it bloaty.
 
+This is NOT meant as a browser. It's meant for displaying websites that don't change often in spare monitors/desktops.
+
 It supports up to 4 different websites displayed at the same time.
 
 It provides 16 different tiling layouts to choose from.
