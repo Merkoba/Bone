@@ -18,12 +18,16 @@ Creating a build is recommended so the application's config files don't reside i
 There is a script to create a build (create_builds.sh)
 You can modify this to target your platform or architecture:
 >npm install
+
 >Check/Edit create_builds.sh
+
 >chmod +x create_builds.sh
+
 >./create_builds.sh
 
 To run it without building it
 >npm install
+
 >npm start
 
 ### Screenshots
