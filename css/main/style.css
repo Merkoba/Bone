@@ -166,8 +166,8 @@ body, html
 
 .menu_window_layout_item
 {
-    width: 90px;
-    height: 90px;
+    width: 92px;
+    height: 92px;
     margin: auto;
     display: flex;
     align-items: center;
@@ -346,4 +346,13 @@ body, html
 .swap_webviews_item
 {
     font-size: 1.2rem;
+}
+
+.layout_square_item
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    overflow: hidden;
 }

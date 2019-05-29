@@ -140,97 +140,97 @@ Bone.setup_menu_window = function()
 
         if(current_layout === 'single')
         {
-            current_layout = '2_column'
+            square.innerHTML = `<div class='layout_square_item'>1</div>`
         }
 
         else if(current_layout === '2_column')
         {
             square.classList.add('layout_column')
-            square.innerHTML = '<div></div><div></div>'
+            square.innerHTML = `<div class='layout_square_item'>1</div><div class='layout_square_item'>2</div>`
         }
         
         else if(current_layout === '2_row')
         {
             square.classList.add('layout_row')
-            square.innerHTML = '<div></div><div></div>'
+            square.innerHTML = `<div class='layout_square_item'>1</div><div class='layout_square_item'>2</div>`
         }
         
         else if(current_layout === '1_top_2_bottom')
         {
             square.classList.add('layout_column')
-            square.innerHTML = `<div></div><div class='layout_square_row'><div></div><div></div></div>`
+            square.innerHTML = `<div class='layout_square_item'>1</div><div class='layout_square_row'><div class='layout_square_item'>2</div><div class='layout_square_item'>3</div></div>`
         }
 
         else if(current_layout === '1_top_3_bottom')
         {
             square.classList.add('layout_column')
-            square.innerHTML = `<div></div><div class='layout_square_row'><div></div><div></div><div></div></div>`
+            square.innerHTML = `<div class='layout_square_item'>1</div><div class='layout_square_row'><div class='layout_square_item'>2</div><div class='layout_square_item'>3</div><div class='layout_square_item'>4</div></div>`
         }
 
         else if(current_layout === '2_top_1_bottom')
         {
             square.classList.add('layout_column')
-            square.innerHTML = `<div class='layout_square_row'><div></div><div></div></div><div></div>`
+            square.innerHTML = `<div class='layout_square_row'><div class='layout_square_item'>1</div><div class='layout_square_item'>2</div></div><div class='layout_square_item'>3</div>`
         }
 
         else if(current_layout === '3_top_1_bottom')
         {
             square.classList.add('layout_column')
-            square.innerHTML = `<div class='layout_square_row'><div></div><div></div><div></div></div><div></div>`
+            square.innerHTML = `<div class='layout_square_row'><div class='layout_square_item'>1</div><div class='layout_square_item'>2</div><div class='layout_square_item'>3</div></div><div class='layout_square_item'>4</div>`
         }
 
         else if(current_layout === '3_row')
         {
             square.classList.add('layout_row')
-            square.innerHTML = '<div></div><div></div><div></div>'
+            square.innerHTML = `<div class='layout_square_item'>1</div><div class='layout_square_item'>2</div><div class='layout_square_item'>3</div>`
         }
 
         else if(current_layout === '4_row')
         {
             square.classList.add('layout_row')
-            square.innerHTML = '<div></div><div></div><div></div><div></div>'
+            square.innerHTML = `<div class='layout_square_item'>1</div><div class='layout_square_item'>2</div><div class='layout_square_item'>3</div><div class='layout_square_item'>4</div>`
         }
 
         else if(current_layout === '3_column')
         {
             square.classList.add('layout_column')
-            square.innerHTML = '<div></div><div></div><div></div>'
+            square.innerHTML = `<div class='layout_square_item'>1</div><div class='layout_square_item'>2</div><div class='layout_square_item'>3</div>`
         }
 
         else if(current_layout === '4_column')
         {
             square.classList.add('layout_column')
-            square.innerHTML = '<div></div><div></div><div></div><div></div>'
+            square.innerHTML = `<div class='layout_square_item'>1</div><div class='layout_square_item'>2</div><div class='layout_square_item'>3</div><div class='layout_square_item'>4</div>`
         }
 
         else if(current_layout === '2_top_2_bottom')
         {
             square.classList.add('layout_column')
-            square.innerHTML = `<div class='layout_square_row'><div></div><div></div></div><div class='layout_square_row'><div></div><div></div></div>`
+            square.innerHTML = `<div class='layout_square_row'><div class='layout_square_item'>1</div><div class='layout_square_item'>2</div></div><div class='layout_square_row'><div class='layout_square_item'>3</div><div class='layout_square_item'>4</div></div>`
         }
 
         else if(current_layout === '1_left_2_right')
         {
             square.classList.add('layout_row')
-            square.innerHTML = `<div></div><div class='layout_square_column'><div></div><div></div></div>`
+            square.innerHTML = `<div class='layout_square_item'>1</div><div class='layout_square_column'><div class='layout_square_item'>2</div><div class='layout_square_item'>3</div></div>`
         }
 
         else if(current_layout === '1_left_3_right')
         {
             square.classList.add('layout_row')
-            square.innerHTML = `<div></div><div class='layout_square_column'><div></div><div></div><div></div></div>`
+            square.innerHTML = `<div class='layout_square_item'>1</div><div class='layout_square_column'><div class='layout_square_item'>2</div><div class='layout_square_item'>3</div><div class='layout_square_item'>4</div></div>`
         }
 
         else if(current_layout === '2_left_1_right')
         {
             square.classList.add('layout_row')
-            square.innerHTML = `<div class='layout_square_column'><div></div><div></div></div><div></div>`
+            square.innerHTML = `<div class='layout_square_column'><div class='layout_square_item'>1</div><div class='layout_square_item'>2</div></div><div class='layout_square_item'>3</div>`
         }
 
         else if(current_layout === '3_left_1_right')
         {
             square.classList.add('layout_row')
-            square.innerHTML = `<div class='layout_square_column'><div></div><div></div><div></div></div><div></div>`
+            square.innerHTML = `<div class='layout_square_column'><div class='layout_square_item'>1</div><div class='layout_square_item'>2</div><div class='layout_square_item'>3</div></div><div class='layout_square_item'>4</div>`
         }
 
         layout_number += 1
@@ -962,6 +962,7 @@ Bone.apply_theme = function()
     {
         background-color: ${bg_color_2} !important;
         box-shadow: 0 0 2px ${font_color_1} !important;
+        color: ${font_color_1} !important;
     }
 
     .menu_window_layout_item.layout_column > div, .menu_window_layout_item.layout_row > div,
