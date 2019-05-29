@@ -3,6 +3,10 @@
   "productName": "Boneless",
   "version": "1.0.0",
   "main": "index.js",
+  "dependencies": 
+  {
+    "electron-context-menu": "~0.12.1"
+  },
   "devDependencies": {
     "electron": "^5.0.2",
     "electron-packager": "^13.1.1"

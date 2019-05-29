@@ -1,3 +1,7 @@
+// Node imports
+
+const contextMenu = require('electron-context-menu')
+
 // Init main object and some properties
 
 let Bone = {}
@@ -656,7 +660,10 @@ Bone.apply_layout = function(reset_size=true)
 
     for(let webview of webviews)
     {
-        Bone.apply_url(webview.id.replace('webview_', ''))
+        if(!webview.src)
+        {
+            Bone.apply_url(webview.id.replace('webview_', ''))
+        }
     }
 }
 
@@ -675,7 +682,7 @@ Bone.apply_url = function(num)
     {
         if(!url)
         {
-            Bone.remake_webview(num, false)
+            Bone.remake_webview(num, '', false)
             return false
         }
     }
@@ -685,12 +692,12 @@ Bone.apply_url = function(num)
         return false
     }
 
-    webview.src = url
+    Bone.remake_webview(num, url, false)
 }
 
 // Replaces a webview with a new one
 // This is to destroy its content
-Bone.remake_webview = function(num, no_display=true)
+Bone.remake_webview = function(num, url='', no_display=true)
 {
     let wv = Bone.$(`#webview_${num}`)
     let rep = Bone.create_webview(num)
@@ -700,7 +707,30 @@ Bone.remake_webview = function(num, no_display=true)
         rep.style.display = 'none'
     }
 
+    else
+    {
+        rep.style.display = Bone.initial_webview_display
+    }
+
+    rep.style.width = wv.style.width
+    rep.style.height = wv.style.height
+
+    if(url)
+    {
+        rep.src = url
+    }
+
     wv.parentNode.replaceChild(rep, wv)
+
+    let wv2 = Bone.$(`#webview_${num}`)
+
+    contextMenu(
+    {
+        window: wv2,
+        showCopyImageAddress: true,
+        showSaveImageAs: true,
+        showInspectElement: true
+    })
 }
 
 // Applies zoom level to a loaded webview
