@@ -166,8 +166,8 @@ body, html
 
 .menu_window_layout_item
 {
-    width: 92px;
-    height: 92px;
+    width: 94px;
+    height: 94px;
     margin: auto;
     display: flex;
     align-items: center;
@@ -291,10 +291,11 @@ body, html
     cursor: pointer;
 }
 
-#menu_window_save_preset
+#menu_window_save_preset, #menu_window_save_preset_dummy
 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     cursor: pointer;
+    margin-left: 0.5rem;
 }
 
 #menu_window_preset_container > div
@@ -304,12 +305,6 @@ body, html
 
 .inline
 {
-    display: inline-block;
-}
-
-.menu_window_preset_item
-{
-    cursor: pointer;
     display: inline-block;
 }
 
@@ -355,4 +350,20 @@ input[type=checkbox]
 {
     width: 20px;
     height: 20px;
+}
+
+select
+{
+    font-size: 1rem;
+}
+
+.invisible
+{
+    visibility: hidden;
+}
+
+#handle_preset_container
+{
+    outline: none;
+    border: 0px solid grey;
 }

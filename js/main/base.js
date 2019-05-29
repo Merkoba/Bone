@@ -63,33 +63,44 @@ Bone.setup_templates = function()
 // Create Msg modal windows
 Bone.create_windows = function()
 {
-    Bone.msg_menu_window = Msg.factory
-    ({
-        class: 'black'
-    })
+    let common =
+    {
+        show_effect: 'none',
+        close_effect: 'none'
+    }
 
-    Bone.msg_create_preset = Msg.factory
-    ({
-        class: 'black',
+    Bone.msg_menu_window = Msg.factory(Object.assign({}, common, 
+    {
+        id: 'menu_window'
+    }))
+
+    Bone.msg_create_preset = Msg.factory(Object.assign({}, common, 
+    {
+        id: 'create_preset',
         after_close: function()
         {
             Bone.$('#create_preset_name').value = ''
         }
-    })
+    }))
 
-    Bone.msg_handle_preset = Msg.factory
-    ({
-        class: 'black',
+    Bone.msg_handle_preset = Msg.factory(Object.assign({}, common,
+    {
+        id: 'handle_preset',
         after_close: function()
         {
             Bone.$('#handle_preset_name').value = ''
         }
-    })
+    }))
 
-    Bone.msg_swap_webviews = Msg.factory
-    ({
-        class: 'black'
-    })
+    Bone.msg_swap_webviews = Msg.factory(Object.assign({}, common,
+    {
+        id: 'swap_webviews'
+    }))
+
+    Bone.msg_info = Msg.factory(Object.assign({}, common,
+    {
+        id: 'info'
+    }))
 
     Bone.msg_menu_window.set(Bone.template_menu_window())
     Bone.msg_create_preset.set(Bone.template_create_preset())
@@ -365,17 +376,21 @@ Bone.setup_menu_window = function()
         })
     })
 
-    Bone.$('#menu_window_preset_container').addEventListener('click', function(e)
+    Bone.$('#menu_window_presets_select').addEventListener('change', function(e)
     {
-        if(!e.target.classList.contains('menu_window_preset_item'))
+        let selected = this.options[this.selectedIndex]
+
+        if(!selected.value)
         {
             return false
         }
 
         Bone.msg_handle_preset.show(function()
         {
-            Bone.show_handle_preset(e.target.dataset.name)
+            Bone.show_handle_preset(selected.value)
         })
+
+        this.selectedIndex = 0
     })
 
     Bone.$('#menu_window_auto_hide_top_panel_checkbox').addEventListener('change', function()
@@ -918,7 +933,7 @@ Bone.setup_top_panel = function()
     Bone.$('#top_panel').addEventListener('mouseenter', function()
     {
         clearInterval(Bone.top_panel_autohide_timeout)
-        
+
         if(!Bone.top_panel_active)
         {
             Bone.show_top_panel()
@@ -957,6 +972,7 @@ Bone.do_create_preset = function(name)
     Bone.save_preset(name)
     Bone.update_presets()
     Bone.msg_create_preset.close()
+    Bone.info(`Preset '${name}' created`)
 }
 
 // Setups the edit preset window
@@ -964,59 +980,79 @@ Bone.setup_handle_preset = function()
 {
     Bone.$('#handle_preset_apply').addEventListener('click', function()
     {
-        Bone.apply_preset(Bone.handled_preset)
-        Bone.close_all_windows()
+        Bone.do_handle_preset_apply(Bone.handled_preset)
     })
 
     Bone.$('#handle_preset_submit').addEventListener('click', function()
     {
-        Bone.do_handle_preset(Bone.$('#handle_preset_name').value)
+        Bone.do_handle_preset_update(Bone.$('#handle_preset_name').value)
     })
-
+    
     Bone.$('#handle_preset_delete').addEventListener('click', function()
     {
         if(confirm('Are you sure?'))
         {
-            Bone.delete_preset(Bone.handled_preset)
+            let name = Bone.handled_preset
+            Bone.delete_preset(name)
             Bone.update_presets()
             Bone.msg_handle_preset.close()
+            Bone.info(`Preset '${name}' deleted`)
         }
     })
-
-    Bone.$('#handle_preset_name').addEventListener('keyup', function(e)
+    
+    Bone.$('#handle_preset_container').addEventListener('keyup', function(e)
     {
         if(e.key === 'Enter')
         {
-            Bone.do_handle_preset(this.value)
+            if(document.activeElement === Bone.$('#handle_preset_name'))
+            {
+                Bone.do_handle_preset_update(Bone.$('#handle_preset_name').value)
+            }
+
+            else
+            {
+                Bone.do_handle_preset_apply(Bone.handled_preset)
+            }
         }
     })
 }
 
-// Does the edit preset action
-Bone.do_handle_preset = function(name)
+// Does the apply preset action
+Bone.do_handle_preset_apply = function(name)
 {
-    Bone.save_preset(name, Bone.handled_preset)
+    Bone.apply_preset(name)
+    Bone.close_all_windows()
+}
+
+// Does the edit preset action
+Bone.do_handle_preset_update = function(name)
+{
+    let oname = Bone.handled_preset
+    Bone.save_preset(name, oname)
     Bone.update_presets()
     Bone.msg_handle_preset.close()
+    Bone.info(`Preset '${name}' updated`)
 }
 
 // Updates the presets container
 Bone.update_presets = function()
 {
-    let c = Bone.$('#menu_window_preset_container')
+    let c = Bone.$('#menu_window_presets_select')
     c.innerHTML = ''
 
     for(let name in Bone.storage.presets)
     {
-        let el0 = document.createElement('div')
-        let el = document.createElement('div')
-        el.classList.add('menu_window_preset_item')
-        el.classList.add('action')
-        el.innerHTML = name
-        el.dataset.name = name
-        el0.append(el)
-        c.prepend(el0)
+        let el = document.createElement('option')
+        el.textContent = name
+        el.value = name
+        c.prepend(el)
     }
+
+    let el = document.createElement('option')
+    el.textContent = '-- Presets --'
+    el.value = ''
+    el.selected = true
+    c.prepend(el)
 }
 
 // Applies css styles based on current theme
@@ -1441,7 +1477,7 @@ Bone.show_handle_preset = function(name)
 {
     Bone.handled_preset = name
     Bone.$('#handle_preset_name').value = name
-    Bone.$('#handle_preset_name').focus()
+    Bone.$('#handle_preset_container').focus()
 }
 
 // Closes all modal windows
@@ -1590,4 +1626,10 @@ Bone.apply_auto_hide_top_panel = function()
         Bone.$('#webview_container').style.top = '36px'
         Bone.show_top_panel()
     }    
+}
+
+// Shows a message in the info window
+Bone.info = function(message)
+{
+    Bone.msg_info.show(message)    
 }
