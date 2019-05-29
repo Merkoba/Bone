@@ -396,6 +396,8 @@ Bone.update_menu_window_widgets = function()
         Bone.set_zoom_factor_label(i)
         Bone.set_size_label(i)
     }
+
+    Bone.$('#menu_window_theme_color_picker').value = Bone.storage.theme
 }
 
 // Makes the current layout highlighted in the menu window
