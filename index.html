@@ -91,6 +91,12 @@
                     <div id='webview_{{num}}_size_label' class='webview_control_label action'>Size</div>
                     <i class='fas fa-plus menu_window_control_icon action webview_control_icon_plus'></i>
                 </div>
+
+                <div class='menu_window_action_controls menu_window_webview_controls'>
+                    <span class='webview_refresh action pointer'>Refresh</span>
+                    <span>|</span>
+                    <span class='webview_swap action pointer'>Swap</span>
+                </div>
             </div>
         </script>
 
@@ -107,6 +113,15 @@
                 <div id='handle_preset_submit' class='preset_button action inline'>Update</div>
                 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                 <div id='handle_preset_delete' class='preset_button action inline'>Delete</div>
+            </div>
+        </script>
+
+        <script id='template_swap_webviews' type='text/x-handlebars-template' class='template'>
+            <div id='swap_webviews_container'>
+                <div id='swap_webviews_1' class='swap_webviews_item action pointer'>Swap With 1</div>
+                <div id='swap_webviews_2' class='swap_webviews_item action pointer'>Swap With 2</div>
+                <div id='swap_webviews_3' class='swap_webviews_item action pointer'>Swap With 3</div>
+                <div id='swap_webviews_4' class='swap_webviews_item action pointer'>Swap With 4</div>
             </div>
         </script>
     </body>

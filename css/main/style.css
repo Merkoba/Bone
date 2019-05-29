@@ -325,3 +325,16 @@ body, html
 {
     text-decoration: underline;
 }
+
+#swap_webviews_container
+{
+    display: grid;
+    grid-gap: 20px;
+    grid-auto-columns: auto;
+    align-items: center;
+}
+
+.swap_webviews_item
+{
+    font-size: 1.2rem;
+}

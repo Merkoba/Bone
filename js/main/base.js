@@ -36,6 +36,7 @@ Bone.init = function()
     Bone.setup_webviews()
     Bone.apply_layout(false)
     Bone.apply_size()
+    Bone.setup_swap_webviews()
 
     Bone.$('#menu_icon').addEventListener('click', function()
     {
@@ -82,9 +83,15 @@ Bone.create_windows = function()
         }
     })
 
+    Bone.msg_swap_webviews = Msg.factory
+    ({
+        class: 'black'
+    })
+
     Bone.msg_menu_window.set(Bone.template_menu_window())
     Bone.msg_create_preset.set(Bone.template_create_preset())
     Bone.msg_handle_preset.set(Bone.template_handle_preset())
+    Bone.msg_swap_webviews.set(Bone.template_swap_webviews())
 }
 
 // Create some utilities
@@ -149,25 +156,25 @@ Bone.setup_menu_window = function()
         else if(current_layout === '1_top_2_bottom')
         {
             square.classList.add('layout_column')
-            square.innerHTML = '<div></div><div class="layout_square_row"><div></div><div></div></div>'
+            square.innerHTML = `<div></div><div class='layout_square_row'><div></div><div></div></div>`
         }
 
         else if(current_layout === '1_top_3_bottom')
         {
             square.classList.add('layout_column')
-            square.innerHTML = '<div></div><div class="layout_square_row"><div></div><div></div><div></div></div>'
+            square.innerHTML = `<div></div><div class='layout_square_row'><div></div><div></div><div></div></div>`
         }
 
         else if(current_layout === '2_top_1_bottom')
         {
             square.classList.add('layout_column')
-            square.innerHTML = '<div class="layout_square_row"><div></div><div></div></div><div></div>'
+            square.innerHTML = `<div class='layout_square_row'><div></div><div></div></div><div></div>`
         }
 
         else if(current_layout === '3_top_1_bottom')
         {
             square.classList.add('layout_column')
-            square.innerHTML = '<div class="layout_square_row"><div></div><div></div><div></div></div><div></div>'
+            square.innerHTML = `<div class='layout_square_row'><div></div><div></div><div></div></div><div></div>`
         }
 
         else if(current_layout === '3_row')
@@ -197,31 +204,31 @@ Bone.setup_menu_window = function()
         else if(current_layout === '2_top_2_bottom')
         {
             square.classList.add('layout_column')
-            square.innerHTML = '<div class="layout_square_row"><div></div><div></div></div><div class="layout_square_row"><div></div><div></div></div>'
+            square.innerHTML = `<div class='layout_square_row'><div></div><div></div></div><div class='layout_square_row'><div></div><div></div></div>`
         }
 
-        else if(current_layout === "1_left_2_right")
+        else if(current_layout === '1_left_2_right')
         {
             square.classList.add('layout_row')
-            square.innerHTML = '<div></div><div class="layout_square_column"><div></div><div></div></div>'
+            square.innerHTML = `<div></div><div class='layout_square_column'><div></div><div></div></div>`
         }
 
-        else if(current_layout === "1_left_3_right")
+        else if(current_layout === '1_left_3_right')
         {
             square.classList.add('layout_row')
-            square.innerHTML = '<div></div><div class="layout_square_column"><div></div><div></div><div></div></div>'
+            square.innerHTML = `<div></div><div class='layout_square_column'><div></div><div></div><div></div></div>`
         }
 
-        else if(current_layout === "2_left_1_right")
+        else if(current_layout === '2_left_1_right')
         {
             square.classList.add('layout_row')
-            square.innerHTML = '<div class="layout_square_column"><div></div><div></div></div><div></div>'
+            square.innerHTML = `<div class='layout_square_column'><div></div><div></div></div><div></div>`
         }
 
-        else if(current_layout === "3_left_1_right")
+        else if(current_layout === '3_left_1_right')
         {
             square.classList.add('layout_row')
-            square.innerHTML = '<div class="layout_square_column"><div></div><div></div><div></div></div><div></div>'
+            square.innerHTML = `<div class='layout_square_column'><div></div><div></div><div></div></div><div></div>`
         }
 
         layout_number += 1
@@ -287,6 +294,18 @@ Bone.setup_menu_window = function()
             Bone.reset_size(i)
         })
 
+        let action = wvc.querySelector('.menu_window_action_controls')
+
+        action.querySelector('.webview_refresh').addEventListener('click', function()
+        {
+            Bone.refresh_webview(i)
+        })
+
+        action.querySelector('.webview_swap').addEventListener('click', function()
+        {
+            Bone.swap_webview(i)
+        })
+
         webview_controls.appendChild(wvc)
     }
 
@@ -303,7 +322,7 @@ Bone.setup_menu_window = function()
 
         input.addEventListener('keyup', function(e)
         {
-            if(e.key === "Enter")
+            if(e.key === 'Enter')
             {
                 Bone.do_url_change(this.value, num)
             }
@@ -509,7 +528,7 @@ Bone.setup_webviews = function()
 }
 
 // Applies webview layout setup from current layout
-Bone.apply_layout = function(reset_size=true)
+Bone.apply_layout = function(reset_size=true, force_url_change=false)
 {
     let layout = Bone.storage.layout
     let c = Bone.$('#webview_container')
@@ -660,7 +679,7 @@ Bone.apply_layout = function(reset_size=true)
 
     for(let webview of webviews)
     {
-        if(!webview.src)
+        if(force_url_change || !webview.src)
         {
             Bone.apply_url(webview.id.replace('webview_', ''))
         }
@@ -990,7 +1009,7 @@ Bone.apply_preset = function(name)
 
     Bone.save_local_storage()
     Bone.update_menu_window_widgets()
-    Bone.apply_layout(false)
+    Bone.apply_layout(false, true)
     Bone.apply_theme()
     Bone.apply_size()
 
@@ -1325,4 +1344,69 @@ Bone.cycle_presets = function()
     }
 
     Bone.apply_preset(presets[Bone.preset_index])
+}
+
+// Refreshes a webview with configured url
+Bone.refresh_webview = function(num)
+{
+    let url = Bone.storage[`webview_${num}`].url
+    Bone.remake_webview(num, url, false)
+}
+
+// Opens a window to swap a webview config with another one
+Bone.swap_webview = function(num)
+{
+    let items = Bone.$$('.swap_webviews_item')
+
+    for(let item of items)
+    {
+        let num_2 = parseInt(item.id.replace('swap_webviews_', ''))
+
+        if(num === num_2)
+        {
+            item.style.display = 'none'
+        }
+
+        else
+        {
+            item.style.display = 'block'
+        }
+    }
+
+    Bone.swapping_webview = num
+    Bone.msg_swap_webviews.show()
+}
+
+// Setups the swap webview window
+Bone.setup_swap_webviews = function()
+{
+    Bone.$('#swap_webviews_container').addEventListener('click', function(e)
+    {
+        if(!e.target.classList.contains('swap_webviews_item'))
+        {
+            return false
+        }
+
+        let num = parseInt(e.target.id.replace('swap_webviews_', ''))
+        Bone.do_webview_swap(Bone.swapping_webview, num)
+        Bone.msg_swap_webviews.close()
+    })
+}
+
+// Does the webview swapping
+Bone.do_webview_swap = function(num_1, num_2)
+{
+    let w1 = Bone.storage[`webview_${num_1}`]
+    let w2 = Bone.storage[`webview_${num_2}`]
+    let ourl_1 = w1.url
+
+    w1.url = w2.url
+    w2.url = ourl_1
+
+    Bone.$(`#menu_window_url_${num_1}`).value = w1.url
+    Bone.$(`#menu_window_url_${num_2}`).value = w2.url
+
+    Bone.save_local_storage()
+    Bone.apply_url(num_1)
+    Bone.apply_url(num_2)
 }
