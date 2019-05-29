@@ -264,17 +264,17 @@ Bone.setup_menu_window = function()
 
         zoom.querySelector('.webview_control_icon_minus').addEventListener('click', function()
         {
-            Bone.decrease_zoom_level(i)
+            Bone.decrease_zoom_factor(i)
         })
 
         zoom.querySelector('.webview_control_icon_plus').addEventListener('click', function()
         {
-            Bone.increase_zoom_level(i)
+            Bone.increase_zoom_factor(i)
         })
 
         zoom.querySelector('.webview_control_label').addEventListener('click', function()
         {
-            Bone.reset_zoom_level(i)
+            Bone.reset_zoom_factor(i)
         })
 
         let size = wvc.querySelector('.menu_window_size_controls')
@@ -391,7 +391,7 @@ Bone.update_menu_window_widgets = function()
 
     for(let i=1; i<=4; i++)
     {
-        Bone.set_zoom_level_label(i)
+        Bone.set_zoom_factor_label(i)
         Bone.set_size_label(i)
     }
 }
@@ -502,7 +502,7 @@ Bone.create_webview = function(num)
 
     wv.addEventListener('dom-ready', function()
     {
-        Bone.apply_zoom_level(num)
+        Bone.apply_zoom_factor(num)
     })
 
     wv.addEventListener('focus', function()
@@ -752,52 +752,53 @@ Bone.remake_webview = function(num, url='', no_display=true)
     })
 }
 
-// Applies zoom level to a loaded webview
-Bone.apply_zoom_level = function(num)
+// Applies zoom level and factor to a loaded webview
+Bone.apply_zoom_factor = function(num)
 {
     try
     {
         let webview = Bone.$(`#webview_${num}`)
         let zoom = Bone.storage[`webview_${num}`].zoom
-        webview.setZoomLevel(zoom)
+        webview.setZoomLevel(0)
+        webview.setZoomFactor(zoom)
     }
 
     catch(err){}
 }
 
 // Sets the zoom level to a webview
-Bone.set_zoom_level_label = function(num)
+Bone.set_zoom_factor_label = function(num)
 {
     let zoom = Bone.storage[`webview_${num}`].zoom
     Bone.$(`#webview_${num}_zoom_label`).textContent = `Zoom (${zoom})`
 }
 
 // Decreases a webview zoom level by 0.1
-Bone.decrease_zoom_level = function(num)
+Bone.decrease_zoom_factor = function(num)
 {
     let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom - 0.1, 1)
     Bone.storage[`webview_${num}`].zoom = zoom
-    Bone.apply_zoom_level(num)
-    Bone.set_zoom_level_label(num)
+    Bone.apply_zoom_factor(num)
+    Bone.set_zoom_factor_label(num)
     Bone.save_local_storage()
 }
 
 // Increases a webview zoom level by 0.1
-Bone.increase_zoom_level = function(num)
+Bone.increase_zoom_factor = function(num)
 {
     let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom + 0.1, 1)
     Bone.storage[`webview_${num}`].zoom = zoom
-    Bone.apply_zoom_level(num)
-    Bone.set_zoom_level_label(num)
+    Bone.apply_zoom_factor(num)
+    Bone.set_zoom_factor_label(num)
     Bone.save_local_storage()
 }
 
 // Resets a webview zoom level to 1
-Bone.reset_zoom_level = function(num)
+Bone.reset_zoom_factor = function(num)
 {
     Bone.storage[`webview_${num}`].zoom = 1
-    Bone.apply_zoom_level(num)
-    Bone.set_zoom_level_label(num)
+    Bone.apply_zoom_factor(num)
+    Bone.set_zoom_factor_label(num)
     Bone.save_local_storage()
 }
 
