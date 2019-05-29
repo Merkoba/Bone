@@ -173,8 +173,6 @@ body, html
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background-color: rgb(49, 49, 49);
-    box-shadow: 0 0 2px rgb(211, 211, 211);
 }
 
 .menu_window_layout_item.layout_column
@@ -187,7 +185,6 @@ body, html
     flex-grow: 1;
     flex-shrink: 1;
     width: 100%;
-    box-shadow: 0 0 2px rgb(211, 211, 211);
 }
 
 .menu_window_layout_item.layout_row
@@ -200,7 +197,6 @@ body, html
     flex-grow: 1;
     flex-shrink: 1;
     height: 100%;
-    box-shadow: 0 0 2px rgb(211, 211, 211);
 }
 
 .menu_window_input_text
@@ -221,7 +217,6 @@ body, html
 {
     flex-grow: 1;
     flex-shrink: 1;
-    box-shadow: 0 0 2px rgb(211, 211, 211);
 }
 
 .layout_square_column
@@ -234,7 +229,6 @@ body, html
 {
     flex-grow: 1;
     flex-shrink: 1;
-    box-shadow: 0 0 2px rgb(211, 211, 211);
 }
 
 .unselectable
