@@ -1369,7 +1369,9 @@ Bone.swap_webview = function(num)
 
         else
         {
+            let wv = Bone.storage[`webview_${num_2}`]
             item.style.display = 'block'
+            item.textContent = `Swap With: ${wv.url.substring(0, 50)}`
         }
     }
 
