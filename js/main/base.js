@@ -39,6 +39,7 @@ Bone.init = function()
     Bone.apply_size()
     Bone.setup_swap_webviews()
     Bone.start_top_panel_autohide()
+    Bone.apply_auto_hide_top_panel()
 
     Bone.$('#menu_icon').addEventListener('click', function()
     {
@@ -381,16 +382,7 @@ Bone.setup_menu_window = function()
     {
         Bone.storage.auto_hide_top_panel = this.checked
         Bone.save_local_storage()
-
-        if(this.checked)
-        {
-            Bone.start_top_panel_autohide()
-        }
-        
-        else
-        {
-            Bone.show_top_panel()
-        }
+        Bone.apply_auto_hide_top_panel()
     })
 }
 
@@ -1042,6 +1034,11 @@ Bone.apply_theme = function()
     let bg_color_3 = Bone.colorlib.get_lighter_or_darker(bg_color_1, 0.3)
 
     let css = `
+    #main_container
+    {
+        background-color: ${bg_color_1} !important;
+    }
+
     #top_panel
     {
         background-color: ${bg_color_1} !important;
@@ -1554,7 +1551,7 @@ Bone.start_top_panel_autohide = function()
     Bone.top_panel_autohide_timeout = setTimeout(function()
     {
         Bone.hide_top_panel()
-    }, 2000)
+    }, 1000)
 }
 
 // Shows the top panel
@@ -1575,4 +1572,20 @@ Bone.hide_top_panel = function()
     let tp = Bone.$('#top_panel')
     tp.style.top = '-32px'
     Bone.top_panel_active = false
+}
+
+// Makes changes depending on auto hide top panel setting
+Bone.apply_auto_hide_top_panel = function()
+{
+    if(Bone.storage.auto_hide_top_panel)
+    {
+        Bone.$('#webview_container').style.top = "4px"
+        Bone.start_top_panel_autohide()
+    }
+    
+    else
+    {
+        Bone.$('#webview_container').style.top = "36px"
+        Bone.show_top_panel()
+    }    
 }
