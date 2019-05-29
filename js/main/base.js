@@ -1579,13 +1579,13 @@ Bone.apply_auto_hide_top_panel = function()
 {
     if(Bone.storage.auto_hide_top_panel)
     {
-        Bone.$('#webview_container').style.top = "4px"
+        Bone.$('#webview_container').style.top = '4px'
         Bone.start_top_panel_autohide()
     }
     
     else
     {
-        Bone.$('#webview_container').style.top = "36px"
+        Bone.$('#webview_container').style.top = '36px'
         Bone.show_top_panel()
     }    
 }
