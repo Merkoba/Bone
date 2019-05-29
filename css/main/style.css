@@ -367,3 +367,9 @@ select
     outline: none;
     border: 0px solid grey;
 }
+
+#info_container
+{
+    outline: none;
+    border: 0px solid grey;
+}

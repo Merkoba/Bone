@@ -40,6 +40,7 @@ Bone.init = function()
     Bone.setup_swap_webviews()
     Bone.start_top_panel_autohide()
     Bone.apply_auto_hide_top_panel()
+    Bone.setup_info()
 
     Bone.$('#menu_icon').addEventListener('click', function()
     {
@@ -106,6 +107,7 @@ Bone.create_windows = function()
     Bone.msg_create_preset.set(Bone.template_create_preset())
     Bone.msg_handle_preset.set(Bone.template_handle_preset())
     Bone.msg_swap_webviews.set(Bone.template_swap_webviews())
+    Bone.msg_info.set(Bone.template_info())
 }
 
 // Create some utilities
@@ -1628,8 +1630,26 @@ Bone.apply_auto_hide_top_panel = function()
     }    
 }
 
+// Setups the info window
+Bone.setup_info = function()
+{
+    Bone.$('#info_container').addEventListener('keyup', function(e)
+    {
+        if(e.key === 'Enter')
+        {
+            Bone.msg_info.close()
+        }
+    })
+}
+
 // Shows a message in the info window
 Bone.info = function(message)
 {
-    Bone.msg_info.show(message)    
+    let c = Bone.$('#info_container')
+    c.textContent = message
+
+    Bone.msg_info.show(function()
+    {
+        c.focus()
+    })    
 }
