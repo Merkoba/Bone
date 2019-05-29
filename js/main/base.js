@@ -376,6 +376,22 @@ Bone.setup_menu_window = function()
             Bone.show_handle_preset(e.target.dataset.name)
         })
     })
+
+    Bone.$('#menu_window_auto_hide_top_panel_checkbox').addEventListener('change', function()
+    {
+        Bone.storage.auto_hide_top_panel = this.checked
+        Bone.save_local_storage()
+
+        if(this.checked)
+        {
+            Bone.start_top_panel_autohide()
+        }
+        
+        else
+        {
+            Bone.show_top_panel()
+        }
+    })
 }
 
 // Updates widgest in the menu window
@@ -398,6 +414,7 @@ Bone.update_menu_window_widgets = function()
     }
 
     Bone.$('#menu_window_theme_color_picker').value = Bone.storage.theme
+    Bone.$('#menu_window_auto_hide_top_panel_checkbox').checked = Bone.storage.auto_hide_top_panel
 }
 
 // Makes the current layout highlighted in the menu window
@@ -448,37 +465,126 @@ Bone.get_local_storage = function()
 
     else
     {
-        obj = 
-        {
-            layout: '2_column',
-            theme: '#000000',
-            presets: {},
-            webview_1:
-            {
-                url: 'https://mastodon.social',
-                zoom: 1,
-                size: 1
-            },
-            webview_2:
-            {
-                url: 'https://www.dubtrack.fm/join/the-underground',
-                zoom: 1,
-                size: 1
-            },
-            webview_3:
-            {
-                url: 'http://lab.serotoninphobia.info/',
-                zoom: 1,
-                size: 1
-            },
-            webview_4:
-            {
-                url: 'https://arisuchan.jp/',
-                zoom: 1,
-                size: 1
-            }
-        }
+        obj = {}
+    }
 
+    if(obj.layout === undefined)
+    {
+        obj.layout = '2_column'
+        save = true
+    }
+
+    if(obj.theme === undefined)
+    {
+        obj.theme = '#000000'
+        save = true
+    }
+
+    if(obj.presets === undefined)
+    {
+        obj.presets = {}
+        save = true
+    }
+
+    if(obj.webview_1 === undefined)
+    {
+        obj.webview_1 = {}
+        save = true
+    }
+
+    if(obj.webview_1.url === undefined)
+    {
+        obj.webview_1.url = 'https://mastodon.social'
+        save = true
+    }
+
+    if(obj.webview_1.zoom === undefined)
+    {
+        obj.webview_1.zoom = 1
+        save = true
+    }
+
+    if(obj.webview_1.size === undefined)
+    {
+        obj.webview_1.size = 1
+        save = true
+    }
+
+    if(obj.webview_2 === undefined)
+    {
+        obj.webview_2 = {}
+        save = true
+    }
+
+    if(obj.webview_2.url === undefined)
+    {
+        obj.webview_2.url = 'https://www.dubtrack.fm/join/the-underground'
+        save = true
+    }
+
+    if(obj.webview_2.zoom === undefined)
+    {
+        obj.webview_2.zoom = 1
+        save = true
+    }
+
+    if(obj.webview_2.size === undefined)
+    {
+        obj.webview_2.size = 1
+        save = true
+    }
+
+    if(obj.webview_3 === undefined)
+    {
+        obj.webview_3 = {}
+        save = true
+    }
+
+    if(obj.webview_3.url === undefined)
+    {
+        obj.webview_3.url = 'http://lab.serotoninphobia.info/'
+        save = true
+    }
+
+    if(obj.webview_3.zoom === undefined)
+    {
+        obj.webview_3.zoom = 1
+        save = true
+    }
+
+    if(obj.webview_3.size === undefined)
+    {
+        obj.webview_3.size = 1
+        save = true
+    }
+
+    if(obj.webview_4 === undefined)
+    {
+        obj.webview_4 = {}
+        save = true
+    }
+
+    if(obj.webview_4.url === undefined)
+    {
+        obj.webview_4.url = 'https://arisuchan.jp/'
+        save = true
+    }
+
+    if(obj.webview_4.zoom === undefined)
+    {
+        obj.webview_4.zoom = 1
+        save = true
+    }
+
+    if(obj.webview_4.size === undefined)
+    {
+        obj.webview_4.size = 1
+        save = true
+    }
+
+    if(obj.auto_hide_top_panel === undefined)
+    {
+        obj.auto_hide_top_panel = true
         save = true
     }
 
@@ -1438,6 +1544,11 @@ Bone.do_webview_swap = function(num_1, num_2)
 // Starts a timeout to automatically hide the top panel
 Bone.start_top_panel_autohide = function()
 {
+    if(!Bone.storage.auto_hide_top_panel)
+    {
+        return false
+    }
+
     clearInterval(Bone.top_panel_autohide_timeout)
 
     Bone.top_panel_autohide_timeout = setTimeout(function()
