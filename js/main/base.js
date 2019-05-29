@@ -17,6 +17,7 @@ Bone.layouts =
 
 Bone.colorlib = ColorLib()
 Bone.preset_index = -1
+Bone.top_panel_active = true
 
 // This gets called when body loads
 // First function that is called
@@ -37,6 +38,7 @@ Bone.init = function()
     Bone.apply_layout(false)
     Bone.apply_size()
     Bone.setup_swap_webviews()
+    Bone.start_top_panel_autohide()
 
     Bone.$('#menu_icon').addEventListener('click', function()
     {
@@ -812,6 +814,22 @@ Bone.setup_top_panel = function()
             Bone.cycle_presets()
         }
     })
+
+    Bone.$('#top_panel').addEventListener('mouseenter', function()
+    {
+        if(!Bone.top_panel_active)
+        {
+            Bone.show_top_panel()
+        }
+    })
+
+    Bone.$('#top_panel').addEventListener('mouseleave', function()
+    {
+        if(Bone.top_panel_active)
+        {
+            Bone.start_top_panel_autohide()
+        }
+    })
 }
 
 // Setups the create preset window
@@ -1412,4 +1430,35 @@ Bone.do_webview_swap = function(num_1, num_2)
     Bone.save_local_storage()
     Bone.apply_url(num_1)
     Bone.apply_url(num_2)
+}
+
+// Starts a timeout to automatically hide the top panel
+Bone.start_top_panel_autohide = function()
+{
+    clearInterval(Bone.top_panel_autohide_timeout)
+
+    Bone.top_panel_autohide_timeout = setTimeout(function()
+    {
+        Bone.hide_top_panel()
+    }, 2000)
+}
+
+// Shows the top panel
+Bone.show_top_panel = function()
+{
+    clearInterval(Bone.top_panel_autohide_timeout)
+
+    let tp = Bone.$('#top_panel')
+    tp.style.top = '0'
+    Bone.top_panel_active = true
+}
+
+// Hides the top panel
+Bone.hide_top_panel = function()
+{
+    clearInterval(Bone.top_panel_autohide_timeout)
+
+    let tp = Bone.$('#top_panel')
+    tp.style.top = '-1.8rem'
+    Bone.top_panel_active = false
 }

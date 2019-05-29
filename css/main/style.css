@@ -41,6 +41,7 @@ body, html
 #top_panel
 {
     height: 2rem;
+    width: 100%;
     background-color: black;
     color: white;
     display: flex;
@@ -49,6 +50,10 @@ body, html
     flex-grow: 0;
     flex-shrink: 0;
     overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: top 500ms linear;
 }
 
 #webview_container
