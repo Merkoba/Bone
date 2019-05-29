@@ -917,6 +917,8 @@ Bone.setup_top_panel = function()
 
     Bone.$('#top_panel').addEventListener('mouseenter', function()
     {
+        clearInterval(Bone.top_panel_autohide_timeout)
+        
         if(!Bone.top_panel_active)
         {
             Bone.show_top_panel()
