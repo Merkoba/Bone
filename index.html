@@ -110,11 +110,11 @@
 
         <script id='template_create_preset' type='text/x-handlebars-template' class='template'>
             <input type='text' id='create_preset_name' class='preset_input' placeholder='Name'>
-            <div><div id='create_preset_submit' class='preset_button action inline'>Save</div></div>
+            <div><div id='create_preset_submit' class='preset_button action inline unselectable'>Save</div></div>
         </script>
 
         <script id='template_handle_preset' type='text/x-handlebars-template' class='template'>
-            <div id='handle_preset_container' tabindex='0'>
+            <div id='handle_preset_container' class='unselectable' tabindex='0'>
                 <input type='text' id='handle_preset_name' class='preset_input' placeholder='Name'>
                 <div>
                     <div id='handle_preset_apply' class='preset_button action inline'>Apply</div>
@@ -127,7 +127,7 @@
         </script>
 
         <script id='template_swap_webviews' type='text/x-handlebars-template' class='template'>
-            <div id='swap_webviews_container'>
+            <div id='swap_webviews_container' class='unselectable'>
                 <div id='swap_webviews_1' class='swap_webviews_item action pointer'></div>
                 <div id='swap_webviews_2' class='swap_webviews_item action pointer'></div>
                 <div id='swap_webviews_3' class='swap_webviews_item action pointer'></div>
