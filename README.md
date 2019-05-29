@@ -10,6 +10,8 @@ It supports saving configurations as presets, to easily jump between different e
 
 It supports changing the theme color, which affects the top panel and application windows.
 
+Buttons to refresh and swap urls.
+
 Proportions for each tiled webview can be configured.
 
 ### Installation
