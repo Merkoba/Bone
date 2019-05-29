@@ -1459,6 +1459,6 @@ Bone.hide_top_panel = function()
     clearInterval(Bone.top_panel_autohide_timeout)
 
     let tp = Bone.$('#top_panel')
-    tp.style.top = '-30px'
+    tp.style.top = '-32px'
     Bone.top_panel_active = false
 }
