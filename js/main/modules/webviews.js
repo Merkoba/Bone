@@ -275,7 +275,7 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 }
 
 // Applies zoom level and factor to a loaded webview
-Bone.apply_zoom_factor = function(num)
+Bone.apply_zoom = function(num)
 {
     try
     {
@@ -289,38 +289,38 @@ Bone.apply_zoom_factor = function(num)
 }
 
 // Sets the zoom level to a webview
-Bone.set_zoom_factor_label = function(num)
+Bone.set_zoom_label = function(num)
 {
     let zoom = Bone.storage[`webview_${num}`].zoom
     Bone.$(`#webview_${num}_zoom_label`).textContent = `Zoom (${zoom})`
 }
 
 // Decreases a webview zoom level by config.zoom_step
-Bone.decrease_zoom_factor = function(num)
+Bone.decrease_zoom = function(num)
 {
     let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom - Bone.config.zoom_step, 1)
     Bone.storage[`webview_${num}`].zoom = zoom
-    Bone.apply_zoom_factor(num)
-    Bone.set_zoom_factor_label(num)
+    Bone.apply_zoom(num)
+    Bone.set_zoom_label(num)
     Bone.save_local_storage()
 }
 
 // Increases a webview zoom level by config.zoom_step
-Bone.increase_zoom_factor = function(num)
+Bone.increase_zoom = function(num)
 {
     let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom + Bone.config.zoom_step, 1)
     Bone.storage[`webview_${num}`].zoom = zoom
-    Bone.apply_zoom_factor(num)
-    Bone.set_zoom_factor_label(num)
+    Bone.apply_zoom(num)
+    Bone.set_zoom_label(num)
     Bone.save_local_storage()
 }
 
 // Resets a webview zoom level to zoom_default
-Bone.reset_zoom_factor = function(num)
+Bone.reset_zoom = function(num)
 {
     Bone.storage[`webview_${num}`].zoom = Bone.config.zoom_default
-    Bone.apply_zoom_factor(num)
-    Bone.set_zoom_factor_label(num)
+    Bone.apply_zoom(num)
+    Bone.set_zoom_label(num)
     Bone.save_local_storage()
 }
 
@@ -608,9 +608,12 @@ Bone.do_webview_swap = function(num_1, num_2)
     let w1 = Bone.storage[`webview_${num_1}`]
     let w2 = Bone.storage[`webview_${num_2}`]
     let ourl_1 = w1.url
+    let ozoom_1 = w1.zoom
 
     w1.url = w2.url
     w2.url = ourl_1
+    w1.zoom = w2.zoom
+    w2.zoom = ozoom_1
 
     Bone.$(`#menu_window_url_${num_1}`).value = w1.url
     Bone.$(`#menu_window_url_${num_2}`).value = w2.url
@@ -618,12 +621,16 @@ Bone.do_webview_swap = function(num_1, num_2)
     Bone.save_local_storage()
     Bone.apply_url(num_1)
     Bone.apply_url(num_2)
+    Bone.apply_zoom(num_1)
+    Bone.apply_zoom(num_2)
+    Bone.set_zoom_label(num_1)
+    Bone.set_zoom_label(num_2)
 }
 
 // What to do when a webview is dom ready
 Bone.on_webview_dom_ready = function(webview, num)
 {
-    Bone.apply_zoom_factor(num)
+    Bone.apply_zoom(num)
 }
 
 // Populates and shows the webview history

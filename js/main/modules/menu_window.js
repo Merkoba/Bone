@@ -139,17 +139,17 @@ Bone.setup_menu_window = function()
 
         zoom.querySelector('.webview_control_icon_minus').addEventListener('click', function()
         {
-            Bone.decrease_zoom_factor(i)
+            Bone.decrease_zoom(i)
         })
 
         zoom.querySelector('.webview_control_icon_plus').addEventListener('click', function()
         {
-            Bone.increase_zoom_factor(i)
+            Bone.increase_zoom(i)
         })
 
         zoom.querySelector('.webview_control_label').addEventListener('click', function()
         {
-            Bone.reset_zoom_factor(i)
+            Bone.reset_zoom(i)
         })
 
         let size = wvc.querySelector('.menu_window_size_controls')
@@ -287,7 +287,7 @@ Bone.update_menu_window_widgets = function()
 
     for(let i=1; i<=Bone.config.num_webviews; i++)
     {
-        Bone.set_zoom_factor_label(i)
+        Bone.set_zoom_label(i)
         Bone.set_size_label(i)
     }
 
