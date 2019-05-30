@@ -21,6 +21,14 @@ Bone.colorlib = ColorLib()
 Bone.preset_index = -1
 Bone.top_panel_active = true
 
+Bone.history =
+{
+    webview_1: [],
+    webview_2: [],
+    webview_3: [],
+    webview_4: []
+}
+
 // This gets called when body loads
 // First function that is called
 Bone.init = function()
@@ -43,6 +51,7 @@ Bone.init = function()
     Bone.start_top_panel_autohide()
     Bone.apply_auto_hide_top_panel()
     Bone.setup_info()
+    Bone.setup_history()
 
     Bone.$('#menu_icon').addEventListener('click', function()
     {
@@ -105,11 +114,17 @@ Bone.create_windows = function()
         id: 'info'
     }))
 
+    Bone.msg_history = Msg.factory(Object.assign({}, common,
+    {
+        id: 'history'
+    }))
+
     Bone.msg_menu_window.set(Bone.template_menu_window())
     Bone.msg_create_preset.set(Bone.template_create_preset())
     Bone.msg_handle_preset.set(Bone.template_handle_preset())
     Bone.msg_swap_webviews.set(Bone.template_swap_webviews())
     Bone.msg_info.set(Bone.template_info())
+    Bone.msg_history.set(Bone.template_history())
 }
 
 // Create some utilities
@@ -138,6 +153,11 @@ Bone.setup_utils = function()
     Bone.get_percentage = function(n1, n2)
     {
         return (n1 / n2) * 100
+    }
+
+    Bone.get_child_index = function(element) 
+    {
+        return Array.from(element.parentNode.children).indexOf(element)
     }
 }
 
@@ -356,19 +376,24 @@ Bone.setup_menu_window = function()
 
     Bone.$('#menu_window_back').addEventListener('click', function()
     {
-        if(Bone.focused_webview && Bone.focused_webview.canGoBack())
+        if(Bone.focused_webview)
         {
-            Bone.focused_webview.goBack()
-            Bone.msg_menu_window.close()
+            let history = Bone.history[Bone.focused_webview.id]
+            let num = Bone.focused_webview.id.replace('webview_', '')
+
+            if(history && history.length > 1)
+            {
+                history.pop()
+                Bone.remake_webview(num, history.slice(-1)[0], false, false)
+            }
         }
     })
 
-    Bone.$('#menu_window_forward').addEventListener('click', function()
+    Bone.$('#menu_window_history').addEventListener('click', function()
     {
-        if(Bone.focused_webview && Bone.focused_webview.canGoForward())
+        if(Bone.focused_webview)
         {
-            Bone.focused_webview.goForward()
-            Bone.msg_menu_window.close()
+            Bone.show_history(Bone.focused_webview.id.replace('webview_', ''))
         }
     })
 
@@ -623,12 +648,29 @@ Bone.create_webview = function(num)
 
     wv.addEventListener('dom-ready', function()
     {
-        Bone.apply_zoom_factor(num)
+        Bone.on_webview_dom_ready(this, num)
     })
 
     wv.addEventListener('focus', function()
     {
         Bone.focused_webview = this
+    })
+
+    wv.addEventListener('did-navigate', function(e)
+    {
+        if(!e.url)
+        {
+            return false
+        }
+
+        let history = Bone.history[`webview_${num}`]
+        
+        if(history.slice(-1)[0] === e.url)
+        {
+            return false
+        }
+
+        history.push(e.url)
     })
 
     return wv
@@ -643,6 +685,11 @@ Bone.setup_webviews = function()
     {
         let wv = Bone.create_webview(i)
         c.appendChild(wv)
+
+        if(i === 1)
+        {
+            Bone.focused_webview = wv
+        }
     }
 
     Bone.initial_webview_display = Bone.$('#webview_1').style.display
@@ -837,7 +884,7 @@ Bone.apply_url = function(num)
 
 // Replaces a webview with a new one
 // This is to destroy its content
-Bone.remake_webview = function(num, url='', no_display=true)
+Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 {
     let wv = Bone.$(`#webview_${num}`)
     let rep = Bone.create_webview(num)
@@ -858,6 +905,11 @@ Bone.remake_webview = function(num, url='', no_display=true)
     if(url)
     {
         rep.src = url
+    }
+
+    if(reset_history)
+    {
+        Bone.history[`webview_${num}`] = []
     }
 
     wv.parentNode.replaceChild(rep, wv)
@@ -1447,31 +1499,21 @@ Bone.show_menu_window = function()
     Bone.msg_menu_window.show(function()
     {
         let disable_back = true
-        let disable_forward = true
 
         if(Bone.focused_webview)
         {
-            if(Bone.focused_webview.canGoBack())
+            let history = Bone.history[Bone.focused_webview.id]
+
+            if(history && history.length > 1)
             {
                 Bone.$('#menu_window_back').classList.remove('disabled')
                 disable_back = false
-            }
-
-            if(Bone.focused_webview.canGoForward())
-            {
-                Bone.$('#menu_window_forward').classList.remove('disabled')
-                disable_forward = false
             }
         }
 
         if(disable_back)
         {
             Bone.$('#menu_window_back').classList.add('disabled')
-        }
-
-        if(disable_forward)
-        {
-            Bone.$('#menu_window_forward').classList.add('disabled')
         }
     })
 }
@@ -1654,4 +1696,51 @@ Bone.info = function(message)
     {
         c.focus()
     })    
+}
+
+// What to do when a webview is dom ready
+Bone.on_webview_dom_ready = function(webview, num)
+{
+    Bone.apply_zoom_factor(num)
+}
+
+// Populates and shows the webview history
+Bone.show_history = function(num)
+{
+    let c = Bone.$('#history_container')
+    c.innerHTML = ''
+
+    for(let item of Bone.history[`webview_${num}`])
+    {
+        let el = document.createElement('div')
+        el.classList.add('history_item')
+        el.classList.add('action')
+        el.textContent = item.substring(0, 50)
+        el.dataset.url = item
+        el.dataset.num = num
+        c.prepend(el)
+    }
+
+    Bone.msg_history.show()
+}
+
+// Setups history
+Bone.setup_history = function()
+{
+    Bone.$('#history_container').addEventListener('click', function(e)
+    {
+        if(!e.target.classList.contains('history_item'))
+        {
+            return false
+        }
+
+        let url = e.target.dataset.url
+        let num = e.target.dataset.num
+        let history = Bone.history[`webview_${num}`]
+        let index = 0 - Bone.get_child_index(e.target)
+
+        Bone.history[`webview_${num}`] = history.slice(0, index)
+        Bone.remake_webview(num, url, false, false)
+        Bone.close_all_windows()
+    })
 }

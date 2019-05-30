@@ -373,3 +373,17 @@ select
     outline: none;
     border: 0px solid grey;
 }
+
+#history_container
+{
+    display: grid;
+    grid-gap: 20px;
+    grid-auto-columns: auto;
+    align-items: center;
+    max-width: 450px;
+}
+
+.history_item
+{
+    cursor: pointer;
+}
