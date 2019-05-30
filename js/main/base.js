@@ -40,7 +40,7 @@ Bone.config =
     size_default: 1,
     top_panel_height: 36,
     top_panel_hidden_height: 4,
-    top_panel_auto_hide_delay: 1000,
+    top_panel_auto_hide_delay: 500,
     history_max_url_length: 50,
     swap_max_url_length: 50,
     modules_path: './js/main/modules/'
