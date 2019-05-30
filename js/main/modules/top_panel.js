@@ -11,6 +11,11 @@ Bone.setup_top_panel = function()
 
     let top_panel = Bone.$('#top_panel')
 
+    top_panel.addEventListener('click', function()
+    {
+        Bone.show_menu_window()
+    })
+
     top_panel.addEventListener('mouseenter', function()
     {
         clearInterval(Bone.top_panel_autohide_timeout)

@@ -55,6 +55,7 @@ body, html
     left: 0;
     transition: top 250ms linear;
     z-index: 999;
+    cursor: pointer;
 }
 
 #webview_container
@@ -104,10 +105,7 @@ body, html
 
 #menu_icon
 {
-    cursor: pointer;
     padding: 2rem;
-    padding-left: 10rem;
-    padding-right: 10rem;
 }
 
 .action, .action_2
@@ -115,7 +113,7 @@ body, html
     transition: text-shadow 500ms, box-shadow 500ms
 }
 
-.action:hover
+.action:hover, .action_container:hover
 {
     text-shadow: 0 0 1em currentColor;
 }
