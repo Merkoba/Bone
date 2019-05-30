@@ -1739,7 +1739,11 @@ Bone.setup_history = function()
         let history = Bone.history[`webview_${num}`]
         let index = 0 - Bone.get_child_index(e.target)
 
-        Bone.history[`webview_${num}`] = history.slice(0, index)
+        if(index < 0)
+        {
+            Bone.history[`webview_${num}`] = history.slice(0, index)
+        }
+
         Bone.remake_webview(num, url, false, false)
         Bone.close_all_windows()
     })
