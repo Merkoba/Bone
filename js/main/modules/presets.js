@@ -18,7 +18,11 @@ Bone.setup_create_preset = function()
 // Does the create preset action
 Bone.do_create_preset = function(name)
 {
-    Bone.save_preset(name)
+    if(!Bone.save_preset(name))
+    {
+        return false
+    }
+
     Bone.update_presets()
     Bone.msg_create_preset.close()
     Bone.info(`Preset '${name}' created`)
@@ -102,6 +106,16 @@ Bone.update_presets = function()
     el.value = ''
     el.selected = true
     c.prepend(el)
+
+    if(Object.keys(Bone.storage.presets).length > 0)
+    {
+        Bone.$('#menu_window_clear_presets').classList.remove('disabled')
+    }
+    
+    else
+    {
+        Bone.$('#menu_window_clear_presets').classList.add('disabled')
+    }
 }
 
 // Saves a preset based on current state
@@ -123,6 +137,8 @@ Bone.save_preset = function(name, replace=false)
     obj.presets = undefined
     Bone.storage.presets[name] = obj
     Bone.save_local_storage()
+
+    return true
 }
 
 // Changes settings to a specified preset
@@ -187,4 +203,16 @@ Bone.cycle_presets = function()
     }
 
     Bone.apply_preset(presets[Bone.preset_index])
+}
+
+// Clears saved presets
+Bone.clear_presets = function()
+{
+    if(confirm('Are you sure you want to delete all the saved presets?'))
+    {
+        Bone.storage.presets = {}
+        Bone.save_local_storage()
+        Bone.update_presets()
+        Bone.info('All the presets have been deleted')
+    }
 }

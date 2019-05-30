@@ -291,11 +291,18 @@ body, html
     cursor: pointer;
 }
 
-#menu_window_save_preset, #menu_window_save_preset_dummy
+#menu_window_save_preset
 {
     font-size: 1rem;
     cursor: pointer;
     margin-left: 0.5rem;
+}
+
+#menu_window_clear_presets
+{
+    font-size: 1rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
 }
 
 #menu_window_preset_container > div

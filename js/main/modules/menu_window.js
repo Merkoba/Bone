@@ -242,6 +242,11 @@ Bone.setup_menu_window = function()
         })
     })
 
+    Bone.$('#menu_window_clear_presets').addEventListener('click', function()
+    {
+        Bone.clear_presets()
+    })
+
     Bone.$('#menu_window_presets_select').addEventListener('change', function(e)
     {
         let selected = this.options[this.selectedIndex]
