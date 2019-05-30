@@ -42,7 +42,8 @@ Bone.config =
     top_panel_hidden_height: 4,
     top_panel_auto_hide_delay: 1000,
     history_max_url_length: 50,
-    swap_max_url_length: 50 
+    swap_max_url_length: 50,
+    modules_path: './js/main/modules/'
 }
 
 // This gets called when body loads
@@ -84,6 +85,6 @@ Bone.load_files = function()
 
     fs.readdirSync(normalized_path).forEach(function(file) 
     {
-        require(`./js/main/modules/${file}`)
+        require(Bone.config.modules_path + file)
     })
 }
