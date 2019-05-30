@@ -93,7 +93,12 @@ Bone.update_presets = function()
     let c = Bone.$('#menu_window_presets_select')
     c.innerHTML = ''
 
-    for(let name in Bone.storage.presets)
+    let keys_sorted = Object.keys(Bone.storage.presets).sort(function(a, b)
+    {
+        return Bone.storage.presets[a].last_used - Bone.storage.presets[b].last_used
+    })
+
+    for(let name of keys_sorted)
     {
         let el = document.createElement('option')
         el.textContent = name
@@ -107,7 +112,7 @@ Bone.update_presets = function()
     el.selected = true
     c.prepend(el)
 
-    if(Object.keys(Bone.storage.presets).length > 0)
+    if(keys_sorted.length > 0)
     {
         Bone.$('#menu_window_clear_presets').classList.remove('disabled')
     }
@@ -135,6 +140,7 @@ Bone.save_preset = function(name, replace=false)
 
     let obj = Bone.clone_object(Bone.storage)
     obj.presets = undefined
+    obj.last_used = Date.now()
     Bone.storage.presets[name] = obj
     Bone.save_local_storage()
 
@@ -149,15 +155,18 @@ Bone.apply_preset = function(name)
         return false
     }
 
+    Bone.storage.presets[name].last_used = Date.now()
     let obj = Bone.clone_object(Bone.storage.presets[name])
     obj.presets = Bone.clone_object(Bone.storage.presets)
     Bone.storage = obj
-
+    
     Bone.save_local_storage()
     Bone.update_menu_window_widgets()
     Bone.apply_layout(false, true)
     Bone.apply_theme()
     Bone.apply_size()
+    Bone.update_presets()
+
 }
 
 // Deletes a preset
