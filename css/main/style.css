@@ -104,7 +104,7 @@ body, html
 
 .action:hover, .action_container:hover
 {
-    text-shadow: 0 0 1em currentColor;
+    text-shadow: 0 0 10px currentColor;
 }
 
 .action_2:hover
