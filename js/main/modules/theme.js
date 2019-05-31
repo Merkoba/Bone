@@ -69,6 +69,11 @@ Bone.apply_theme = function()
     {
         background-color: ${bg_color_3} !important;
     }
+
+    .resize_handle
+    {
+        background-color: ${bg_color_1} !important;
+    }
     `
 
     let styles = Bone.$$('.appended_theme_style')

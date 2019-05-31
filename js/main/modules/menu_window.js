@@ -124,6 +124,7 @@ Bone.setup_menu_window = function()
         Bone.storage.layout = layout
         Bone.save_local_storage()
         Bone.update_selected_layout()
+        Bone.msg_menu_window.close()
         Bone.apply_layout()
     })
 
@@ -287,7 +288,6 @@ Bone.update_menu_window_widgets = function()
 
     for(let i=1; i<=Bone.config.num_webviews; i++)
     {
-        Bone.set_zoom_label(i)
         Bone.set_size_label(i)
     }
 

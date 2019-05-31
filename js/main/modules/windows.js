@@ -93,3 +93,14 @@ Bone.info = function(message)
         c.focus()
     })    
 }
+
+// Activates the main window resize listener
+Bone.activate_resize_listener = function()
+{
+    let on_resize = Bone.debounce(function()
+    {
+        // Do nothing for now
+    }, 500)
+
+    window.addEventListener('resize', on_resize)
+}

@@ -60,8 +60,7 @@ body, html
 
 #webview_container
 {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     overflow: hidden;
     width: 100%;
     flex-grow: 1;
@@ -70,16 +69,6 @@ body, html
     top: 4px;
     bottom: 0;
     left: 0;
-}
-
-.webview_container_row
-{
-    flex-direction: row;
-}
-
-.webview_container_column
-{
-    flex-direction: column;
 }
 
 .webview
@@ -391,4 +380,34 @@ select
 .history_item
 {
     cursor: pointer;
+}
+
+.resize_handle
+{
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.resize_handle_ns
+{
+    height: 5px;
+    width: 100%;
+    cursor: ns-resize;
+}
+
+.resize_handle_ew
+{
+    height: 100%;
+    width: 5px;
+    cursor: ew-resize;
+}
+
+.cursor_resize_ns
+{
+    cursor: ns-resize !important;
+}
+
+.cursor_resize_ew
+{
+    cursor: ew-resize !important;
 }

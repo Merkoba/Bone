@@ -22,6 +22,7 @@ Bone.layouts =
 Bone.colorlib = ColorLib()
 Bone.preset_index = -1
 Bone.top_panel_active = true
+Bone.active_resize_handle = false
 
 Bone.history =
 {
@@ -43,7 +44,9 @@ Bone.config =
     top_panel_auto_hide_delay: 1000,
     history_max_url_length: 50,
     swap_max_url_length: 50,
-    modules_path: './js/main/modules/'
+    modules_path: './js/main/modules/',
+    resize_handle_size: 5,
+    resize_double_click_delay: 350
 }
 
 // This gets called when body loads
@@ -51,7 +54,6 @@ Bone.config =
 Bone.init = function()
 {
     Bone.load_files()
-    Bone.setup_utils()
     Bone.get_local_storage()
     Bone.setup_templates()
     Bone.create_windows()
@@ -62,14 +64,14 @@ Bone.init = function()
     Bone.setup_handle_preset()
     Bone.update_presets()
     Bone.apply_theme()
-    Bone.setup_webviews()
     Bone.apply_layout(false)
-    Bone.apply_size()
     Bone.setup_swap_webviews()
     Bone.start_top_panel_auto_hide()
     Bone.apply_auto_hide_top_panel()
     Bone.setup_info()
     Bone.setup_history()
+    Bone.setup_resize_handles()
+    Bone.activate_resize_listener()
 
     console.info('Boneless started')
 }

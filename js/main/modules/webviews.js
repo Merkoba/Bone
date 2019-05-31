@@ -36,161 +36,444 @@ Bone.create_webview = function(num)
     return wv
 }
 
-// Setup webviews
-Bone.setup_webviews = function()
-{
-    let c = Bone.$('#webview_container')
-
-    for(let i=1; i<=Bone.config.num_webviews; i++)
-    {
-        let wv = Bone.create_webview(i)
-        c.appendChild(wv)
-
-        if(i === 1)
-        {
-            Bone.focused_webview = wv
-        }
-    }
-
-    Bone.initial_webview_display = Bone.$('#webview_1').style.display
-}
-
 // Applies webview layout setup from current layout
-Bone.apply_layout = function(reset_size=true, force_url_change=false)
+Bone.apply_layout = function(reset_size=true, force_url_change=false, create_elements=true)
 {
     let layout = Bone.storage.layout
+    let rhs = `${Bone.config.resize_handle_size}px`
+    let handles = Bone.$$('.resize_handle')
 
-    let c = Bone.$('#webview_container')
-    c.classList.remove('webview_container_row')
-    c.classList.remove('webview_container_column')
-    
+    for(let handle of handles)
+    {
+        handle.parentNode.removeChild(handle)
+    }
+
+    let css = ''
     let wv = {}
 
     for(let i=1; i<=Bone.config.num_webviews; i++)
     {
-        wv[i] = {}
-        wv[i].el = Bone.$(`#webview_${i}`)
-        wv[i].el.style.width = 'initial'
-        wv[i].el.style.height = 'initial'
-        wv[i].el.style.display = Bone.initial_webview_display
-
         if(reset_size)
         {
             Bone.reset_size(i, false)
         }
+
+        wv[i] = {}
+        wv[i].size = Bone.storage[`webview_${i}`].size
+    }
+
+    if(Bone.current_layout === layout)
+    {
+        create_elements = false
     }
 
     if(layout === 'single')
     {
-        c.classList.add('webview_container_row')
-        Bone.remake_webview(2)
-        Bone.remake_webview(3)
-        Bone.remake_webview(4)
+        Bone.create_webview_container(1)
     }
 
     else if(layout === '2_column')
     {
-        c.classList.add('webview_container_row')
-        wv[1].el.style.width = '100%'
-        Bone.remake_webview(3)
-        Bone.remake_webview(4)
+        if(create_elements) Bone.create_webview_container(2, 2)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: 1fr;
+            grid-template-rows: ${wv[1].size}fr ${rhs} ${wv[2].size}fr;
+            grid-template-areas: '.' '.' '.';
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 2), Bone.$('#webview_1'))
     }
 
     else if(layout === '3_column')
     {
-        c.classList.add('webview_container_row')
-        wv[1].el.style.width = '100%'
-        wv[2].el.style.width = '100%'
-        Bone.remake_webview(4)
+        if(create_elements) Bone.create_webview_container(2, 3)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: 1fr;
+            grid-template-rows: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr;
+            grid-template-areas: '.' '.' '.' '.' '.';
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 3), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.$('#webview_2'))
     }
 
     else if(layout === '4_column')
     {
-        c.classList.add('webview_container_row')
-        wv[1].el.style.width = '100%'
-        wv[2].el.style.width = '100%'
-        wv[3].el.style.width = '100%'
+        if(create_elements) Bone.create_webview_container(2, 4)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: 1fr;
+            grid-template-rows: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr ${rhs} ${wv[4].size}fr;
+            grid-template-areas: '.' '.' '.' '.' '.' '.' '.';
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 3), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.$('#webview_2'))
+        Bone.insert_after(Bone.create_resize_handle('ns', 3, [4], 3), Bone.$('#webview_3'))
     }
 
     else if(layout === '2_row')
     {
-        c.classList.add('webview_container_row')
-        Bone.remake_webview(3)
-        Bone.remake_webview(4)
+        if(create_elements) Bone.create_webview_container(2, 2)
+
+        css = `
+        #webview_container 
+        {
+            grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: '. . .';
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 2), Bone.$('#webview_1'))
     }
     
     else if(layout === '3_row')
     {
-        c.classList.add('webview_container_row')
-        Bone.remake_webview(4)
+        if(create_elements) Bone.create_webview_container(2, 3)
+
+        css = `
+        #webview_container 
+        {
+            grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: '. . . . .';
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 3), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.$('#webview_2'))
     }
 
     else if(layout === '4_row')
     {
-        c.classList.add('webview_container_row')
+        if(create_elements) Bone.create_webview_container(2, 4)
+
+        css = `
+        #webview_container 
+        {
+            grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr ${rhs} ${wv[4].size}fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: '. . . . . . .';
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 3), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.$('#webview_2'))
+        Bone.insert_after(Bone.create_resize_handle('ew', 3, [4], 3), Bone.$('#webview_3'))
     }
 
     else if(layout === '1_top_2_bottom')
     {
-        c.classList.add('webview_container_row')
-        wv[1].el.style.width = '100%'
-        Bone.remake_webview(4)
+        if(create_elements) Bone.create_webview_container(3, 3)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: 1fr;
+            grid-template-rows: ${wv[1].size}fr ${2 - (wv[1].size)}fr;
+            grid-template-areas: 'top' 'bottom';
+        }
+    
+        .webview_top
+        { 
+            display: grid;
+            grid-area: top;
+            grid-template-rows: 1fr ${rhs};
+        }
+    
+        .webview_bottom
+        {
+            display: grid;
+            grid-template-columns: ${wv[2].size}fr ${rhs} ${wv[3].size}fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: '. . .';
+            grid-area: bottom;
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2, 3], 2), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 2), Bone.$('#webview_2'))
     }
 
     else if(layout === '1_top_3_bottom')
     {
-        c.classList.add('webview_container_row')
-        wv[1].el.style.width = '100%'
+        if(create_elements) Bone.create_webview_container(3, 4)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: 1fr;
+            grid-template-rows: ${wv[1].size}fr ${2 - (wv[1].size)}fr;
+            grid-template-areas: 'top' 'bottom';
+        }
+    
+        .webview_top
+        { 
+            display: grid;
+            grid-area: top;
+            grid-template-rows: 1fr ${rhs};
+        }
+    
+        .webview_bottom
+        {
+            display: grid;
+            grid-template-columns: ${wv[2].size}fr ${rhs} ${wv[3].size}fr ${rhs} ${wv[4].size}fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: '. . . . .';
+            grid-area: bottom;
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2, 3, 4], 2), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.$('#webview_2'))
+        Bone.insert_after(Bone.create_resize_handle('ew', 3, [4], 3), Bone.$('#webview_3'))
     }
 
     else if(layout === '2_top_1_bottom')
     {
-        c.classList.add('webview_container_row')
-        wv[1].el.style.width = '50%'
-        wv[2].el.style.width = '50%'
-        Bone.remake_webview(4)
+        if(create_elements) Bone.create_webview_container(4, 3)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: 1fr;
+            grid-template-rows: ${2 - (wv[3].size)}fr ${wv[3].size}fr;
+            grid-template-areas: 'top' 'bottom';
+        }
+    
+        .webview_top
+        { 
+            display: grid;
+            grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: '. . .';
+            grid-area: top;
+        }
+    
+        .webview_bottom
+        {
+            display: grid;
+            grid-area: bottom;
+            grid-template-rows: ${rhs} 1fr;
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 2), Bone.$('#webview_1'))
+        Bone.insert_before(Bone.create_resize_handle('ns', 3, [1, 2], 2, 'before'), Bone.$('#webview_3'))
     }
 
     else if(layout === '3_top_1_bottom')
     {
-        c.classList.add('webview_container_row')
-        wv[4].el.style.width = '100%'
+        if(create_elements) Bone.create_webview_container(4, 4)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: 1fr;
+            grid-template-rows: ${2 - (wv[4].size)}fr ${wv[4].size}fr;
+            grid-template-areas: 'top' 'bottom';
+        }
+    
+        .webview_top
+        { 
+            display: grid;
+            grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: '. . . .';
+            grid-area: top;
+        }
+    
+        .webview_bottom
+        {
+            display: grid;
+            grid-area: bottom;
+            grid-template-rows: ${rhs} 1fr;
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 3), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.$('#webview_2'))
+        Bone.insert_before(Bone.create_resize_handle('ns', 4, [1, 2, 3], 2, 'before'), Bone.$('#webview_4'))
     }
 
     else if(layout === '2_top_2_bottom')
     {
-        c.classList.add('webview_container_row')
-        wv[1].el.style.width = '50%'
-        wv[2].el.style.width = '50%'
-        wv[3].el.style.width = '50%'
-        wv[4].el.style.width = '50%'
+        if(create_elements) Bone.create_webview_container(5, 4)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr;
+            grid-template-areas: 'top' 'bottom';
+        }
+    
+        .webview_top
+        { 
+            display: grid;
+            grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: '. . .';
+            grid-area: top;
+        }
+    
+        .webview_bottom
+        {
+            display: grid;
+            grid-template-columns: ${wv[3].size}fr ${rhs} ${wv[4].size}fr ${rhs};
+            grid-template-rows: 1fr;
+            grid-template-areas: '. . .';
+            grid-area: bottom;
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 2), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ew', 3, [4], 2), Bone.$('#webview_3'))
     }
 
     else if(layout === '1_left_2_right')
     {
-        c.classList.add('webview_container_column')
-        wv[1].el.style.height = '100%'
-        Bone.remake_webview(4)
+        if(create_elements) Bone.create_webview_container(6, 3)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: ${wv[1].size}fr ${2 - (wv[1].size)}fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: 'left right';
+        }
+    
+        .webview_left
+        { 
+            display: grid;
+            grid-area: left;
+            grid-template-columns: 1fr ${rhs};
+        }
+    
+        .webview_right
+        {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: ${wv[2].size}fr ${rhs} ${wv[3].size}fr;
+            grid-template-areas: '.' '.' '.';
+            grid-area: right;
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2, 3], 2), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 2), Bone.$('#webview_2'))
     }
 
     else if(layout === '1_left_3_right')
     {
-        c.classList.add('webview_container_column')
-        wv[1].el.style.height = '100%'
+        if(create_elements) Bone.create_webview_container(6, 4)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: ${wv[1].size}fr ${2 - (wv[1].size)}fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: 'left right';
+        }
+    
+        .webview_left
+        { 
+            display: grid;
+            grid-area: left;
+            grid-template-columns: 1fr ${rhs};
+        }
+    
+        .webview_right
+        {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: ${wv[2].size}fr ${rhs} ${wv[3].size}fr ${rhs} ${wv[4].size}fr;
+            grid-template-areas: '.' '.' '.' '.';
+            grid-area: right;
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2, 3], 2), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.$('#webview_2'))
+        Bone.insert_after(Bone.create_resize_handle('ns', 3, [4], 3), Bone.$('#webview_3'))
     }
 
     else if(layout === '2_left_1_right')
     {
-        c.classList.add('webview_container_column')
-        wv[3].el.style.height = '100%'
-        Bone.remake_webview(4)
+        if(create_elements) Bone.create_webview_container(7, 3)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: 1fr;
+            grid-template-columns: ${2 - (wv[3].size)}fr ${wv[3].size}fr;
+            grid-template-areas: 'left right';
+        }
+    
+        .webview_left
+        { 
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: ${wv[1].size}fr ${rhs} ${wv[2].size}fr;
+            grid-template-areas: '.' '.' .';
+            grid-area: left;
+        }
+    
+        .webview_right
+        {
+            display: grid;
+            grid-area: right;
+            grid-template-columns: ${rhs} 1fr;
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 2), Bone.$('#webview_1'))
+        Bone.insert_before(Bone.create_resize_handle('ew', 3, [1, 2], 2, 'before'), Bone.$('#webview_3'))
     }
 
     else if(layout === '3_left_1_right')
     {
-        c.classList.add('webview_container_column')
-        wv[4].el.style.height = '100%'
+        if(create_elements) Bone.create_webview_container(7, 4)
+
+        css = `
+        #webview_container
+        {
+            grid-template-columns: 1fr;
+            grid-template-columns: ${2 - (wv[4].size)}fr ${wv[4].size}fr;
+            grid-template-areas: 'left right';
+        }
+    
+        .webview_left
+        { 
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr;
+            grid-template-areas: '.' '.' .' '.' '.';
+            grid-area: left;
+        }
+    
+        .webview_right
+        {
+            display: grid;
+            grid-area: right;
+            grid-template-columns: ${rhs} 1fr;
+        }`
+
+        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 3), Bone.$('#webview_1'))
+        Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.$('#webview_2'))
+        Bone.insert_before(Bone.create_resize_handle('ew', 4, [1, 2, 3], 2, 'before'), Bone.$('#webview_4'))
     }
+
+    let styles = Bone.$$('.appended_layout_style')
+
+    for(let style of styles)
+    {
+        style.parentNode.removeChild(style)
+    }
+
+    let style_el = document.createElement('style')
+    style_el.classList.add('appended_layout_style')
+    style_el.innerHTML = css
+
+    document.head.appendChild(style_el)
 
     let webviews = Bone.$$('.webview')
 
@@ -201,6 +484,8 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false)
             Bone.apply_url(webview.id.replace('webview_', ''))
         }
     }
+
+    Bone.current_layout = layout
 }
 
 // Changes a webview url
@@ -245,7 +530,7 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 
     else
     {
-        rep.style.display = Bone.initial_webview_display
+        rep.style.display = ''
     }
 
     rep.style.width = wv.style.width
@@ -283,6 +568,7 @@ Bone.apply_zoom = function(num)
         let zoom = Bone.storage[`webview_${num}`].zoom
         webview.setZoomLevel(0)
         webview.setZoomFactor(zoom)
+        Bone.set_zoom_label(num)
     }
 
     catch(err){}
@@ -301,7 +587,6 @@ Bone.decrease_zoom = function(num)
     let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom - Bone.config.zoom_step, 1)
     Bone.storage[`webview_${num}`].zoom = zoom
     Bone.apply_zoom(num)
-    Bone.set_zoom_label(num)
     Bone.save_local_storage()
 }
 
@@ -311,7 +596,6 @@ Bone.increase_zoom = function(num)
     let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom + Bone.config.zoom_step, 1)
     Bone.storage[`webview_${num}`].zoom = zoom
     Bone.apply_zoom(num)
-    Bone.set_zoom_label(num)
     Bone.save_local_storage()
 }
 
@@ -320,191 +604,7 @@ Bone.reset_zoom = function(num)
 {
     Bone.storage[`webview_${num}`].zoom = Bone.config.zoom_default
     Bone.apply_zoom(num)
-    Bone.set_zoom_label(num)
     Bone.save_local_storage()
-}
-
-// Applies the configured sizes to the webviews
-Bone.apply_size = function()
-{
-    let layout = Bone.storage.layout
-    let c = Bone.$('#webview_container')
-    let wv = {}
-
-    for(let i=1; i<=Bone.config.num_webviews; i++)
-    {
-        wv[i] = {}
-        wv[i].el = Bone.$(`#webview_${i}`)
-        wv[i].size = Bone.storage[`webview_${i}`].size
-    }
-
-    if(layout === 'single')
-    {
-        // Do nothing
-    }
-
-    else if(layout === '2_column')
-    {
-        let sum = wv[1].size + wv[2].size
-        wv[1].el.style.height = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.height = `${Bone.get_percentage(wv[2].size, sum)}%`
-    }
-
-    else if(layout === '3_column')
-    {
-        let sum = wv[1].size + wv[2].size + wv[3].size
-        wv[1].el.style.height = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.height = `${Bone.get_percentage(wv[2].size, sum)}%`
-        wv[3].el.style.height = `${Bone.get_percentage(wv[3].size, sum)}%`
-    }
-
-    else if(layout === '4_column')
-    {
-        let sum = wv[1].size + wv[2].size + wv[3].size + wv[4].size
-        wv[1].el.style.height = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.height = `${Bone.get_percentage(wv[2].size, sum)}%`
-        wv[3].el.style.height = `${Bone.get_percentage(wv[3].size, sum)}%`
-        wv[4].el.style.height = `${Bone.get_percentage(wv[4].size, sum)}%`
-    }
-
-    else if(layout === '2_row')
-    {
-        let sum = wv[1].size + wv[2].size
-        wv[1].el.style.width = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.width = `${Bone.get_percentage(wv[2].size, sum)}%`
-    }
-    
-    else if(layout === '3_row')
-    {
-        let sum = wv[1].size + wv[2].size + wv[3].size
-        wv[1].el.style.width = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.width = `${Bone.get_percentage(wv[2].size, sum)}%`
-        wv[3].el.style.width = `${Bone.get_percentage(wv[3].size, sum)}%`
-    }
-
-    else if(layout === '4_row')
-    {
-        let sum = wv[1].size + wv[2].size + wv[3].size + wv[4].size
-        wv[1].el.style.width = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.width = `${Bone.get_percentage(wv[2].size, sum)}%`
-        wv[3].el.style.width = `${Bone.get_percentage(wv[3].size, sum)}%`
-        wv[4].el.style.width = `${Bone.get_percentage(wv[4].size, sum)}%`
-    }
-
-    else if(layout === '1_top_2_bottom')
-    {
-        let sum = wv[1].size + 1
-        wv[1].el.style.height = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.height = `${Bone.get_percentage(1, sum)}%`
-        wv[3].el.style.height = `${Bone.get_percentage(1, sum)}%`
-
-        let sum_2 = wv[2].size + wv[3].size
-        wv[2].el.style.width = `${Bone.get_percentage(wv[2].size, sum_2)}%`
-        wv[3].el.style.width = `${Bone.get_percentage(wv[3].size, sum_2)}%`
-    }
-
-    else if(layout === '1_top_3_bottom')
-    {
-        let sum = wv[1].size + 1
-        wv[1].el.style.height = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.height = `${Bone.get_percentage(1, sum)}%`
-        wv[3].el.style.height = `${Bone.get_percentage(1, sum)}%`
-        wv[4].el.style.height = `${Bone.get_percentage(1, sum)}%`
-
-        let sum_2 = wv[2].size + wv[3].size + wv[4].size
-        wv[2].el.style.width = `${Bone.get_percentage(wv[2].size, sum_2)}%`
-        wv[3].el.style.width = `${Bone.get_percentage(wv[3].size, sum_2)}%`
-        wv[4].el.style.width = `${Bone.get_percentage(wv[4].size, sum_2)}%`
-    }
-
-    else if(layout === '2_top_1_bottom')
-    {
-        let sum = wv[3].size + 1
-        wv[3].el.style.height = `${Bone.get_percentage(wv[3].size, sum)}%`
-        wv[1].el.style.height = `${Bone.get_percentage(1, sum)}%`
-        wv[2].el.style.height = `${Bone.get_percentage(1, sum)}%`
-
-        let sum_2 = wv[1].size + wv[2].size
-        wv[1].el.style.width = `${Bone.get_percentage(wv[1].size, sum_2)}%`
-        wv[2].el.style.width = `${Bone.get_percentage(wv[2].size, sum_2)}%`
-    }
-
-    else if(layout === '3_top_1_bottom')
-    {
-        let sum = wv[4].size + 1
-        wv[4].el.style.height = `${Bone.get_percentage(wv[4].size, sum)}%`
-        wv[1].el.style.height = `${Bone.get_percentage(1, sum)}%`
-        wv[2].el.style.height = `${Bone.get_percentage(1, sum)}%`
-        wv[3].el.style.height = `${Bone.get_percentage(1, sum)}%`
-
-        let sum_2 = wv[1].size + wv[2].size + wv[3].size
-        wv[1].el.style.width = `${Bone.get_percentage(wv[1].size, sum_2)}%`
-        wv[2].el.style.width = `${Bone.get_percentage(wv[2].size, sum_2)}%`
-        wv[3].el.style.width = `${Bone.get_percentage(wv[3].size, sum_2)}%`
-    }
-
-    else if(layout === '2_top_2_bottom')
-    {
-        let sum = wv[1].size + wv[2].size
-        wv[1].el.style.width = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.width = `${Bone.get_percentage(wv[2].size, sum)}%`
-
-        let sum_2 = wv[3].size + wv[4].size
-        wv[3].el.style.width = `${Bone.get_percentage(wv[3].size, sum_2)}%`
-        wv[4].el.style.width = `${Bone.get_percentage(wv[4].size, sum_2)}%`
-    }
-
-    else if(layout === '1_left_2_right')
-    {
-        let sum = wv[1].size + 1
-        wv[1].el.style.width = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.width = `${Bone.get_percentage(1, sum)}%`
-        wv[3].el.style.width = `${Bone.get_percentage(1, sum)}%`
-
-        let sum_2 = wv[2].size + wv[3].size
-        wv[2].el.style.height = `${Bone.get_percentage(wv[2].size, sum_2)}%`
-        wv[3].el.style.height = `${Bone.get_percentage(wv[3].size, sum_2)}%`
-    }
-
-    else if(layout === '1_left_3_right')
-    {
-        let sum = wv[1].size + 1
-        wv[1].el.style.width = `${Bone.get_percentage(wv[1].size, sum)}%`
-        wv[2].el.style.width = `${Bone.get_percentage(1, sum)}%`
-        wv[3].el.style.width = `${Bone.get_percentage(1, sum)}%`
-        wv[4].el.style.width = `${Bone.get_percentage(1, sum)}%`
-
-        let sum_2 = wv[2].size + wv[3].size + wv[4].size
-        wv[2].el.style.height = `${Bone.get_percentage(wv[2].size, sum_2)}%`
-        wv[3].el.style.height = `${Bone.get_percentage(wv[3].size, sum_2)}%`
-        wv[4].el.style.height = `${Bone.get_percentage(wv[4].size, sum_2)}%`
-    }
-
-    else if(layout === '2_left_1_right')
-    {
-        let sum = wv[3].size + 1
-        wv[3].el.style.width = `${Bone.get_percentage(wv[3].size, sum)}%`
-        wv[1].el.style.width = `${Bone.get_percentage(1, sum)}%`
-        wv[2].el.style.width = `${Bone.get_percentage(1, sum)}%`
-
-        let sum_2 = wv[1].size + wv[2].size
-        wv[1].el.style.height = `${Bone.get_percentage(wv[1].size, sum_2)}%`
-        wv[2].el.style.height = `${Bone.get_percentage(wv[2].size, sum_2)}%`
-    }
-
-    else if(layout === '3_left_1_right')
-    {
-        let sum = wv[4].size + 1
-        wv[4].el.style.width = `${Bone.get_percentage(wv[4].size, sum)}%`
-        wv[1].el.style.width = `${Bone.get_percentage(1, sum)}%`
-        wv[2].el.style.width = `${Bone.get_percentage(1, sum)}%`
-        wv[3].el.style.width = `${Bone.get_percentage(1, sum)}%`
-
-        let sum_2 = wv[1].size + wv[2].size + wv[3].size
-        wv[1].el.style.height = `${Bone.get_percentage(wv[1].size, sum_2)}%`
-        wv[2].el.style.height = `${Bone.get_percentage(wv[2].size, sum_2)}%`
-        wv[3].el.style.height = `${Bone.get_percentage(wv[3].size, sum_2)}%`
-    }
 }
 
 // Sets the size to a webview
@@ -525,9 +625,9 @@ Bone.decrease_size = function(num)
     }
 
     Bone.storage[`webview_${num}`].size = size
-    Bone.apply_size(num)
-    Bone.set_size_label(num)
+    Bone.apply_layout(false)
     Bone.save_local_storage()
+    Bone.set_size_label(num)
 }
 
 // Increases a webview size by size_step
@@ -535,21 +635,21 @@ Bone.increase_size = function(num)
 {
     let size = Bone.round(Bone.storage[`webview_${num}`].size + Bone.config.size_step, 1)
     Bone.storage[`webview_${num}`].size = size
-    Bone.apply_size(num)
-    Bone.set_size_label(num)
+    Bone.apply_layout(false)
     Bone.save_local_storage()
+    Bone.set_size_label(num)
 }
 
 // Resets a webview size to size_default
 Bone.reset_size = function(num, apply=true)
 {
     Bone.storage[`webview_${num}`].size = Bone.config.size_default
-    Bone.set_size_label(num)
     Bone.save_local_storage()
+    Bone.set_size_label(num)
 
     if(apply)
     {
-        Bone.apply_size(num)
+        Bone.apply_layout(false)
     }  
 }
 
@@ -623,8 +723,6 @@ Bone.do_webview_swap = function(num_1, num_2)
     Bone.apply_url(num_2)
     Bone.apply_zoom(num_1)
     Bone.apply_zoom(num_2)
-    Bone.set_zoom_label(num_1)
-    Bone.set_zoom_label(num_2)
 }
 
 // What to do when a webview is dom ready
@@ -676,4 +774,297 @@ Bone.setup_history = function()
         Bone.remake_webview(num, url, false, false)
         Bone.close_all_windows()
     })
+}
+
+// Creates a resize handle based on a given direction
+Bone.create_resize_handle = function(direction, owner, siblings, group, mode='after')
+{
+    let handle = document.createElement('div')
+    handle.classList.add(`resize_handle`)
+    handle.classList.add(`resize_handle_${direction}`)
+    handle.dataset.direction = direction
+    handle.dataset.owner = owner
+    handle.dataset.siblings = siblings.join(',')
+    handle.dataset.group = group
+    handle.dataset.mode = mode
+
+    return handle
+}
+
+// Setups resize handles
+Bone.setup_resize_handles = function()
+{
+    let c = Bone.$('#webview_container')
+
+    c.addEventListener('mousedown', function(e)
+    {
+        if(!Bone.active_resize_handle)
+        {
+            if(e.target.classList.contains('resize_handle'))
+            {
+                Bone.active_resize_handle = e.target
+                Bone.initial_resize_x = e.clientX
+                Bone.initial_resize_y = e.clientY
+                Bone.resize_mousedown_date = Date.now()
+    
+                let webviews = Bone.$$('.webview')
+    
+                for(let webview of webviews)
+                {
+                    webview.classList.add('disabled')
+                }
+
+                c.classList.add(`cursor_resize_${Bone.active_resize_handle.dataset.direction}`)
+
+                e.preventDefault()
+                return false
+            }
+        }
+
+        else
+        {
+            if(Date.now() - Bone.resize_mousedown_date < Bone.config.resize_double_click_delay)
+            {
+                let owner = Bone.active_resize_handle.dataset.owner
+                let siblings = Bone.active_resize_handle.dataset.siblings
+                let elements
+
+                if(siblings.length === 1)
+                {
+                    elements = [owner, ...siblings]
+                }
+
+                else
+                {
+                    elements = [owner]
+                }
+                
+                for(let num of elements)
+                {
+                    Bone.reset_size(num)
+                }
+
+                Bone.leave_resize_mode()
+                e.preventDefault()
+                return false
+            }
+        }
+    })
+
+    c.addEventListener('mouseup', function(e)
+    {
+        clearTimeout(Bone.resize_mouse_timeout)
+
+        let diff = Bone.config.resize_double_click_delay - (Date.now() - Bone.resize_mousedown_date)
+        let delay = diff < 0 ? 0 : diff
+
+        Bone.resize_mouse_timeout = setTimeout(function()
+        {
+            Bone.resize_mouseup_function(e)
+        }, delay)
+    })
+}
+
+// Creates a webview container from a given template
+Bone.create_webview_container = function(num, amount)
+{
+    let c = Bone.$('#webview_container')
+    c.innerHTML = ''
+
+    if(num === 1)
+    {
+        c.appendChild(Bone.create_webview(1))
+    }
+
+    else if(num === 2)
+    {
+        for(let i=1; i<=amount; i++)
+        {
+            c.appendChild(Bone.create_webview(i))
+        }
+    }
+
+    else if(num === 3)
+    {
+        let top = document.createElement('div')
+        top.classList.add('webview_top')
+        top.appendChild(Bone.create_webview(1))
+
+        let bottom = document.createElement('div')
+        bottom.classList.add('webview_bottom')
+        
+        for(let i=2; i<=amount; i++)
+        {
+            bottom.appendChild(Bone.create_webview(i)) 
+        }
+
+        c.prepend(bottom)
+        c.prepend(top)
+    }
+
+    else if(num === 4)
+    {
+        let top = document.createElement('div')
+        top.classList.add('webview_top')
+
+        for(let i=1; i<=amount-1; i++)
+        {
+            top.appendChild(Bone.create_webview(i)) 
+        }
+
+        let bottom = document.createElement('div')
+        bottom.classList.add('webview_bottom')
+        bottom.appendChild(Bone.create_webview(amount))
+        
+        c.prepend(bottom)
+        c.prepend(top)
+    }
+
+    else if(num === 5)
+    {
+        let top = document.createElement('div')
+        top.classList.add('webview_top')
+
+        for(let i=1; i<=amount/2; i++)
+        {
+            top.appendChild(Bone.create_webview(i)) 
+        }
+
+        let bottom = document.createElement('div')
+        bottom.classList.add('webview_bottom')
+
+        for(let i=amount/2+1; i<=amount; i++)
+        {
+            bottom.appendChild(Bone.create_webview(i)) 
+        }
+        
+        c.prepend(bottom)
+        c.prepend(top)
+    }
+
+    else if(num === 6)
+    {
+        let left = document.createElement('div')
+        left.classList.add('webview_left')
+        left.appendChild(Bone.create_webview(1))
+
+        let right = document.createElement('div')
+        right.classList.add('webview_right')
+        
+        for(let i=2; i<=amount; i++)
+        {
+            right.appendChild(Bone.create_webview(i)) 
+        }
+
+        c.prepend(right)
+        c.prepend(left)
+    }
+
+    else if(num === 7)
+    {
+        let left = document.createElement('div')
+        left.classList.add('webview_left')
+
+        for(let i=1; i<=amount-1; i++)
+        {
+            left.appendChild(Bone.create_webview(i)) 
+        }
+
+        let right = document.createElement('div')
+        right.classList.add('webview_right')
+        right.appendChild(Bone.create_webview(amount))
+        
+        c.prepend(right)
+        c.prepend(left)
+    }
+}
+
+// What happens after a resizing is done or cancelled
+Bone.leave_resize_mode = function()
+{
+    let c = Bone.$('#webview_container')
+
+    c.classList.remove(`cursor_resize_${Bone.active_resize_handle.dataset.direction}`)
+    Bone.active_resize_handle = false
+    
+    let webviews = Bone.$$('.webview')
+
+    for(let webview of webviews)
+    {
+        webview.classList.remove('disabled')
+    }
+
+    clearTimeout(Bone.resize_mouse_timeout)
+}
+
+// Function for the mouseup event when resizing
+Bone.resize_mouseup_function = function(e)
+{
+    if(!Bone.active_resize_handle)
+    {
+        return false
+    }
+
+    let c = Bone.$('#webview_container')
+    let direction = Bone.active_resize_handle.dataset.direction
+    let siblings_list = Bone.active_resize_handle.dataset.siblings.split(',')
+    let owner = Bone.active_resize_handle.dataset.owner
+    let group = Bone.active_resize_handle.dataset.group
+    let mode = Bone.active_resize_handle.dataset.mode
+    let diff_x = e.clientX - Bone.initial_resize_x
+    let diff_y = e.clientY - Bone.initial_resize_y
+    let elements
+
+    if(siblings_list.length === 1)
+    {
+        elements = [owner, ...siblings_list]
+    }
+
+    else
+    {
+        elements = [owner]
+    }
+
+    let diff, oname
+
+    if(direction === 'ns')
+    {
+        oname = 'clientHeight'
+        diff = diff_y
+    }
+
+    else if(direction === 'ew')
+    {
+        oname = 'clientWidth'
+        diff = diff_x
+    }
+
+    else
+    {
+        return false
+    }
+
+    for(let num of elements)
+    {
+        let el = Bone.$(`#webview_${num}`)
+        let nsize
+
+        if(num === owner && mode === 'after')
+        {
+            nsize = el[oname] + diff
+        }
+        
+        else
+        {
+            nsize = el[oname] - diff
+        }
+
+        let size = Bone.round((nsize / c[oname]) * group, 3)
+        Bone.storage[`webview_${num}`].size = size
+        Bone.set_size_label(num)
+    }
+
+    Bone.apply_layout(false, false, false)
+    Bone.save_local_storage()
+    Bone.leave_resize_mode()
 }
