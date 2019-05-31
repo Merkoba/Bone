@@ -660,9 +660,9 @@ Bone.decrease_size = function(num, mode='normal')
 
     let size = Bone.round(Bone.storage[`webview_${num}`].size - step, 2)
 
-    if(size <= 0)
+    if(size < 0)
     {
-        return false
+        size = 0
     }
 
     Bone.storage[`webview_${num}`].size = size
