@@ -5,6 +5,7 @@
 const fs = require('fs')
 const path = require('path')
 const contextMenu = require('electron-context-menu')
+const remote = require('electron').remote
 
 // Init main object and some properties
 

@@ -287,6 +287,14 @@ Bone.setup_menu_window = function()
             Bone.reset_storage()
         }
     })
+
+    Bone.$('#menu_window_exit').addEventListener('click', function()
+    {
+        if(confirm('Are you sure you want to exit?'))
+        {
+            Bone.exit()
+        }
+    })
 }
 
 // Updates widgest in the menu window

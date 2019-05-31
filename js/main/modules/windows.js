@@ -104,3 +104,9 @@ Bone.activate_resize_listener = function()
 
     window.addEventListener('resize', on_resize)
 }
+
+// Closes the application
+Bone.exit = function()
+{
+    remote.getCurrentWindow().close()
+}

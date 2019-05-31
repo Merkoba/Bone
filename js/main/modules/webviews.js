@@ -501,6 +501,11 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
     }
 
     Bone.current_layout = layout
+
+    if(create_elements)
+    {
+        Bone.focused_webview = Bone.$('#webview_1')
+    }
 }
 
 // Changes a webview url
