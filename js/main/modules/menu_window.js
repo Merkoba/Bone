@@ -314,7 +314,7 @@ Bone.setup_menu_window = function()
 
     Bone.$('#menu_window_reset').addEventListener('click', function()
     {
-        if(confirm('Are you sure?'))
+        if(confirm('Are you sure you want to reset the settings? This will not delete saved presets.'))
         {
             Bone.reset_storage()
         }

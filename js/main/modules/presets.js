@@ -43,7 +43,7 @@ Bone.setup_handle_preset = function()
     
     Bone.$('#handle_preset_delete').addEventListener('click', function()
     {
-        if(confirm('Are you sure?'))
+        if(confirm('Are you sure you want to delete this preset?'))
         {
             let name = Bone.handled_preset
             Bone.delete_preset(name)
@@ -80,11 +80,14 @@ Bone.do_handle_preset_apply = function(name)
 // Does the edit preset action
 Bone.do_handle_preset_update = function(name)
 {
-    let oname = Bone.handled_preset
-    Bone.save_preset(name, oname)
-    Bone.update_presets()
-    Bone.msg_handle_preset.close()
-    Bone.info(`Preset '${name}' updated`)
+    if(confirm('Are you sure you want to update this preset with the current settings?'))
+    {
+        let oname = Bone.handled_preset
+        Bone.save_preset(name, oname)
+        Bone.update_presets()
+        Bone.msg_handle_preset.close()
+        Bone.info(`Preset '${name}' updated`)
+    }
 }
 
 // Updates the presets container
@@ -155,16 +158,17 @@ Bone.apply_preset = function(name)
         return false
     }
 
-    Bone.storage.presets[name].last_used = Date.now()
-    let obj = Bone.clone_object(Bone.storage.presets[name])
+    let preset = Bone.storage.presets[name]
+    preset.last_used = Date.now()
+    Bone.check_local_storage(preset)
+    let obj = Bone.clone_object(preset)
     obj.presets = Bone.clone_object(Bone.storage.presets)
     Bone.storage = obj
     
     Bone.save_local_storage()
     Bone.update_menu_window_widgets()
-    Bone.apply_layout(false, true)
+    Bone.apply_layout()
     Bone.apply_theme()
-    Bone.apply_size()
     Bone.update_presets()
 
 }

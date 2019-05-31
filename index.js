@@ -5,7 +5,7 @@ const path = require('path')
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
-function createWindow () 
+exports.create_window = function() 
 {
     // Create the browser window.
     win = new BrowserWindow(
@@ -42,7 +42,7 @@ app.commandLine.appendSwitch('--autoplay-policy', 'no-user-gesture-required')
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', exports.create_window)
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => 
@@ -73,7 +73,7 @@ app.on('activate', () =>
     // dock icon is clicked and there are no other windows open.
     if(win === null) 
     {
-        createWindow()
+        create_window()
     }
 })
 

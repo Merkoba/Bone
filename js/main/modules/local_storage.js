@@ -2,7 +2,6 @@
 Bone.get_local_storage = function()
 {
     let obj
-    let save = false
 
     if(localStorage[Bone.ls_name])
     {
@@ -23,6 +22,21 @@ Bone.get_local_storage = function()
         obj = {}
     }
 
+    let save = Bone.check_local_storage(obj)
+    
+    Bone.storage = obj
+
+    if(save)
+    {
+        Bone.save_local_storage()
+    }
+}
+
+// Checks local storage object and assigns defaults if missing
+Bone.check_local_storage = function(obj)
+{
+    let save = false
+    
     if(obj.layout === undefined)
     {
         obj.layout = '2_column'
@@ -149,12 +163,7 @@ Bone.get_local_storage = function()
         save = true
     }
 
-    Bone.storage = obj
-
-    if(save)
-    {
-        Bone.save_local_storage()
-    }
+    return save
 }
 
 // Save the local storage data
