@@ -167,7 +167,7 @@ Bone.apply_preset = function(name)
     
     Bone.save_local_storage()
     Bone.update_menu_window_widgets()
-    Bone.apply_layout()
+    Bone.apply_layout(true, true, 'yes')
     Bone.apply_theme()
     Bone.update_presets()
 
