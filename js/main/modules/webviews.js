@@ -598,13 +598,13 @@ Bone.apply_zoom = function(num)
 Bone.set_zoom_label = function(num)
 {
     let zoom = Bone.storage[`webview_${num}`].zoom
-    Bone.$(`#webview_${num}_zoom_label`).textContent = `Zoom (${zoom})`
+    Bone.$(`#webview_${num}_zoom_label`).textContent = `Zoom (${Number(zoom).toFixed(2)})`
 }
 
 // Decreases a webview zoom level by config.zoom_step
 Bone.decrease_zoom = function(num)
 {
-    let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom - Bone.config.zoom_step, 1)
+    let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom - Bone.config.zoom_step, 2)
     Bone.storage[`webview_${num}`].zoom = zoom
     Bone.apply_zoom(num)
     Bone.save_local_storage()
@@ -613,7 +613,7 @@ Bone.decrease_zoom = function(num)
 // Increases a webview zoom level by config.zoom_step
 Bone.increase_zoom = function(num)
 {
-    let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom + Bone.config.zoom_step, 1)
+    let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom + Bone.config.zoom_step, 2)
     Bone.storage[`webview_${num}`].zoom = zoom
     Bone.apply_zoom(num)
     Bone.save_local_storage()
@@ -631,13 +631,13 @@ Bone.reset_zoom = function(num)
 Bone.set_size_label = function(num)
 {
     let size = Bone.storage[`webview_${num}`].size
-    Bone.$(`#webview_${num}_size_label`).textContent = `Size (${size})`
+    Bone.$(`#webview_${num}_size_label`).textContent = `Size (${Number(size).toFixed(2)})`
 }
 
 // Decreases a webview size by size_step
 Bone.decrease_size = function(num)
 {
-    let size = Bone.round(Bone.storage[`webview_${num}`].size - Bone.config.size_step, 1)
+    let size = Bone.round(Bone.storage[`webview_${num}`].size - Bone.config.size_step, 2)
 
     if(size <= 0)
     {
@@ -653,7 +653,7 @@ Bone.decrease_size = function(num)
 // Increases a webview size by size_step
 Bone.increase_size = function(num)
 {
-    let size = Bone.round(Bone.storage[`webview_${num}`].size + Bone.config.size_step, 1)
+    let size = Bone.round(Bone.storage[`webview_${num}`].size + Bone.config.size_step, 2)
     Bone.storage[`webview_${num}`].size = size
     Bone.apply_layout(false)
     Bone.save_local_storage()

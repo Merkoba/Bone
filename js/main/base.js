@@ -36,9 +36,9 @@ Bone.history =
 Bone.config =
 {
     num_webviews: 4,
-    zoom_step: 0.1,
+    zoom_step: 0.05,
     zoom_default: 1,
-    size_step: 0.1,
+    size_step: 0.05,
     size_default: 1,
     top_panel_height: 36,
     top_panel_hidden_height: 4,
