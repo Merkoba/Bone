@@ -194,6 +194,14 @@ body, html
     text-align: center;
 }
 
+.menu_window_input_text_small
+{
+    width: 8rem;
+    font-size: 1.1rem;
+    padding: 0.25rem;
+    text-align: center;
+}
+
 .layout_square_row
 {
     display: flex;

@@ -271,6 +271,22 @@ Bone.setup_menu_window = function()
         Bone.save_local_storage()
         Bone.apply_auto_hide_top_panel()
     })
+
+    Bone.$('#menu_window_resize_handle_size').addEventListener('blur', function()
+    {
+        Bone.storage.resize_handle_size = this.value
+        Bone.save_local_storage()
+        Bone.update_resize_handle_style()
+        Bone.apply_layout(false)
+    })
+
+    Bone.$('#menu_window_reset').addEventListener('click', function()
+    {
+        if(confirm('Are you sure?'))
+        {
+            Bone.reset_storage()
+        }
+    })
 }
 
 // Updates widgest in the menu window
@@ -289,10 +305,12 @@ Bone.update_menu_window_widgets = function()
     for(let i=1; i<=Bone.config.num_webviews; i++)
     {
         Bone.set_size_label(i)
+        Bone.set_zoom_label(i)
     }
 
     Bone.$('#menu_window_theme_color_picker').value = Bone.storage.theme
     Bone.$('#menu_window_auto_hide_top_panel_checkbox').checked = Bone.storage.auto_hide_top_panel
+    Bone.$('#menu_window_resize_handle_size').value = Bone.storage.resize_handle_size
 }
 
 // Makes the current layout highlighted in the menu window

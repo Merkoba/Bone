@@ -37,10 +37,10 @@ Bone.create_webview = function(num)
 }
 
 // Applies webview layout setup from current layout
-Bone.apply_layout = function(reset_size=true, force_url_change=false, create_elements=true)
+Bone.apply_layout = function(reset_size=true, force_url_change=false, create='auto')
 {
     let layout = Bone.storage.layout
-    let rhs = `${Bone.config.resize_handle_size}px`
+    let rhs = `${Bone.storage.resize_handle_size}px`
     let handles = Bone.$$('.resize_handle')
 
     for(let handle of handles)
@@ -62,9 +62,24 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create_ele
         wv[i].size = Bone.storage[`webview_${i}`].size
     }
 
-    if(Bone.current_layout === layout)
+    let create_elements = true
+
+    if(create === 'auto')
+    {
+        if(Bone.current_layout === layout)
+        {
+            create_elements = false
+        }
+    }
+
+    else if(create === 'no')
     {
         create_elements = false
+    }
+
+    else if(create === 'yes')
+    {
+        create_elements = true
     }
 
     if(layout === 'single')
@@ -863,6 +878,8 @@ Bone.setup_resize_handles = function()
             Bone.resize_mouseup_function(e)
         }, delay)
     })
+
+    Bone.update_resize_handle_style()
 }
 
 // Creates a webview container from a given template
@@ -1064,7 +1081,36 @@ Bone.resize_mouseup_function = function(e)
         Bone.set_size_label(num)
     }
 
-    Bone.apply_layout(false, false, false)
+    Bone.apply_layout(false, false, 'no')
     Bone.save_local_storage()
     Bone.leave_resize_mode()
+}
+
+// Adds css declarations for the resize handles
+Bone.update_resize_handle_style = function()
+{
+    let css = `
+    .resize_handle_ew
+    {
+        width: ${Bone.storage.resize_handle_size}px !important;
+    }
+    
+    .resize_handle_ns
+    {
+        height: ${Bone.storage.resize_handle_size}px !important;
+    }
+    `
+
+    let styles = Bone.$$('.appended_resize_handle_style')
+
+    for(let style of styles)
+    {
+        style.parentNode.removeChild(style)
+    }
+
+    let style_el = document.createElement('style')
+    style_el.classList.add('appended_resize_handle_style')
+    style_el.innerHTML = css
+
+    document.head.appendChild(style_el)
 }

@@ -143,6 +143,12 @@ Bone.get_local_storage = function()
         save = true
     }
 
+    if(obj.resize_handle_size === undefined)
+    {
+        obj.resize_handle_size = 4
+        save = true
+    }
+
     Bone.storage = obj
 
     if(save)
@@ -155,4 +161,17 @@ Bone.get_local_storage = function()
 Bone.save_local_storage = function()
 {
     localStorage.setItem(Bone.ls_name, JSON.stringify(Bone.storage))
+}
+
+// Resets storage object except presets
+Bone.reset_storage = function()
+{
+    let presets = Bone.clone_object(Bone.storage.presets)
+    localStorage.removeItem(Bone.ls_name)
+    Bone.get_local_storage()
+    Bone.storage.presets = presets
+    Bone.save_local_storage()
+    Bone.update_menu_window_widgets()
+    Bone.apply_theme()
+    Bone.apply_layout(true, true, 'yes')
 }
