@@ -337,7 +337,7 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
         .webview_bottom
         {
             display: grid;
-            grid-template-columns: ${wv[3].size}fr ${rhs} ${wv[4].size}fr ${rhs};
+            grid-template-columns: ${wv[3].size}fr ${rhs} ${wv[4].size}fr;
             grid-template-rows: 1fr;
             grid-template-areas: '. . .';
             grid-area: bottom;
