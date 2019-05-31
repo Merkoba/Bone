@@ -45,7 +45,7 @@ Bone.config =
     history_max_url_length: 50,
     swap_max_url_length: 50,
     modules_path: './js/main/modules/',
-    resize_handle_size: 5,
+    resize_handle_size: 4,
     resize_double_click_delay: 350
 }
 
