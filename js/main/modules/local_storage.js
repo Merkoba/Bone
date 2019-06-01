@@ -211,5 +211,6 @@ Bone.reset_storage = function()
     Bone.save_local_storage()
     Bone.update_menu_widgets()
     Bone.apply_theme()
-    Bone.apply_layout(true, true, 'yes')
+    Bone.destroy_spaces()
+    Bone.create_space(Bone.storage)
 }

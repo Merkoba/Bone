@@ -1,10 +1,15 @@
 // Creates a space and adds it to the spaces array
-Bone.create_space = function(obj, name=false)
+Bone.create_space = function(obj)
 {
+    if(!obj.name)
+    {
+        obj.name = ''
+    }
+
     let space = Bone.create_space_from_object(obj, Bone.spaces.length + 1)
     Bone.spaces.push(space)
     Bone.create_webview_container(Bone.spaces.length)
-    Bone.change_space(Bone.spaces.length, name)
+    Bone.change_space(Bone.spaces.length)
     Bone.update_spaces()
 }
 
@@ -70,22 +75,14 @@ Bone.update_spaces = function()
     let c = Bone.$('#spaces')
     c.innerHTML = ''
 
-    if(spaces.length === 1)
-    {
-        return false
-    }
-
-    let n = 1
-
     for(let space of spaces)
     {   
         let el = document.createElement('div')
         el.classList.add('spaces_item')
         el.classList.add('action')
-        el.textContent = space.name || n
+        el.textContent = space.name || 'Default Space'
         el.dataset.num = space.num
         c.append(el)
-        n += 1
     }
 
     Bone.update_active_space()
@@ -308,4 +305,18 @@ Bone.get_space_left = function(wrap=false)
 Bone.space_modified = function()
 {
     // Do nothing for now
+}
+
+// Destroys all spaces
+Bone.destroy_spaces = function()
+{
+    let containers = Bone.$$('.webview_container')
+
+    for(let container of containers)
+    {
+        Bone.remove_element(container)
+    }
+
+    Bone.spaces = []
+    Bone.current_space = 0
 }

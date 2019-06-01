@@ -381,6 +381,7 @@ select
 {
     outline: none;
     border: 0px solid grey;
+    max-width: 450px;
 }
 
 #history_container
@@ -440,7 +441,12 @@ select
 
 #autostart_container
 {
-    width: 250px;
+    max-width: 450px;
+}
+
+#autostart_info
+{
+    margin-bottom: 20px;
 }
 
 #autostart_items
@@ -449,7 +455,6 @@ select
     grid-gap: 10px;
     grid-auto-columns: auto;
     align-items: center;
-    margin-top: 20px;
 }
 
 .autostart_item

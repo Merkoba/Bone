@@ -390,23 +390,38 @@ Bone.setup_autostart = function()
 // Shows a list of autostarted presets
 Bone.show_autostart_presets = function()
 {
+    Bone.msg_autostart.show()
+}
+
+// Updates the autostart presets window
+Bone.update_autostart_presets = function()
+{
     let autostart = Bone.get_autostart_presets()
     let c = Bone.$('#autostart_items')
     c.innerHTML = ''
-
-    for(let name of autostart)
+    
+    if(autostart.length > 0)
     {
-        let el = document.createElement('div')
-        el.classList.add('autostart_item')
-        el.classList.add('action')
-        el.textContent = name
-        el.dataset.name = name
-        el
+        for(let name of autostart)
+        {
+            let el = document.createElement('div')
+            el.classList.add('autostart_item')
+            el.classList.add('action')
+            el.textContent = name
+            el.dataset.name = name
+            el
+    
+            c.append(el)
+        }
 
-        c.append(el)
+        Bone.$('#autostart_info').style.display = 'block'
     }
-
-    Bone.msg_autostart.show()
+    
+    else
+    {
+        c.textContent = `You haven't set any preset to autostart yet`
+        Bone.$('#autostart_info').style.display = 'none'
+    }
 }
 
 // Updates the order of the enabled autostart presets
@@ -421,5 +436,6 @@ Bone.update_autostart_order = function()
         preset.autostart_index = i
     }
 
+    Bone.update_autostart_presets()
     Bone.save_local_storage()
 }

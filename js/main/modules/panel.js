@@ -74,15 +74,18 @@ Bone.setup_panel = function()
             return false
         }
 
-        let num = parseInt(e.target.dataset.num)
-
-        if(num === Bone.current_space)
+        if(parseInt(e.target.dataset.num) === Bone.current_space)
         {
             let space = Bone.space()
 
             if(space.name)
             {
                 Bone.show_handle_preset(space.name)
+            }
+
+            else
+            {
+                Bone.info('You can create presets based on current settings. You can open them in different spaces, as well as setting them to autostart.')
             }
         }
 
