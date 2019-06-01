@@ -56,9 +56,9 @@ Bone.create_windows = function()
         id: 'history'
     }))
 
-    Bone.msg_apply_preset = Msg.factory(Object.assign({}, common,
+    Bone.msg_open_preset = Msg.factory(Object.assign({}, common,
     {
-        id: 'apply_preset'
+        id: 'open_preset'
     }))
 
     Bone.msg_autostart = Msg.factory(Object.assign({}, common,
@@ -72,7 +72,7 @@ Bone.create_windows = function()
     Bone.msg_swap_webviews.set(Bone.template_swap_webviews())
     Bone.msg_info.set(Bone.template_info())
     Bone.msg_history.set(Bone.template_history())
-    Bone.msg_apply_preset.set(Bone.template_apply_preset())
+    Bone.msg_open_preset.set(Bone.template_open_preset())
     Bone.msg_autostart.set(Bone.template_autostart())
 }
 

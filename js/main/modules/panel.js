@@ -74,7 +74,22 @@ Bone.setup_panel = function()
             return false
         }
 
-        Bone.change_space(parseInt(e.target.dataset.num))
+        let num = parseInt(e.target.dataset.num)
+
+        if(num === Bone.current_space)
+        {
+            let space = Bone.space()
+
+            if(space.name)
+            {
+                Bone.show_handle_preset(space.name)
+            }
+        }
+
+        else
+        {
+            Bone.change_space(parseInt(e.target.dataset.num))
+        }
     })
 
     spaces.addEventListener('auxclick', function(e)

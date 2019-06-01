@@ -1,10 +1,10 @@
 // Creates a space and adds it to the spaces array
-Bone.create_space = function(obj)
+Bone.create_space = function(obj, name=false)
 {
     let space = Bone.create_space_from_object(obj, Bone.spaces.length + 1)
     Bone.spaces.push(space)
     Bone.create_webview_container(Bone.spaces.length)
-    Bone.change_space(Bone.spaces.length)
+    Bone.change_space(Bone.spaces.length, name)
     Bone.update_spaces()
 }
 
@@ -34,14 +34,14 @@ Bone.change_space = function(n, obj=false)
     }
 
     Bone.$(`#webview_container_${n}`).style.display = 'grid'
-    Bone.current_space = n
-    Bone.update_active_space()
-
+    
     if(obj)
     {
         Bone.spaces[n - 1] = Bone.create_space_from_object(obj, n)
     }
-
+    
+    Bone.current_space = n
+    Bone.update_spaces()
     Bone.apply_layout(false, false)
     Bone.update_menu_widgets()
 }
@@ -82,7 +82,7 @@ Bone.update_spaces = function()
         let el = document.createElement('div')
         el.classList.add('spaces_item')
         el.classList.add('action')
-        el.textContent = n
+        el.textContent = space.name || n
         el.dataset.num = space.num
         c.append(el)
         n += 1
@@ -125,6 +125,7 @@ Bone.create_space_from_object = function(obj, n)
     space.webview_3 = Bone.clone_object(obj.webview_3)
     space.webview_4 = Bone.clone_object(obj.webview_4)
     space.layout = obj.layout
+    space.name = obj.name
     space.num = n
     return space
 }
@@ -301,4 +302,10 @@ Bone.get_space_left = function(wrap=false)
     }
 
     return new_space
+}
+
+// Space modified signal
+Bone.space_modified = function()
+{
+    // Do nothing for now
 }

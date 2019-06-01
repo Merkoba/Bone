@@ -422,6 +422,8 @@ Bone.do_url_change = function(url, num)
     if(Bone.space()[`webview_${num}`].url !== url)
     {
         Bone.space()[`webview_${num}`].url = url
+        Bone.space_modified()
+        Bone.spacesi
         Bone.save_local_storage()
         Bone.apply_url(num)
     }

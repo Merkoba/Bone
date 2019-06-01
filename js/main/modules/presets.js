@@ -33,7 +33,7 @@ Bone.setup_handle_preset = function()
 {
     Bone.$('#handle_preset_apply').addEventListener('click', function()
     {
-        Bone.msg_apply_preset.show()
+        Bone.msg_open_preset.show()
     })
 
     Bone.$('#handle_preset_submit').addEventListener('click', function()
@@ -64,7 +64,7 @@ Bone.setup_handle_preset = function()
 
             else
             {
-                Bone.msg_apply_preset.show()
+                Bone.msg_open_preset.show()
             }
         }
     })
@@ -160,15 +160,17 @@ Bone.save_preset = function(name, replace=false)
     if(replace && name !== replace)
     {
         delete Bone.storage.presets[replace]
+        oname = replace
     }
     
     let obj = {}
+    let space = Bone.space()
     obj.autostart = autostart
-    obj.webview_1 = Bone.clone_object(Bone.space().webview_1)
-    obj.webview_2 = Bone.clone_object(Bone.space().webview_2)
-    obj.webview_3 = Bone.clone_object(Bone.space().webview_3)
-    obj.webview_4 = Bone.clone_object(Bone.space().webview_4)
-    obj.layout = Bone.space().layout
+    obj.webview_1 = Bone.clone_object(space.webview_1)
+    obj.webview_2 = Bone.clone_object(space.webview_2)
+    obj.webview_3 = Bone.clone_object(space.webview_3)
+    obj.webview_4 = Bone.clone_object(space.webview_4)
+    obj.layout = space.layout
     obj.last_used = Date.now()
     Bone.storage.presets[name] = obj
     Bone.save_local_storage()
@@ -177,7 +179,7 @@ Bone.save_preset = function(name, replace=false)
 }
 
 // Changes settings to a specified preset
-Bone.apply_preset = function(name, new_space=false)
+Bone.open_preset = function(name, new_space=false)
 {
     if(!Bone.storage.presets[name])
     {
@@ -185,22 +187,18 @@ Bone.apply_preset = function(name, new_space=false)
     }
 
     let preset = Bone.storage.presets[name]
-    preset.last_used = Date.now()
     Bone.check_local_storage(preset)
-    Bone.storage.webview_1 = Bone.clone_object(preset.webview_1)
-    Bone.storage.webview_2 = Bone.clone_object(preset.webview_2)
-    Bone.storage.webview_3 = Bone.clone_object(preset.webview_3)
-    Bone.storage.webview_4 = Bone.clone_object(preset.webview_4)
-    Bone.storage.layout = preset.layout
+    preset.last_used = Date.now()
+    preset.name = name
 
     if(new_space === false)
     {
-        Bone.change_space(Bone.current_space, Bone.storage)
+        Bone.change_space(Bone.current_space, preset)
     }
 
     else
     {
-        Bone.create_space(Bone.storage)
+        Bone.create_space(preset)
     }
     
     Bone.save_local_storage()
@@ -258,7 +256,7 @@ Bone.cycle_presets = function()
         Bone.preset_index += 1
     }
 
-    Bone.apply_preset(presets[Bone.preset_index])
+    Bone.open_preset(presets[Bone.preset_index])
 }
 
 // Clears saved presets
@@ -274,17 +272,17 @@ Bone.clear_presets = function()
 }
 
 // Setups the apply preset window
-Bone.setup_apply_preset = function()
+Bone.setup_open_preset = function()
 {
-    Bone.$('#apply_preset_here').addEventListener('click', function()
+    Bone.$('#open_preset_here').addEventListener('click', function()
     {
-        Bone.apply_preset(Bone.handled_preset, false)
+        Bone.open_preset(Bone.handled_preset, false)
         Bone.close_all_windows()
     })
  
-    Bone.$('#apply_preset_space').addEventListener('click', function()
+    Bone.$('#open_preset_space').addEventListener('click', function()
     {
-        Bone.apply_preset(Bone.handled_preset, 0)
+        Bone.open_preset(Bone.handled_preset, 0)
         Bone.close_all_windows()
     })
 }
@@ -385,6 +383,8 @@ Bone.setup_autostart = function()
 
         Bone.update_autostart_order()
     })
+
+    Bone.update_autostart_order()
 }
 
 // Shows a list of autostarted presets

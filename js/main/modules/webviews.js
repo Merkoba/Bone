@@ -647,6 +647,7 @@ Bone.decrease_zoom = function(num, mode='normal')
 
     let zoom = Bone.round(Bone.space()[`webview_${num}`].zoom - step, 2)
     Bone.space()[`webview_${num}`].zoom = zoom
+    Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_zoom(num)
 }
@@ -663,6 +664,7 @@ Bone.increase_zoom = function(num, mode='normal')
 
     let zoom = Bone.round(Bone.space()[`webview_${num}`].zoom + step, 2)
     Bone.space()[`webview_${num}`].zoom = zoom
+    Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_zoom(num)
 }
@@ -671,6 +673,7 @@ Bone.increase_zoom = function(num, mode='normal')
 Bone.reset_zoom = function(num)
 {
     Bone.space()[`webview_${num}`].zoom = Bone.config.zoom_default
+    Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_zoom(num)
 }
@@ -700,6 +703,7 @@ Bone.decrease_size = function(num, mode='normal')
     }
 
     Bone.space()[`webview_${num}`].size = size
+    Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_layout(false)
     Bone.set_size_label(num)
@@ -717,6 +721,7 @@ Bone.increase_size = function(num, mode='normal')
 
     let size = Bone.round(Bone.space()[`webview_${num}`].size + step, 2)
     Bone.space()[`webview_${num}`].size = size
+    Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_layout(false)
     Bone.set_size_label(num)
@@ -726,6 +731,7 @@ Bone.increase_size = function(num, mode='normal')
 Bone.reset_size = function(num, apply=true)
 {
     Bone.space()[`webview_${num}`].size = Bone.config.size_default
+    Bone.space_modified()
     Bone.save_local_storage()
     Bone.set_size_label(num)
 
@@ -1148,6 +1154,7 @@ Bone.resize_mouseup_function = function(e)
         Bone.set_size_label(num)
     }
 
+    Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_layout(false, false, 'no')
     Bone.leave_resize_mode()
