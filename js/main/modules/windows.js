@@ -122,3 +122,20 @@ Bone.exit = function()
 {
     remote.getCurrentWindow().close()
 }
+
+// Starts removing the splash and showing the main container
+Bone.remove_splash = function()
+{
+    setTimeout(function()
+    {
+        Bone.$('#main_container').style.display = 'block'
+        
+        let splash = Bone.$('#splash')
+        splash.style.opacity = 0
+    
+        setTimeout(function()
+        {
+            splash.style.display = 'none'
+        }, 1500)
+    }, 500)
+}
