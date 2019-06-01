@@ -487,3 +487,9 @@ select
 {
     margin-top: 20px;
 }
+
+#open_preset_container
+{
+    outline: none;
+    border: 0px solid grey;
+}

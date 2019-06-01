@@ -332,7 +332,7 @@ Bone.duplicate_space = function()
     if(space.name)
     {
         let preset = Bone.storage.presets[space.name]
-        preset.name = name
+        preset.name = space.name
         Bone.create_space(preset)
     }
 

@@ -33,7 +33,7 @@ Bone.setup_handle_preset = function()
 {
     Bone.$('#handle_preset_open').addEventListener('click', function()
     {
-        Bone.msg_open_preset.show()
+        Bone.show_open_preset()
     })
 
     Bone.$('#handle_preset_submit').addEventListener('click', function()
@@ -64,7 +64,7 @@ Bone.setup_handle_preset = function()
 
             else
             {
-                Bone.msg_open_preset.show()
+                Bone.show_open_preset()
             }
         }
     })
@@ -206,14 +206,14 @@ Bone.open_preset = function(name, new_space=false)
     preset.last_used = Date.now()
     preset.name = name
 
-    if(new_space === false)
-    {
-        Bone.change_space(Bone.current_space, preset)
-    }
-
-    else
+    if(new_space)
     {
         Bone.create_space(preset)
+    }
+    
+    else
+    {
+        Bone.change_space(Bone.current_space, preset)
     }
     
     Bone.save_local_storage()
@@ -247,8 +247,11 @@ Bone.show_handle_preset = function(name)
     Bone.handled_preset = name
     Bone.$('#handle_preset_name').value = name
     Bone.update_handle_preset_autostart(name)
-    Bone.$('#handle_preset_container').focus()
-    Bone.msg_handle_preset.show()
+    
+    Bone.msg_handle_preset.show(function()
+    {
+        Bone.$('#handle_preset_container').focus()
+    })
 }
 
 // Cycles between presets
@@ -286,19 +289,28 @@ Bone.clear_presets = function()
     }
 }
 
-// Setups the apply preset window
+// Setups the open preset window
 Bone.setup_open_preset = function()
 {
-    Bone.$('#open_preset_here').addEventListener('click', function()
+    Bone.$('#open_preset_here').addEventListener('click', function(e)
     {
         Bone.open_preset(Bone.handled_preset, false)
         Bone.close_all_windows()
     })
  
-    Bone.$('#open_preset_space').addEventListener('click', function()
+    Bone.$('#open_preset_space').addEventListener('click', function(e)
     {
-        Bone.open_preset(Bone.handled_preset, 0)
+        Bone.open_preset(Bone.handled_preset, true)
         Bone.close_all_windows()
+    })
+
+    Bone.$('#open_preset_container').addEventListener('keyup', function(e)
+    {
+        if(e.key === 'Enter')
+        {
+            Bone.open_preset(Bone.handled_preset, true)
+            Bone.close_all_windows()
+        }
     })
 }
 
@@ -453,4 +465,13 @@ Bone.update_autostart_order = function()
 
     Bone.update_autostart_presets()
     Bone.save_local_storage()
+}
+
+// Shows the open preset window
+Bone.show_open_preset = function()
+{
+    Bone.msg_open_preset.show(function()
+    {
+        Bone.$('#open_preset_container').focus()
+    })
 }
