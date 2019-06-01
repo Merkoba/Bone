@@ -364,6 +364,11 @@ input[type=checkbox]
 select
 {
     font-size: 1rem;
+    text-align-last: center;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    cursor: pointer;
+    min-width: 8rem;
 }
 
 .invisible
@@ -470,4 +475,10 @@ select
 .italic
 {
     font-style: italic;
+}
+
+#menu_space_options
+{
+    margin-top: 20px;
+    text-align: center;
 }

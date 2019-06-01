@@ -150,6 +150,7 @@ Bone.save_preset = function(name, replace=false)
     }
     
     let preset = Bone.storage.presets[name]
+    let space = Bone.space()
     let autostart = false
 
     if(preset)
@@ -160,11 +161,25 @@ Bone.save_preset = function(name, replace=false)
     if(replace && name !== replace)
     {
         delete Bone.storage.presets[replace]
-        oname = replace
+
+        let changed = false
+
+        for(let space of Bone.get_spaces())
+        {
+            if(space.name === replace)
+            {
+                space.name = name
+                changed = true
+            }
+        }
+
+        if(changed)
+        {
+            Bone.update_spaces()
+        }
     }
     
     let obj = {}
-    let space = Bone.space()
     obj.autostart = autostart
     obj.webview_1 = Bone.clone_object(space.webview_1)
     obj.webview_2 = Bone.clone_object(space.webview_2)

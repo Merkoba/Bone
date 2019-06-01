@@ -75,14 +75,17 @@ Bone.update_spaces = function()
     let c = Bone.$('#spaces')
     c.innerHTML = ''
 
+    let n = 1
+
     for(let space of spaces)
     {   
         let el = document.createElement('div')
         el.classList.add('spaces_item')
         el.classList.add('action')
-        el.textContent = space.name || 'Default Space'
+        el.textContent = space.name || n
         el.dataset.num = space.num
         c.append(el)
+        n += 1
     }
 
     Bone.update_active_space()
@@ -319,4 +322,22 @@ Bone.destroy_spaces = function()
 
     Bone.spaces = []
     Bone.current_space = 0
+}
+
+// Duplicates current space
+Bone.duplicate_space = function()
+{
+    let space = Bone.space()
+
+    if(space.name)
+    {
+        let preset = Bone.storage.presets[space.name]
+        preset.name = name
+        Bone.create_space(preset)
+    }
+
+    else
+    {
+        Bone.create_space(Bone.storage)
+    }
 }

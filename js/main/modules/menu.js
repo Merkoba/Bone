@@ -338,6 +338,11 @@ Bone.setup_menu = function()
         }
     })
 
+    Bone.$('#menu_duplicate_space').addEventListener('click', function()
+    {
+        Bone.duplicate_space()
+    })
+
     Bone.$('#menu_cycle_spaces_on_wheel_checkbox').addEventListener('change', function()
     {
         Bone.storage.cycle_spaces_on_wheel = this.checked
