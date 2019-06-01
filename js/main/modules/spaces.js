@@ -133,58 +133,24 @@ Bone.create_space_from_object = function(obj, n)
 Bone.switch_space = function(direction='right')
 {
     let new_space
-    let spaces = Bone.get_spaces()
-
-    if(spaces.length === 1)
-    {
-        return false
-    }
 
     if(direction === 'right')
     {
-        for(let i=0; i<spaces.length; i++)
-        {
-            let space = spaces[i]
-
-            if(space.num === Bone.current_space)
-            {
-                new_space = spaces[i + 1]
-                break
-            }
-        }
+        new_space = Bone.get_space_right(Bone.storage.wrap_spaces_on_wheel)
         
         if(!new_space)
         {
-            if(!Bone.storage.wrap_spaces_on_wheel)
-            {
-                return false
-            }
-
-            new_space = spaces[0]
+            return false
         }
     }
 
     else if(direction === 'left')
     {
-        for(let i=0; i<spaces.length; i++)
-        {
-            let space = spaces[i]
-
-            if(space.num === Bone.current_space)
-            {
-                new_space = spaces[i - 1]
-                break
-            }
-        }
+        new_space = Bone.get_space_left(Bone.storage.wrap_spaces_on_wheel)
         
         if(!new_space)
         {
-            if(!Bone.storage.wrap_spaces_on_wheel)
-            {
-                return false
-            }
-            
-            new_space = spaces[spaces.length - 1]
+            return false
         }
     }
 
@@ -234,19 +200,12 @@ Bone.close_space = function(n=false)
 
     if(n === Bone.current_space)
     {
-        let new_n
+        let new_space = Bone.get_space_left() || Bone.get_space_right()
 
-        if(n > 1)
+        if(new_space)
         {
-            new_n = n - 1
+            Bone.change_space(new_space.num)
         }
-
-        else
-        {
-            new_n = n + 1
-        }
-
-        Bone.change_space(new_n)
     }
 
     Bone.remove_element(Bone.$(`#webview_container_${n}`))
@@ -268,4 +227,78 @@ Bone.get_spaces = function()
     }
 
     return spaces
+}
+
+// Gets the space to the right of current space
+Bone.get_space_right = function(wrap=false)
+{
+    let spaces = Bone.get_spaces()
+
+    if(spaces.length === 1)
+    {
+        return false
+    }
+
+    for(let i=0; i<spaces.length; i++)
+    {
+        let space = spaces[i]
+
+        if(space.num === Bone.current_space)
+        {
+            new_space = spaces[i + 1]
+            break
+        }
+    }
+        
+    if(!new_space)
+    {
+        if(wrap)
+        {
+            new_space = spaces[0]
+        }
+
+        else
+        {
+            return false
+        }
+    }
+
+    return new_space
+}
+
+// Gets the space to the right of current space
+Bone.get_space_left = function(wrap=false)
+{
+    let spaces = Bone.get_spaces()
+
+    if(spaces.length === 1)
+    {
+        return false
+    }
+
+    for(let i=0; i<spaces.length; i++)
+    {
+        let space = spaces[i]
+
+        if(space.num === Bone.current_space)
+        {
+            new_space = spaces[i - 1]
+            break
+        }
+    }
+        
+    if(!new_space)
+    {
+        if(wrap)
+        {
+            new_space = spaces[spaces.length - 1]
+        }
+
+        else
+        {
+            return false
+        }
+    }
+
+    return new_space
 }

@@ -334,6 +334,7 @@ Bone.setup_menu = function()
         if(confirm('Are you sure you want to close this space?'))
         {
             Bone.close_space()
+            Bone.close_all_windows()
         }
     })
 
