@@ -232,6 +232,22 @@ Bone.delete_preset = function(name)
 
     delete Bone.storage.presets[name]
     Bone.save_local_storage()
+
+    let changed = false
+
+    for(let space of Bone.get_spaces())
+    {
+        if(space.name === name)
+        {
+            space.name = ""
+            changed = true
+        }
+    }
+
+    if(changed)
+    {
+        Bone.update_spaces()
+    }
 }
 
 // Shows and prepares the edit preset window
