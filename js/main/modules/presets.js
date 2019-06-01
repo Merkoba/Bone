@@ -31,7 +31,7 @@ Bone.do_create_preset = function(name)
 // Setups the edit preset window
 Bone.setup_handle_preset = function()
 {
-    Bone.$('#handle_preset_apply').addEventListener('click', function()
+    Bone.$('#handle_preset_open').addEventListener('click', function()
     {
         Bone.msg_open_preset.show()
     })

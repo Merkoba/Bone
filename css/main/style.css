@@ -482,3 +482,8 @@ select
     margin-top: 20px;
     text-align: center;
 }
+
+#handle_preset_open
+{
+    margin-top: 20px;
+}
