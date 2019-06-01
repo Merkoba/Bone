@@ -14,6 +14,8 @@ Buttons to refresh and swap urls.
 
 Proportions for each tiled webview can be configured.
 
+Supports multiple workspaces. Presets can be autostarted to start each on a space.
+
 ### Installation
 
 Creating a build is recommended so the application's config files don't reside in the generic Electron directory.
