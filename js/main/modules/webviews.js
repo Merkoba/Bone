@@ -5,6 +5,7 @@ Bone.create_webview = function(num)
     let el = document.createElement('div')
     el.innerHTML = h
     let wv = el.querySelector('webview')
+    wv.dataset.num = num
 
     wv.addEventListener('dom-ready', function()
     {
@@ -39,15 +40,9 @@ Bone.create_webview = function(num)
 // Applies webview layout setup from current layout
 Bone.apply_layout = function(reset_size=true, force_url_change=false, create='auto')
 {
-    let layout = Bone.storage.layout
+    let nspace = Bone.space().num
+    let layout = Bone.space().layout
     let rhs = `${Bone.storage.resize_handle_size}px`
-    let handles = Bone.$$('.resize_handle')
-
-    for(let handle of handles)
-    {
-        handle.parentNode.removeChild(handle)
-    }
-
     let css = ''
     let wv = {}
 
@@ -59,14 +54,14 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
         }
 
         wv[i] = {}
-        wv[i].size = Bone.storage[`webview_${i}`].size
+        wv[i].size = Bone.space()[`webview_${i}`].size
     }
 
     let create_elements = true
 
     if(create === 'auto')
     {
-        if(Bone.current_layout === layout)
+        if(Bone.space().current_layout === layout)
         {
             create_elements = false
         }
@@ -82,127 +77,153 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
         create_elements = true
     }
 
+    if(create_elements)
+    {
+        let handles = Bone.webview_container().querySelectorAll('.resize_handle')
+        for(let handle of handles)
+        {
+            Bone.remove_element(handle)
+        }
+    }
+
     if(layout === 'single')
     {
-        Bone.create_webview_container(1)
+        Bone.setup_webview_container(1)
     }
 
     else if(layout === '2_column')
     {
-        if(create_elements) Bone.create_webview_container(2, 2)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(2, 2)
+            Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 2), Bone.wv(1))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
             grid-template-rows: ${wv[1].size}fr ${rhs} ${wv[2].size}fr;
             grid-template-areas: '.' '.' '.';
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 2), Bone.$('#webview_1'))
     }
 
     else if(layout === '3_column')
     {
-        if(create_elements) Bone.create_webview_container(2, 3)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(2, 3)
+            Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 3), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.wv(2))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
             grid-template-rows: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr;
             grid-template-areas: '.' '.' '.' '.' '.';
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 3), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.$('#webview_2'))
     }
 
     else if(layout === '4_column')
     {
-        if(create_elements) Bone.create_webview_container(2, 4)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(2, 4)
+            Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 3), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.wv(2))
+            Bone.insert_after(Bone.create_resize_handle('ns', 3, [4], 3), Bone.wv(3))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
             grid-template-rows: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr ${rhs} ${wv[4].size}fr;
             grid-template-areas: '.' '.' '.' '.' '.' '.' '.';
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 3), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.$('#webview_2'))
-        Bone.insert_after(Bone.create_resize_handle('ns', 3, [4], 3), Bone.$('#webview_3'))
     }
 
     else if(layout === '2_row')
     {
-        if(create_elements) Bone.create_webview_container(2, 2)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(2, 2)
+            Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 2), Bone.wv(1))
+        }
 
         css = `
-        #webview_container 
+        #webview_container_${nspace} 
         {
             grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr;
             grid-template-rows: 1fr;
             grid-template-areas: '. . .';
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 2), Bone.$('#webview_1'))
     }
     
     else if(layout === '3_row')
     {
-        if(create_elements) Bone.create_webview_container(2, 3)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(2, 3)
+            Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 3), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.wv(2))
+        }
 
         css = `
-        #webview_container 
+        #webview_container_${nspace} 
         {
             grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr;
             grid-template-rows: 1fr;
             grid-template-areas: '. . . . .';
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 3), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.$('#webview_2'))
     }
 
     else if(layout === '4_row')
     {
-        if(create_elements) Bone.create_webview_container(2, 4)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(2, 4)
+            Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 3), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.wv(2))
+            Bone.insert_after(Bone.create_resize_handle('ew', 3, [4], 3), Bone.wv(3))
+        }
 
         css = `
-        #webview_container 
+        #webview_container_${nspace} 
         {
             grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr ${rhs} ${wv[4].size}fr;
             grid-template-rows: 1fr;
             grid-template-areas: '. . . . . . .';
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 3), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.$('#webview_2'))
-        Bone.insert_after(Bone.create_resize_handle('ew', 3, [4], 3), Bone.$('#webview_3'))
     }
 
     else if(layout === '1_top_2_bottom')
     {
-        if(create_elements) Bone.create_webview_container(3, 3)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(3, 3)
+            Bone.insert_after(Bone.create_resize_handle('ns', 1, [2, 3], 2), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 2), Bone.wv(2))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
             grid-template-rows: ${wv[1].size}fr ${2 - (wv[1].size)}fr;
             grid-template-areas: 'top' 'bottom';
         }
     
-        .webview_top
+        #webview_container_${nspace} .webview_top
         { 
             display: grid;
             grid-area: top;
             grid-template-rows: 1fr ${rhs};
         }
     
-        .webview_bottom
+        #webview_container_${nspace} .webview_bottom
         {
             display: grid;
             grid-template-columns: ${wv[2].size}fr ${rhs} ${wv[3].size}fr;
@@ -210,31 +231,34 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-template-areas: '. . .';
             grid-area: bottom;
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2, 3], 2), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 2), Bone.$('#webview_2'))
     }
 
     else if(layout === '1_top_3_bottom')
     {
-        if(create_elements) Bone.create_webview_container(3, 4)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(3, 4)
+            Bone.insert_after(Bone.create_resize_handle('ns', 1, [2, 3, 4], 2), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.wv(2))
+            Bone.insert_after(Bone.create_resize_handle('ew', 3, [4], 3), Bone.wv(3))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
             grid-template-rows: ${wv[1].size}fr ${2 - (wv[1].size)}fr;
             grid-template-areas: 'top' 'bottom';
         }
     
-        .webview_top
+        #webview_container_${nspace} .webview_top
         { 
             display: grid;
             grid-area: top;
             grid-template-rows: 1fr ${rhs};
         }
     
-        .webview_bottom
+        #webview_container_${nspace} .webview_bottom
         {
             display: grid;
             grid-template-columns: ${wv[2].size}fr ${rhs} ${wv[3].size}fr ${rhs} ${wv[4].size}fr;
@@ -242,25 +266,26 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-template-areas: '. . . . .';
             grid-area: bottom;
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2, 3, 4], 2), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.$('#webview_2'))
-        Bone.insert_after(Bone.create_resize_handle('ew', 3, [4], 3), Bone.$('#webview_3'))
     }
 
     else if(layout === '2_top_1_bottom')
     {
-        if(create_elements) Bone.create_webview_container(4, 3)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(4, 3)
+            Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 2), Bone.wv(1))
+            Bone.insert_before(Bone.create_resize_handle('ns', 3, [1, 2], 2, 'before'), Bone.wv(3))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
             grid-template-rows: ${2 - (wv[3].size)}fr ${wv[3].size}fr;
             grid-template-areas: 'top' 'bottom';
         }
     
-        .webview_top
+        #webview_container_${nspace} .webview_top
         { 
             display: grid;
             grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr;
@@ -269,30 +294,33 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-area: top;
         }
     
-        .webview_bottom
+        #webview_container_${nspace} .webview_bottom
         {
             display: grid;
             grid-area: bottom;
             grid-template-rows: ${rhs} 1fr;
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 2), Bone.$('#webview_1'))
-        Bone.insert_before(Bone.create_resize_handle('ns', 3, [1, 2], 2, 'before'), Bone.$('#webview_3'))
     }
-
+    
     else if(layout === '3_top_1_bottom')
     {
-        if(create_elements) Bone.create_webview_container(4, 4)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(4, 4)
+            Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 3), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.wv(2))
+            Bone.insert_before(Bone.create_resize_handle('ns', 4, [1, 2, 3], 2, 'before'), Bone.wv(4))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
             grid-template-rows: ${2 - (wv[4].size)}fr ${wv[4].size}fr;
             grid-template-areas: 'top' 'bottom';
         }
     
-        .webview_top
+        #webview_container_${nspace} .webview_top
         { 
             display: grid;
             grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr ${rhs} ${wv[3].size}fr;
@@ -301,31 +329,32 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-area: top;
         }
     
-        .webview_bottom
+        #webview_container_${nspace} .webview_bottom
         {
             display: grid;
             grid-area: bottom;
             grid-template-rows: ${rhs} 1fr;
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 3), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ew', 2, [3], 3), Bone.$('#webview_2'))
-        Bone.insert_before(Bone.create_resize_handle('ns', 4, [1, 2, 3], 2, 'before'), Bone.$('#webview_4'))
     }
 
     else if(layout === '2_top_2_bottom')
     {
-        if(create_elements) Bone.create_webview_container(5, 4)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(5, 4)
+            Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 2), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ew', 3, [4], 2), Bone.wv(3))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
             grid-template-rows: 1fr 1fr;
             grid-template-areas: 'top' 'bottom';
         }
     
-        .webview_top
+        #webview_container_${nspace} .webview_top
         { 
             display: grid;
             grid-template-columns: ${wv[1].size}fr ${rhs} ${wv[2].size}fr;
@@ -334,7 +363,7 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-area: top;
         }
     
-        .webview_bottom
+        #webview_container_${nspace} .webview_bottom
         {
             display: grid;
             grid-template-columns: ${wv[3].size}fr ${rhs} ${wv[4].size}fr;
@@ -342,31 +371,33 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-template-areas: '. . .';
             grid-area: bottom;
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 2), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ew', 3, [4], 2), Bone.$('#webview_3'))
     }
-
+    
     else if(layout === '1_left_2_right')
     {
-        if(create_elements) Bone.create_webview_container(6, 3)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(6, 3)
+            Bone.insert_after(Bone.create_resize_handle('ew', 1, [2, 3], 2), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 2), Bone.wv(2))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: ${wv[1].size}fr ${2 - (wv[1].size)}fr;
             grid-template-rows: 1fr;
             grid-template-areas: 'left right';
         }
     
-        .webview_left
+        #webview_container_${nspace} .webview_left
         { 
             display: grid;
             grid-area: left;
             grid-template-columns: 1fr ${rhs};
         }
     
-        .webview_right
+        #webview_container_${nspace} .webview_right
         {
             display: grid;
             grid-template-columns: 1fr;
@@ -374,31 +405,34 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-template-areas: '.' '.' '.';
             grid-area: right;
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2, 3], 2), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 2), Bone.$('#webview_2'))
     }
-
+    
     else if(layout === '1_left_3_right')
     {
-        if(create_elements) Bone.create_webview_container(6, 4)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(6, 4)
+            Bone.insert_after(Bone.create_resize_handle('ew', 1, [2, 3], 2), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.wv(2))
+            Bone.insert_after(Bone.create_resize_handle('ns', 3, [4], 3), Bone.wv(3))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: ${wv[1].size}fr ${2 - (wv[1].size)}fr;
             grid-template-rows: 1fr;
             grid-template-areas: 'left right';
         }
     
-        .webview_left
+        #webview_container_${nspace} .webview_left
         { 
             display: grid;
             grid-area: left;
             grid-template-columns: 1fr ${rhs};
         }
     
-        .webview_right
+        #webview_container_${nspace} .webview_right
         {
             display: grid;
             grid-template-columns: 1fr;
@@ -406,25 +440,26 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-template-areas: '.' '.' '.' '.';
             grid-area: right;
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ew', 1, [2, 3], 2), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.$('#webview_2'))
-        Bone.insert_after(Bone.create_resize_handle('ns', 3, [4], 3), Bone.$('#webview_3'))
     }
 
     else if(layout === '2_left_1_right')
     {
-        if(create_elements) Bone.create_webview_container(7, 3)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(7, 3)
+            Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 2), Bone.wv(1))
+            Bone.insert_before(Bone.create_resize_handle('ew', 3, [1, 2], 2, 'before'), Bone.wv(3))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
             grid-template-columns: ${2 - (wv[3].size)}fr ${wv[3].size}fr;
             grid-template-areas: 'left right';
         }
     
-        .webview_left
+        #webview_container_${nspace} .webview_left
         { 
             display: grid;
             grid-template-columns: 1fr;
@@ -433,30 +468,33 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-area: left;
         }
     
-        .webview_right
+        #webview_container_${nspace} .webview_right
         {
             display: grid;
             grid-area: right;
             grid-template-columns: ${rhs} 1fr;
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 2), Bone.$('#webview_1'))
-        Bone.insert_before(Bone.create_resize_handle('ew', 3, [1, 2], 2, 'before'), Bone.$('#webview_3'))
     }
-
+    
     else if(layout === '3_left_1_right')
     {
-        if(create_elements) Bone.create_webview_container(7, 4)
+        if(create_elements) 
+        {
+            Bone.setup_webview_container(7, 4)
+            Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 3), Bone.wv(1))
+            Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.wv(2))
+            Bone.insert_before(Bone.create_resize_handle('ew', 4, [1, 2, 3], 2, 'before'), Bone.wv(4))
+        }
 
         css = `
-        #webview_container
+        #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
             grid-template-columns: ${2 - (wv[4].size)}fr ${wv[4].size}fr;
             grid-template-areas: 'left right';
         }
     
-        .webview_left
+        #webview_container_${nspace} .webview_left
         { 
             display: grid;
             grid-template-columns: 1fr;
@@ -465,54 +503,50 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-area: left;
         }
     
-        .webview_right
+        #webview_container_${nspace} .webview_right
         {
             display: grid;
             grid-area: right;
             grid-template-columns: ${rhs} 1fr;
         }`
-
-        Bone.insert_after(Bone.create_resize_handle('ns', 1, [2], 3), Bone.$('#webview_1'))
-        Bone.insert_after(Bone.create_resize_handle('ns', 2, [3], 3), Bone.$('#webview_2'))
-        Bone.insert_before(Bone.create_resize_handle('ew', 4, [1, 2, 3], 2, 'before'), Bone.$('#webview_4'))
     }
 
-    let styles = Bone.$$('.appended_layout_style')
+    let styles = Bone.$$(`.appended_layout_style_${nspace}`)
 
     for(let style of styles)
     {
-        style.parentNode.removeChild(style)
+        Bone.remove_element(style)
     }
 
     let style_el = document.createElement('style')
-    style_el.classList.add('appended_layout_style')
+    style_el.classList.add(`appended_layout_style_${nspace}`)
     style_el.innerHTML = css
 
     document.head.appendChild(style_el)
 
-    let webviews = Bone.$$('.webview')
+    let webviews = Bone.wvs()
 
     for(let webview of webviews)
     {
         if(force_url_change || !webview.src)
         {
-            Bone.apply_url(webview.id.replace('webview_', ''))
+            Bone.apply_url(webview.dataset.num)
         }
     }
 
-    Bone.current_layout = layout
+    Bone.space().current_layout = layout
 
     if(create_elements)
     {
-        Bone.focused_webview = Bone.$('#webview_1')
+        Bone.focused_webview = Bone.wv(1)
     }
 }
 
 // Changes a webview url
 Bone.apply_url = function(num)
 {
-    let webview = Bone.$(`#webview_${num}`)
-    let url = Bone.storage[`webview_${num}`].url
+    let webview = Bone.wv(num)
+    let url = Bone.space()[`webview_${num}`].url
 
     if(webview.style.display === 'none')
     {
@@ -540,7 +574,7 @@ Bone.apply_url = function(num)
 // This is to destroy its content
 Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 {
-    let wv = Bone.$(`#webview_${num}`)
+    let wv = Bone.wv(num)
     let rep = Bone.create_webview(num)
 
     if(no_display)
@@ -566,9 +600,9 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
         Bone.history[`webview_${num}`] = []
     }
 
-    wv.parentNode.replaceChild(rep, wv)
+    Bone.replace_element(rep, wv)
 
-    let wv2 = Bone.$(`#webview_${num}`)
+    let wv2 = Bone.wv(num)
 
     contextMenu(
     {
@@ -584,8 +618,8 @@ Bone.apply_zoom = function(num)
 {
     try
     {
-        let webview = Bone.$(`#webview_${num}`)
-        let zoom = Bone.storage[`webview_${num}`].zoom
+        let webview = Bone.wv(num)
+        let zoom = Bone.space()[`webview_${num}`].zoom
         webview.setZoomLevel(0)
         webview.setZoomFactor(zoom)
         Bone.set_zoom_label(num)
@@ -597,7 +631,7 @@ Bone.apply_zoom = function(num)
 // Sets the zoom level to a webview
 Bone.set_zoom_label = function(num)
 {
-    let zoom = Bone.storage[`webview_${num}`].zoom
+    let zoom = Bone.space()[`webview_${num}`].zoom
     Bone.$(`#webview_${num}_zoom_label`).textContent = `Zoom (${Number(zoom).toFixed(2)})`
 }
 
@@ -611,10 +645,10 @@ Bone.decrease_zoom = function(num, mode='normal')
         step *= 2
     }
 
-    let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom - step, 2)
-    Bone.storage[`webview_${num}`].zoom = zoom
-    Bone.apply_zoom(num)
+    let zoom = Bone.round(Bone.space()[`webview_${num}`].zoom - step, 2)
+    Bone.space()[`webview_${num}`].zoom = zoom
     Bone.save_local_storage()
+    Bone.apply_zoom(num)
 }
 
 // Increases a webview zoom level by config.zoom_step
@@ -627,24 +661,24 @@ Bone.increase_zoom = function(num, mode='normal')
         step *= 2
     }
 
-    let zoom = Bone.round(Bone.storage[`webview_${num}`].zoom + step, 2)
-    Bone.storage[`webview_${num}`].zoom = zoom
-    Bone.apply_zoom(num)
+    let zoom = Bone.round(Bone.space()[`webview_${num}`].zoom + step, 2)
+    Bone.space()[`webview_${num}`].zoom = zoom
     Bone.save_local_storage()
+    Bone.apply_zoom(num)
 }
 
 // Resets a webview zoom level to zoom_default
 Bone.reset_zoom = function(num)
 {
-    Bone.storage[`webview_${num}`].zoom = Bone.config.zoom_default
-    Bone.apply_zoom(num)
+    Bone.space()[`webview_${num}`].zoom = Bone.config.zoom_default
     Bone.save_local_storage()
+    Bone.apply_zoom(num)
 }
 
 // Sets the size to a webview
 Bone.set_size_label = function(num)
 {
-    let size = Bone.storage[`webview_${num}`].size
+    let size = Bone.space()[`webview_${num}`].size
     Bone.$(`#webview_${num}_size_label`).textContent = `Size (${Number(size).toFixed(2)})`
 }
 
@@ -658,16 +692,16 @@ Bone.decrease_size = function(num, mode='normal')
         step *= 2
     }
 
-    let size = Bone.round(Bone.storage[`webview_${num}`].size - step, 2)
+    let size = Bone.round(Bone.space()[`webview_${num}`].size - step, 2)
 
     if(size < 0)
     {
         size = 0
     }
 
-    Bone.storage[`webview_${num}`].size = size
-    Bone.apply_layout(false)
+    Bone.space()[`webview_${num}`].size = size
     Bone.save_local_storage()
+    Bone.apply_layout(false)
     Bone.set_size_label(num)
 }
 
@@ -681,17 +715,17 @@ Bone.increase_size = function(num, mode='normal')
         step *= 2
     }
 
-    let size = Bone.round(Bone.storage[`webview_${num}`].size + step, 2)
-    Bone.storage[`webview_${num}`].size = size
-    Bone.apply_layout(false)
+    let size = Bone.round(Bone.space()[`webview_${num}`].size + step, 2)
+    Bone.space()[`webview_${num}`].size = size
     Bone.save_local_storage()
+    Bone.apply_layout(false)
     Bone.set_size_label(num)
 }
 
 // Resets a webview size to size_default
 Bone.reset_size = function(num, apply=true)
 {
-    Bone.storage[`webview_${num}`].size = Bone.config.size_default
+    Bone.space()[`webview_${num}`].size = Bone.config.size_default
     Bone.save_local_storage()
     Bone.set_size_label(num)
 
@@ -704,7 +738,7 @@ Bone.reset_size = function(num, apply=true)
 // Refreshes a webview with configured url
 Bone.refresh_webview = function(num)
 {
-    let url = Bone.storage[`webview_${num}`].url
+    let url = Bone.space()[`webview_${num}`].url
     Bone.remake_webview(num, url, false)
 }
 
@@ -724,7 +758,7 @@ Bone.swap_webview = function(num)
 
         else
         {
-            let wv = Bone.storage[`webview_${num_2}`]
+            let wv = Bone.space()[`webview_${num_2}`]
             item.style.display = 'block'
             item.textContent = `Swap With: (${num_2}) ${wv.url.substring(0, Bone.config.swap_max_url_length)}`
         }
@@ -753,8 +787,8 @@ Bone.setup_swap_webviews = function()
 // Does the webview swapping
 Bone.do_webview_swap = function(num_1, num_2)
 {
-    let w1 = Bone.storage[`webview_${num_1}`]
-    let w2 = Bone.storage[`webview_${num_2}`]
+    let w1 = Bone.space()[`webview_${num_1}`]
+    let w2 = Bone.space()[`webview_${num_2}`]
     let ourl_1 = w1.url
     let ozoom_1 = w1.zoom
 
@@ -763,8 +797,8 @@ Bone.do_webview_swap = function(num_1, num_2)
     w1.zoom = w2.zoom
     w2.zoom = ozoom_1
 
-    Bone.$(`#menu_window_url_${num_1}`).value = w1.url
-    Bone.$(`#menu_window_url_${num_2}`).value = w2.url
+    Bone.$(`#menu_url_${num_1}`).value = w1.url
+    Bone.$(`#menu_url_${num_2}`).value = w2.url
 
     Bone.save_local_storage()
     Bone.apply_url(num_1)
@@ -840,9 +874,9 @@ Bone.create_resize_handle = function(direction, owner, siblings, group, mode='af
 }
 
 // Setups resize handles
-Bone.setup_resize_handles = function()
+Bone.setup_resize_handles = function(num)
 {
-    let c = Bone.$('#webview_container')
+    let c = Bone.webview_container(num)
 
     c.addEventListener('mousedown', function(e)
     {
@@ -855,7 +889,7 @@ Bone.setup_resize_handles = function()
                 Bone.initial_resize_y = e.clientY
                 Bone.resize_mousedown_date = Date.now()
     
-                let webviews = Bone.$$('.webview')
+                let webviews = Bone.wvs()
     
                 for(let webview of webviews)
                 {
@@ -916,9 +950,9 @@ Bone.setup_resize_handles = function()
 }
 
 // Creates a webview container from a given template
-Bone.create_webview_container = function(num, amount)
+Bone.setup_webview_container = function(num, amount)
 {
-    let c = Bone.$('#webview_container')
+    let c = Bone.webview_container()
     c.innerHTML = ''
 
     if(num === 1)
@@ -1032,12 +1066,12 @@ Bone.create_webview_container = function(num, amount)
 // What happens after a resizing is done or cancelled
 Bone.leave_resize_mode = function()
 {
-    let c = Bone.$('#webview_container')
+    let c = Bone.webview_container()
 
     c.classList.remove(`cursor_resize_${Bone.active_resize_handle.dataset.direction}`)
     Bone.active_resize_handle = false
     
-    let webviews = Bone.$$('.webview')
+    let webviews = Bone.wvs()
 
     for(let webview of webviews)
     {
@@ -1055,7 +1089,7 @@ Bone.resize_mouseup_function = function(e)
         return false
     }
 
-    let c = Bone.$('#webview_container')
+    let c = Bone.webview_container()
     let direction = Bone.active_resize_handle.dataset.direction
     let siblings_list = Bone.active_resize_handle.dataset.siblings.split(',')
     let owner = Bone.active_resize_handle.dataset.owner
@@ -1096,7 +1130,7 @@ Bone.resize_mouseup_function = function(e)
 
     for(let num of elements)
     {
-        let el = Bone.$(`#webview_${num}`)
+        let el = Bone.wv(num)
         let nsize
 
         if(num === owner && mode === 'after')
@@ -1110,12 +1144,12 @@ Bone.resize_mouseup_function = function(e)
         }
 
         let size = Bone.round((nsize / c[oname]) * group, 3)
-        Bone.storage[`webview_${num}`].size = size
+        Bone.space()[`webview_${num}`].size = size
         Bone.set_size_label(num)
     }
 
-    Bone.apply_layout(false, false, 'no')
     Bone.save_local_storage()
+    Bone.apply_layout(false, false, 'no')
     Bone.leave_resize_mode()
 }
 
@@ -1138,7 +1172,7 @@ Bone.update_resize_handle_style = function()
 
     for(let style of styles)
     {
-        style.parentNode.removeChild(style)
+        Bone.remove_element(style)
     }
 
     let style_el = document.createElement('style')
@@ -1146,4 +1180,15 @@ Bone.update_resize_handle_style = function()
     style_el.innerHTML = css
 
     document.head.appendChild(style_el)
+}
+
+// Creates a webview container
+Bone.create_webview_container = function(num)
+{
+    let h = Bone.template_webview_container({num:num})
+    let el = document.createElement('div')
+    el.innerHTML = h
+    let wvc = el.querySelector('.webview_container')
+    Bone.$('#webview_containers').append(wvc)
+    Bone.setup_resize_handles(num)
 }

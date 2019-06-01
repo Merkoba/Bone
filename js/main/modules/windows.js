@@ -18,9 +18,9 @@ Bone.create_windows = function()
         close_effect: 'none'
     }
 
-    Bone.msg_menu_window = Msg.factory(Object.assign({}, common, 
+    Bone.msg_menu = Msg.factory(Object.assign({}, common, 
     {
-        id: 'menu_window'
+        id: 'menu'
     }))
 
     Bone.msg_create_preset = Msg.factory(Object.assign({}, common, 
@@ -56,18 +56,30 @@ Bone.create_windows = function()
         id: 'history'
     }))
 
-    Bone.msg_menu_window.set(Bone.template_menu_window())
+    Bone.msg_apply_preset = Msg.factory(Object.assign({}, common,
+    {
+        id: 'apply_preset'
+    }))
+
+    Bone.msg_autostart = Msg.factory(Object.assign({}, common,
+    {
+        id: 'autostart'
+    }))
+
+    Bone.msg_menu.set(Bone.template_menu())
     Bone.msg_create_preset.set(Bone.template_create_preset())
     Bone.msg_handle_preset.set(Bone.template_handle_preset())
     Bone.msg_swap_webviews.set(Bone.template_swap_webviews())
     Bone.msg_info.set(Bone.template_info())
     Bone.msg_history.set(Bone.template_history())
+    Bone.msg_apply_preset.set(Bone.template_apply_preset())
+    Bone.msg_autostart.set(Bone.template_autostart())
 }
 
 // Closes all modal windows
 Bone.close_all_windows = function()
 {
-    Bone.msg_menu_window.close_all()
+    Bone.msg_menu.close_all()
 }
 
 // Setups the info window

@@ -24,12 +24,12 @@ Bone.get_local_storage = function()
 
     let save = Bone.check_local_storage(obj)
     
-    Bone.storage = obj
-
     if(save)
     {
         Bone.save_local_storage()
     }
+
+    Bone.storage = obj
 }
 
 // Checks local storage object and assigns defaults if missing
@@ -151,15 +151,33 @@ Bone.check_local_storage = function(obj)
         save = true
     }
 
-    if(obj.auto_hide_top_panel === undefined)
+    if(obj.auto_hide_panel === undefined)
     {
-        obj.auto_hide_top_panel = true
+        obj.auto_hide_panel = true
         save = true
     }
 
     if(obj.resize_handle_size === undefined)
     {
-        obj.resize_handle_size = 4
+        obj.resize_handle_size = 8
+        save = true
+    }
+
+    if(obj.cycle_spaces_on_wheel === undefined)
+    {
+        obj.cycle_spaces_on_wheel = true
+        save = true
+    }
+
+    if(obj.wrap_spaces_on_wheel === undefined)
+    {
+        obj.wrap_spaces_on_wheel = true
+        save = true
+    }
+
+    if(obj.show_menu_on_panel_click === undefined)
+    {
+        obj.show_menu_on_panel_click = true
         save = true
     }
 
@@ -169,6 +187,17 @@ Bone.check_local_storage = function(obj)
 // Save the local storage data
 Bone.save_local_storage = function()
 {
+    let space = Bone.space()
+
+    if(space)
+    {
+        Bone.storage.webview_1 = Bone.clone_object(space.webview_1)
+        Bone.storage.webview_2 = Bone.clone_object(space.webview_2)
+        Bone.storage.webview_3 = Bone.clone_object(space.webview_3)
+        Bone.storage.webview_4 = Bone.clone_object(space.webview_4)
+        Bone.storage.layout = space.layout
+    }
+
     localStorage.setItem(Bone.ls_name, JSON.stringify(Bone.storage))
 }
 
@@ -180,7 +209,7 @@ Bone.reset_storage = function()
     Bone.get_local_storage()
     Bone.storage.presets = presets
     Bone.save_local_storage()
-    Bone.update_menu_window_widgets()
+    Bone.update_menu_widgets()
     Bone.apply_theme()
     Bone.apply_layout(true, true, 'yes')
 }

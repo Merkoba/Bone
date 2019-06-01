@@ -33,7 +33,7 @@ Bone.setup_handle_preset = function()
 {
     Bone.$('#handle_preset_apply').addEventListener('click', function()
     {
-        Bone.do_handle_preset_apply(Bone.handled_preset)
+        Bone.msg_apply_preset.show()
     })
 
     Bone.$('#handle_preset_submit').addEventListener('click', function()
@@ -64,17 +64,30 @@ Bone.setup_handle_preset = function()
 
             else
             {
-                Bone.do_handle_preset_apply(Bone.handled_preset)
+                Bone.msg_apply_preset.show()
             }
         }
     })
-}
+    
+    Bone.$('#handle_preset_autostart').addEventListener('click', function(e)
+    {
+        let preset = Bone.storage.presets[Bone.handled_preset]
+        preset.autostart = !preset.autostart
 
-// Does the apply preset action
-Bone.do_handle_preset_apply = function(name)
-{
-    Bone.apply_preset(name)
-    Bone.close_all_windows()
+        if(preset.autostart)
+        {
+            preset.autostart_index = 0
+        }
+
+        else
+        {
+            preset.autostart_index = undefined
+        }
+
+        Bone.save_local_storage()
+        Bone.update_handle_preset_autostart(Bone.handled_preset)
+        Bone.update_autostart_order()
+    })
 }
 
 // Does the edit preset action
@@ -93,7 +106,7 @@ Bone.do_handle_preset_update = function(name)
 // Updates the presets container
 Bone.update_presets = function()
 {
-    let c = Bone.$('#menu_window_presets_select')
+    let c = Bone.$('#menu_presets_select')
     c.innerHTML = ''
 
     let keys_sorted = Object.keys(Bone.storage.presets).sort(function(a, b)
@@ -117,12 +130,12 @@ Bone.update_presets = function()
 
     if(keys_sorted.length > 0)
     {
-        Bone.$('#menu_window_clear_presets').classList.remove('disabled')
+        Bone.$('#menu_clear_presets').classList.remove('disabled')
     }
     
     else
     {
-        Bone.$('#menu_window_clear_presets').classList.add('disabled')
+        Bone.$('#menu_clear_presets').classList.add('disabled')
     }
 }
 
@@ -130,19 +143,32 @@ Bone.update_presets = function()
 Bone.save_preset = function(name, replace=false)
 {
     name = name.trim()
-
+    
     if(!name)
     {
         return false
+    }
+    
+    let preset = Bone.storage.presets[name]
+    let autostart = false
+
+    if(preset)
+    {
+        autostart = preset.autostart
     }
 
     if(replace && name !== replace)
     {
         delete Bone.storage.presets[replace]
     }
-
-    let obj = Bone.clone_object(Bone.storage)
-    obj.presets = undefined
+    
+    let obj = {}
+    obj.autostart = autostart
+    obj.webview_1 = Bone.clone_object(Bone.space().webview_1)
+    obj.webview_2 = Bone.clone_object(Bone.space().webview_2)
+    obj.webview_3 = Bone.clone_object(Bone.space().webview_3)
+    obj.webview_4 = Bone.clone_object(Bone.space().webview_4)
+    obj.layout = Bone.space().layout
     obj.last_used = Date.now()
     Bone.storage.presets[name] = obj
     Bone.save_local_storage()
@@ -151,7 +177,7 @@ Bone.save_preset = function(name, replace=false)
 }
 
 // Changes settings to a specified preset
-Bone.apply_preset = function(name)
+Bone.apply_preset = function(name, new_space=false)
 {
     if(!Bone.storage.presets[name])
     {
@@ -161,16 +187,24 @@ Bone.apply_preset = function(name)
     let preset = Bone.storage.presets[name]
     preset.last_used = Date.now()
     Bone.check_local_storage(preset)
-    let obj = Bone.clone_object(preset)
-    obj.presets = Bone.clone_object(Bone.storage.presets)
-    Bone.storage = obj
+    Bone.storage.webview_1 = Bone.clone_object(preset.webview_1)
+    Bone.storage.webview_2 = Bone.clone_object(preset.webview_2)
+    Bone.storage.webview_3 = Bone.clone_object(preset.webview_3)
+    Bone.storage.webview_4 = Bone.clone_object(preset.webview_4)
+    Bone.storage.layout = preset.layout
+
+    if(new_space === false)
+    {
+        Bone.change_space(Bone.current_space, Bone.storage)
+    }
+
+    else
+    {
+        Bone.create_space(Bone.storage)
+    }
     
     Bone.save_local_storage()
-    Bone.update_menu_window_widgets()
-    Bone.apply_layout(true, true, 'yes')
-    Bone.apply_theme()
     Bone.update_presets()
-
 }
 
 // Deletes a preset
@@ -190,9 +224,18 @@ Bone.delete_preset = function(name)
 // Shows and prepares the edit preset window
 Bone.show_handle_preset = function(name)
 {
+    let preset = Bone.storage.presets[name]
+
+    if(!preset)
+    {
+        return false
+    }
+
     Bone.handled_preset = name
     Bone.$('#handle_preset_name').value = name
+    Bone.update_handle_preset_autostart(name)
     Bone.$('#handle_preset_container').focus()
+    Bone.msg_handle_preset.show()
 }
 
 // Cycles between presets
@@ -228,4 +271,155 @@ Bone.clear_presets = function()
         Bone.update_presets()
         Bone.info('All the presets have been deleted')
     }
+}
+
+// Setups the apply preset window
+Bone.setup_apply_preset = function()
+{
+    Bone.$('#apply_preset_here').addEventListener('click', function()
+    {
+        Bone.apply_preset(Bone.handled_preset, false)
+        Bone.close_all_windows()
+    })
+ 
+    Bone.$('#apply_preset_space').addEventListener('click', function()
+    {
+        Bone.apply_preset(Bone.handled_preset, 0)
+        Bone.close_all_windows()
+    })
+}
+
+// Changes the autostart label depending on state
+Bone.update_handle_preset_autostart = function(name)
+{
+    let preset = Bone.storage.presets[name]
+
+    if(preset.autostart)
+    {
+        Bone.$('#handle_preset_autostart').textContent = 'Disable AutoStart'
+    }
+        
+    else
+    {
+        Bone.$('#handle_preset_autostart').textContent = 'Enable AutoStart'
+    }
+}
+
+// Gets a list of autostarted presets
+Bone.get_autostart_presets = function()
+{
+    let autostart = []
+
+    for(let name in Bone.storage.presets)
+    {
+        let preset = Bone.storage.presets[name]
+
+        if(preset.autostart)
+        {
+            preset.name = name
+            autostart.push(preset)
+        }
+    }
+
+    let sorted = autostart.sort(function(a, b)
+    {
+        return a.autostart_index - b.autostart_index
+    })
+
+    let names = []
+
+    sorted.map(preset => names.push(preset.name))
+
+    return names
+}
+
+// Setups the presets autostart window
+Bone.setup_autostart = function()
+{
+    Bone.$('#autostart_items').addEventListener('click', function(e)
+    {
+        if(!e.target.classList.contains('autostart_item'))
+        {
+            return false
+        }
+
+        Bone.show_handle_preset(e.target.textContent)
+    })
+
+    Bone.$('#autostart_items').addEventListener('wheel', function(e)
+    {
+        if(!e.target.classList.contains('autostart_item'))
+        {
+            return false
+        }
+        
+        let index = Bone.get_element_index(e.target)
+
+        if(e.deltaY < 0)
+        {
+            if(index > 0)
+            {
+                let el = e.target.parentNode.children[index - 1]
+                el.before(e.target)
+            }
+
+            else
+            {
+                return false
+            }
+        }
+
+        else
+        {
+            if(index < e.target.parentNode.children.length - 1)
+            {
+                let el = e.target.parentNode.children[index + 1]
+                el.after(e.target)
+            }
+
+            else
+            {
+                return false
+            }
+        }
+
+        Bone.update_autostart_order()
+    })
+}
+
+// Shows a list of autostarted presets
+Bone.show_autostart_presets = function()
+{
+    let autostart = Bone.get_autostart_presets()
+    let c = Bone.$('#autostart_items')
+    c.innerHTML = ''
+
+    for(let name of autostart)
+    {
+        let el = document.createElement('div')
+        el.classList.add('autostart_item')
+        el.classList.add('action')
+        el.textContent = name
+        el.dataset.name = name
+        el
+
+        c.append(el)
+    }
+
+    Bone.msg_autostart.show()
+}
+
+// Updates the order of the enabled autostart presets
+Bone.update_autostart_order = function()
+{
+    let items = Bone.$$('.autostart_item')
+
+    for(let i=0; i<items.length; i++)
+    {
+        let item = items[i]
+        let preset = Bone.storage.presets[item.dataset.name]
+        preset.autostart_index = i
+    }
+
+    Bone.save_local_storage()
 }

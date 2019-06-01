@@ -3,9 +3,11 @@
   "productName": "Boneless",
   "version": "1.0.0",
   "main": "index.js",
-  "dependencies": 
-  {
-    "electron-context-menu": "~0.12.1"
+  "dependencies": {
+    "electron-context-menu": "~0.12.1",
+    "handlebars": "~4.1.2",
+    "msg-modal": "~11.4.3",
+    "colorlib2": "~1.0.1"
   },
   "devDependencies": {
     "electron": "^5.0.2",

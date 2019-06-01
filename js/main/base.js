@@ -7,6 +7,9 @@ const path = require('path')
 const contextMenu = require('electron-context-menu')
 const remote = require('electron').remote
 const main = remote.require('./index.js')
+const Msg = require('msg-modal')
+const ColorLib = require('colorlib2')
+const Handlebars = require('handlebars')
 
 // Init main object and some properties
 
@@ -23,8 +26,10 @@ Bone.layouts =
 
 Bone.colorlib = ColorLib()
 Bone.preset_index = -1
-Bone.top_panel_active = true
+Bone.panel_active = true
 Bone.active_resize_handle = false
+Bone.spaces = []
+Bone.current_space = 0
 
 Bone.history =
 {
@@ -41,9 +46,9 @@ Bone.config =
     zoom_default: 1,
     size_step: 0.05,
     size_default: 1,
-    top_panel_height: 36,
-    top_panel_hidden_height: 4,
-    top_panel_auto_hide_delay: 1000,
+    panel_height: 36,
+    panel_hidden_height: 4,
+    panel_auto_hide_delay: 1000,
     history_max_url_length: 50,
     swap_max_url_length: 50,
     modules_path: './js/main/modules/',
@@ -55,24 +60,25 @@ Bone.config =
 Bone.init = function()
 {
     Bone.load_files()
-    Bone.get_local_storage()
     Bone.setup_templates()
+    Bone.get_local_storage()
     Bone.create_windows()
-    Bone.setup_menu_window()
-    Bone.update_menu_window_widgets()
-    Bone.setup_top_panel()
+    Bone.setup_menu()
+    Bone.start_spaces()
+    Bone.setup_panel()
     Bone.setup_create_preset()
     Bone.setup_handle_preset()
+    Bone.setup_apply_preset()
     Bone.update_presets()
     Bone.apply_theme()
     Bone.apply_layout(false)
     Bone.setup_swap_webviews()
-    Bone.start_top_panel_auto_hide()
-    Bone.apply_auto_hide_top_panel()
+    Bone.start_panel_auto_hide()
+    Bone.apply_auto_hide_panel()
     Bone.setup_info()
     Bone.setup_history()
-    Bone.setup_resize_handles()
     Bone.activate_resize_listener()
+    Bone.setup_autostart()
 
     console.info('Boneless started')
 }

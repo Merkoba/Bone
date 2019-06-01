@@ -86,3 +86,18 @@ Bone.debounce = function(func, wait, immediate)
         if(callNow) func.apply(context, args)
     }
 }
+
+Bone.get_element_index = function(element) 
+{
+    return [...element.parentNode.children].indexOf(element)
+}
+
+Bone.remove_element = function(element)
+{
+    element.parentNode.removeChild(element)
+}
+
+Bone.replace_element = function(replacement, original)
+{
+    original.parentNode.replaceChild(replacement, original)
+}

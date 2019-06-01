@@ -20,7 +20,7 @@ Bone.apply_theme = function()
         background-color: ${bg_color_1} !important;
     }
 
-    #top_panel
+    #panel
     {
         background-color: ${bg_color_1} !important;
         color: ${font_color_1} !important;
@@ -42,19 +42,19 @@ Bone.apply_theme = function()
         background-color: ${bg_color_2} !important;
     }
 
-    .menu_window_layout_item
+    .menu_layout_item
     {
         background-color: ${bg_color_2} !important;
         box-shadow: 0 0 1px ${font_color_1} !important;
         color: ${font_color_1} !important;
     }
 
-    .menu_window_layout_item:hover
+    .menu_layout_item:hover
     {
         box-shadow: 0 0 5px ${font_color_1} !important;
     }
 
-    .menu_window_layout_item.layout_column > div, .menu_window_layout_item.layout_row > div,
+    .menu_layout_item.layout_column > div, .menu_layout_item.layout_row > div,
     .layout_square_row > div, .layout_square_column > div
     {
         box-shadow: 0 0 1px ${font_color_1} !important;

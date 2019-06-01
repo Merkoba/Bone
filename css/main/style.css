@@ -38,15 +38,16 @@ body, html
     overflow: hidden;
 }
 
-#top_panel
+#panel
 {
     height: 36px;
     width: 100%;
     background-color: black;
     color: white;
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-grow: 0;
     flex-shrink: 0;
     overflow: hidden;
@@ -58,23 +59,23 @@ body, html
     cursor: pointer;
 }
 
-#webview_container
+#webview_containers
 {
     display: grid;
     overflow: hidden;
     width: 100%;
-    flex-grow: 1;
-    flex-shrink: 1;
     position: absolute;
     top: 4px;
     bottom: 0;
-    left: 0;
+    left: 0; 
 }
 
-.webview
+.webview_container
 {
-    flex-grow: 1;
-    flex-shrink: 1;
+    display: grid;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
 }
 
 .webview_column
@@ -87,14 +88,14 @@ body, html
     flex-direction: row;
 }
 
-.top_panel_icon
+.panel_icon
 {
     font-size: 14px;
 }
 
 #menu_icon
 {
-    padding: 2rem;
+    padding: 10px;
 }
 
 .action, .action_2
@@ -102,7 +103,7 @@ body, html
     transition: text-shadow 500ms, box-shadow 500ms
 }
 
-.action:hover, .action_container:hover
+.action:hover
 {
     text-shadow: 0 0 10px currentColor;
 }
@@ -112,7 +113,7 @@ body, html
     box-shadow: 0 0 10px currentColor, inset 0 0 10px currentColor;
 }
 
-#menu_window_container
+#menu_container
 {
     display: grid;
     grid-gap: 40px;
@@ -121,19 +122,19 @@ body, html
     width: 450px;
 }
 
-.menu_window_item
+.menu_item
 {
     margin: auto;
     width: 100%;
 }
 
-.menu_window_label
+.menu_label
 {
     font-size: 1.2rem;
     margin-bottom: 15px;
 }
 
-#menu_window_layout_container
+#menu_layout_container
 {
     display: grid;
     grid-gap: 20px;
@@ -142,7 +143,7 @@ body, html
     justify-content: center;
 }
 
-.menu_window_layout_container_item
+.menu_layout_container_item
 {
     display: grid;
     grid-gap: 20px;
@@ -151,7 +152,7 @@ body, html
     justify-content: center;
 }
 
-.menu_window_layout_item
+.menu_layout_item
 {
     width: 94px;
     height: 94px;
@@ -162,31 +163,31 @@ body, html
     cursor: pointer;
 }
 
-.menu_window_layout_item.layout_column
+.menu_layout_item.layout_column
 {
     flex-direction: column;
 }
 
-.menu_window_layout_item.layout_column > div
+.menu_layout_item.layout_column > div
 {
     flex-grow: 1;
     flex-shrink: 1;
     width: 100%;
 }
 
-.menu_window_layout_item.layout_row
+.menu_layout_item.layout_row
 {
     flex-direction: row;
 }
 
-.menu_window_layout_item.layout_row > div
+.menu_layout_item.layout_row > div
 {
     flex-grow: 1;
     flex-shrink: 1;
     height: 100%;
 }
 
-.menu_window_input_text
+.menu_input_text
 {
     width: 100%;
     font-size: 1.1rem;
@@ -194,7 +195,7 @@ body, html
     text-align: center;
 }
 
-.menu_window_input_text_small
+.menu_input_text_small
 {
     width: 8rem;
     font-size: 1.1rem;
@@ -236,7 +237,7 @@ body, html
     user-select: none;
 }
 
-.menu_window_webview_controls
+.menu_webview_controls
 {
     display: grid;
     grid-gap: 20px;
@@ -246,7 +247,7 @@ body, html
     margin-top: 15px;
 }
 
-#menu_window_webview_controls
+#menu_webview_controls
 {
     display: grid;
     grid-gap: 40px;
@@ -254,13 +255,13 @@ body, html
     align-items: center;
 }
 
-.menu_window_webview_control
+.menu_webview_control
 {
     margin: auto;
     width: 100%;
 }
 
-.menu_window_control_icon
+.menu_control_icon
 {
     cursor: pointer;
 }
@@ -286,21 +287,27 @@ body, html
     cursor: pointer;
 }
 
-#menu_window_save_preset
+.generic_button
+{
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+#menu_save_preset
 {
     font-size: 1rem;
     cursor: pointer;
     margin-left: 0.8rem;
 }
 
-#menu_window_clear_presets
+#menu_clear_presets
 {
     font-size: 1rem;
     cursor: pointer;
     margin-right: 0.8rem;
 }
 
-#menu_window_preset_container > div
+#menu_preset_container > div
 {
     margin-top: 10px;
 }
@@ -390,12 +397,6 @@ select
     cursor: pointer;
 }
 
-.resize_handle
-{
-    flex-grow: 0;
-    flex-shrink: 0;
-}
-
 .resize_handle_ns
 {
     height: 5px;
@@ -418,4 +419,45 @@ select
 .cursor_resize_ew
 {
     cursor: ew-resize !important;
+}
+
+#spaces
+{
+    display: grid;
+    grid-gap: 0px;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    justify-self: flex-start;
+}
+
+.spaces_item
+{
+    cursor: pointer;
+    padding: 10px;
+}
+
+#autostart_container
+{
+    width: 250px;
+}
+
+#autostart_items
+{
+    display: grid;
+    grid-gap: 10px;
+    grid-auto-columns: auto;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.autostart_item
+{
+    cursor: pointer;
+}
+
+.small_info
+{
+    font-size: 0.8rem;
 }

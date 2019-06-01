@@ -2,9 +2,6 @@
     <head>
         <link rel='stylesheet' type='text/css' href='css/libs/font-awesome.min.css'>
         <link rel='stylesheet' type='text/css' href='css/main/style.css'>
-        <script src='js/libs/msg.min.js'></script>
-        <script src='js/libs/colorlib.js'></script>
-        <script src='js/libs/handlebars.js'></script>
         <script src='js/main/base.js'></script>
 
         <script>
@@ -17,103 +14,127 @@
 
     <body>
         <div id='main_container'>
-            <div id='top_panel' class='unselectable action_container'>
-                <i id='menu_icon' class='fas fa-th-large top_panel_icon action'></i>
+            <div id='panel' class='unselectable'>
+                <i id='menu_icon' class='fas fa-th-large panel_icon action'></i>
+                <div id='spaces'></div>
             </div>
-            <div id='webview_container'></div>
+            <div id='webview_containers'></div>
         </div>
 
-        <script id='template_webview' type='text/x-handlebars-template' class='template'>
-            <webview class='webview' id='webview_{{num}}' webpreferences='allowRunningInsecureContent' allowpopups></webview>
+        <script id='template_webview_container' type='text/x-handlebars-template' class='template'>
+            <div id='webview_container_{{num}}' class='webview_container'></div>
         </script>
 
-        <script id='template_menu_window' type='text/x-handlebars-template' class='template'>
-            <div id='menu_window_container' class='unselectable'>
-                <div class='menu_window_item'>
-                    <span id='menu_window_back' class='action pointer underline'>Back</span>
+        <script id='template_webview' type='text/x-handlebars-template' class='template'>
+            <webview class='webview webview_{{num}}' webpreferences='allowRunningInsecureContent' allowpopups></webview>
+        </script>
+
+        <script id='template_menu' type='text/x-handlebars-template' class='template'>
+            <div id='menu_container' class='unselectable'>
+                <div class='menu_item'>
+                    <span id='menu_back' class='action pointer underline'>Back</span>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span id='menu_window_history' class='action pointer underline'>History</span>
+                    <span id='menu_history' class='action pointer underline'>History</span>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span id='menu_window_exit' class='action pointer underline'>Exit</span>
+                    <span id='menu_autostart' class='action pointer underline'>AutoStart</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span id='menu_close_space' class='action pointer underline'>Close Space</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span id='menu_exit' class='action pointer underline'>Exit</span>
                 </div>
 
-                <div class='menu_window_item'>
-                    <div id='menu_window_clear_presets' class='action inline'>Clear</div>
-                    <select id='menu_window_presets_select'></select>
-                    <div id='menu_window_save_preset' class='action inline'>Save</div>
+                <div class='menu_item'>
+                    <div id='menu_clear_presets' class='action inline'>Clear</div>
+                    <select id='menu_presets_select'></select>
+                    <div id='menu_save_preset' class='action inline'>Save</div>
                 </div>
 
-                <div class='menu_window_item'>
-                    <div class='menu_window_label'>Layout</div>
-                    <div id='menu_window_layout_container'>
-                        <div class='menu_window_layout_container_item'>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
+                <div class='menu_item'>
+                    <div class='menu_label'>Layout</div>
+                    <div id='menu_layout_container'>
+                        <div class='menu_layout_container_item'>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
                         </div>
-                        <div class='menu_window_layout_container_item'>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
+                        <div class='menu_layout_container_item'>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
                         </div>
-                        <div class='menu_window_layout_container_item'>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
+                        <div class='menu_layout_container_item'>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
                         </div>
-                        <div class='menu_window_layout_container_item'>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item'></div>
-                            <div class='menu_window_layout_item action_2'></div>
+                        <div class='menu_layout_container_item'>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item'></div>
+                            <div class='menu_layout_item action_2'></div>
                         </div>
                     </div>
                 </div>
                 
-                <div id='menu_window_webview_controls' class='menu_window_item'></div>
+                <div id='menu_webview_controls' class='menu_item'></div>
 
-                <div class='menu_window_item'>
-                    <div class='menu_window_label'>Theme</div>
-                    <input type='color' id='menu_window_theme_color_picker'>
+                <div class='menu_item'>
+                    <div class='menu_label'>Theme</div>
+                    <input type='color' id='menu_theme_color_picker'>
                 </div>
 
-                <div class='menu_window_item'>
-                    <div class='menu_window_label'>Auto Hide Top Panel</div>
-                    <input type='checkbox' id='menu_window_auto_hide_top_panel_checkbox'>
+                <div class='menu_item'>
+                    <div class='menu_label'>Auto Hide Panel</div>
+                    <input type='checkbox' id='menu_auto_hide_panel_checkbox'>
                 </div>
 
-                <div class='menu_window_item'>
-                    <div class='menu_window_label'>Resize Handle Size (px)</div>
-                    <input type='text' id='menu_window_resize_handle_size' class='menu_window_input_text_small'>
+                <div class='menu_item'>
+                    <div class='menu_label'>Resize Handle Size (px)</div>
+                    <input type='text' id='menu_resize_handle_size_input' class='menu_input_text_small'>
                 </div>
 
-                <div class='menu_window_item'>
-                    <div></div><div id='menu_window_reset' class='action pointer inline'>Reset To Defaults</div></div>
+                <div class='menu_item'>
+                    <div class='menu_label'>Cycle Spaces On Wheel</div>
+                    <input type='checkbox' id='menu_cycle_spaces_on_wheel_checkbox'>
+                </div>
+
+                <div class='menu_item' id='menu_wrap_spaces_on_wheel_container'>
+                    <div class='menu_label'>Wrap Spaces On Wheel</div>
+                    <input type='checkbox' id='menu_wrap_spaces_on_wheel_checkbox'>
+                </div>
+
+                <div class='menu_item' id='menu_wrap_spaces_on_wheel_container'>
+                    <div class='menu_label'>Show Menu On Panel Click</div>
+                    <input type='checkbox' id='menu_show_menu_on_panel_click_checkbox'>
+                </div>
+
+                <div class='menu_item'>
+                    <div></div><div id='menu_reset' class='action pointer inline'>Reset To Defaults</div></div>
                 </div>
             </div>
         </script>
 
         <script id='template_webview_control' type='text/x-handlebars-template' class='template'>
-            <div class='menu_window_webview_control'>
-                <div class='menu_window_label'>Webview {{num}}</div>
-                <input type='text' id='menu_window_url_{{num}}' class='menu_window_url_input menu_window_input_text'>
+            <div class='menu_webview_control'>
+                <div class='menu_label'>Webview {{num}}</div>
+                <input type='text' id='menu_url_{{num}}' class='menu_url_input menu_input_text'>
 
-                <div class='menu_window_size_controls menu_window_webview_controls'>
-                    <i class='fas fa-minus menu_window_control_icon action webview_control_icon_minus'></i>
+                <div class='menu_size_controls menu_webview_controls'>
+                    <i class='fas fa-minus menu_control_icon action webview_control_icon_minus'></i>
                     <div id='webview_{{num}}_size_label' class='webview_control_label action'>Size</div>
-                    <i class='fas fa-plus menu_window_control_icon action webview_control_icon_plus'></i>
+                    <i class='fas fa-plus menu_control_icon action webview_control_icon_plus'></i>
                 </div>
 
-                <div class='menu_window_zoom_controls menu_window_webview_controls'>
-                    <i class='fas fa-minus menu_window_control_icon action webview_control_icon_minus'></i>
+                <div class='menu_zoom_controls menu_webview_controls'>
+                    <i class='fas fa-minus menu_control_icon action webview_control_icon_minus'></i>
                     <div id='webview_{{num}}_zoom_label' class='webview_control_label action'>Zoom</div>
-                    <i class='fas fa-plus menu_window_control_icon action webview_control_icon_plus'></i>
+                    <i class='fas fa-plus menu_control_icon action webview_control_icon_plus'></i>
                 </div>
 
-                <div class='menu_window_action_controls menu_window_webview_controls'>
+                <div class='menu_action_controls menu_webview_controls'>
                     <span class='webview_refresh action pointer'>Refresh</span>
                     <span>|</span>
                     <span class='webview_swap action pointer'>Swap</span>
@@ -130,13 +151,24 @@
             <div id='handle_preset_container' class='unselectable' tabindex='0'>
                 <input type='text' id='handle_preset_name' class='preset_input' placeholder='Name'>
                 <div>
-                    <div id='handle_preset_apply' class='preset_button action inline'>Apply</div>
+                    <div id='handle_preset_apply' class='preset_button action inline'>Open</div>
                     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                     <div id='handle_preset_submit' class='preset_button action inline'>Update</div>
+                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                    <div id='handle_preset_autostart' class='preset_button action inline'></div>
                     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                     <div id='handle_preset_delete' class='preset_button action inline'>Delete</div>
                 </div>
             </div>
+        </script>
+
+        <script id='template_apply_preset' type='text/x-handlebars-template' class='template'>
+            <div id='handle_preset_container' class='unselectable' tabindex='0'>
+                <div>
+                    <div id='apply_preset_here' class='generic_button action inline'>Open Here</div>
+                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                    <div id='apply_preset_space' class='generic_button action inline'>New Space</div>
+                </div>
         </script>
 
         <script id='template_swap_webviews' type='text/x-handlebars-template' class='template'>
@@ -154,6 +186,14 @@
 
         <script id='template_history' type='text/x-handlebars-template' class='template'>
             <div id='history_container' class='unselectable'></div>
+        </script>
+
+        <script id='template_autostart' type='text/x-handlebars-template' class='template'>
+            <div id='autostart_container' class='unselectable'>
+                <div class='small_info'>Use the mouse wheel to move.</div>
+                <div class='small_info'>Presets load from top to bottom</div>
+                <div id='autostart_items'></div>
+            </div>
         </script>
     </body>
 
