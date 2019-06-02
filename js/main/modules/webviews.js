@@ -43,6 +43,10 @@ Bone.create_webview = function(num)
         }
 
         history.push(e.url)
+        Bone.space()[`webview_${wv.dataset.num}`].url = e.url
+        Bone.space_modified()
+        Bone.save_local_storage()
+        Bone.$(`#menu_url_${wv.dataset.num}`).value = e.url
     })
 
     return wv
