@@ -303,7 +303,6 @@ body, html
 .preset_button
 {
     font-size: 1.2rem;
-    margin-top: 1rem;
     cursor: pointer;
 }
 
@@ -415,7 +414,7 @@ select
     grid-gap: 20px;
     grid-auto-columns: auto;
     align-items: center;
-    max-width: 500px;
+    max-width: 600px;
 }
 
 .history_item
@@ -505,7 +504,6 @@ select
 #menu_space_options
 {
     margin-top: 20px;
-    text-align: center;
 }
 
 #handle_preset_open
@@ -563,4 +561,27 @@ select
     flex-shrink: 1;
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.separate_horizontal, .separate_horizontal_2
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.no_opacity
+{
+    opacity: 0
+}
+
+#handle_preset_row_1
+{
+    margin-top: 20px;
+}
+
+#create_preset_submit
+{
+    margin-top: 20px;
 }

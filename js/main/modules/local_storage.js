@@ -109,6 +109,12 @@ Bone.check_local_storage = function(obj)
         save = true
     }
 
+    if(obj.global_history === undefined)
+    {
+        obj.global_history = []
+        save = true
+    }
+
     return save
 }
 

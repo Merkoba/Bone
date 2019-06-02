@@ -160,11 +160,33 @@ Bone.remove_splash = function()
     }, 500)
 }
 
-// Setups focus
-Bone.setup_focus = function()
+// Setups and starts UI separator operations
+Bone.setup_separator = function()
 {
-    window.addEventListener('focus', function()
+    Bone.horizontal_separator = Separator.factory(
     {
-        Bone.focus_webview()
+        mode: 'horizontal'    
     })
+    
+    Bone.horizontal_separator_2 = Separator.factory(
+    {
+        mode: 'horizontal',
+        class: 'no_opacity',
+        margin_left: '10px',
+        margin_right: '10px'  
+    })
+
+    let horizontal = Bone.$$('.separate_horizontal')
+
+    for(let container of horizontal)
+    {
+        Bone.horizontal_separator.separate(container)
+    }
+
+    let horizontal_2 = Bone.$$('.separate_horizontal_2')
+
+    for(let container of horizontal_2)
+    {
+        Bone.horizontal_separator_2.separate(container)
+    }
 }

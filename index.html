@@ -41,19 +41,16 @@
         <script id='template_menu' type='text/x-handlebars-template' class='template'>
             <div id='menu_container' class='unselectable'>
                 <div class='menu_item'>
-                    <span id='menu_back' class='action pointer underline'>Back</span>
-                    &nbsp;&nbsp;&nbsp;
-                    <span id='menu_history' class='action pointer underline'>History</span>
-                    &nbsp;&nbsp;&nbsp;
-                    <span id='menu_copy_url' class='action pointer underline'>Copy URL</span>
-                    &nbsp;&nbsp;&nbsp;
-                    <span id='menu_autostart' class='action pointer underline'>AutoStart</span>
-                    &nbsp;&nbsp;&nbsp;
-                    <span id='menu_exit' class='action pointer underline'>Exit</span>
+                    <div class='separate_horizontal_2'>
+                        <span id='menu_back' class='action pointer underline'>Back</span>
+                        <span id='menu_history' class='action pointer underline'>History</span>
+                        <span id='menu_copy_url' class='action pointer underline'>Copy URL</span>
+                        <span id='menu_autostart' class='action pointer underline'>AutoStart</span>
+                        <span id='menu_exit' class='action pointer underline'>Exit</span>
+                    </div>
 
-                    <div id='menu_space_options'>
+                    <div id='menu_space_options' class='separate_horizontal_2'>
                         <span id='menu_new_space' class='action pointer underline'>New Space</span>
-                        &nbsp;&nbsp;&nbsp;
                         <span id='menu_duplicate_space' class='action pointer underline'>Duplicate Space</span>
                         <span id='menu_close_space' class='action pointer underline'>Close Space</span>
                     </div>
@@ -161,23 +158,19 @@
         <script id='template_handle_preset' type='text/x-handlebars-template' class='template'>
             <div id='handle_preset_container' class='unselectable' tabindex='0'>
                 <input type='text' id='handle_preset_name' class='preset_input' placeholder='Name'>
-                <div>
+                <div id='handle_preset_row_1' class='separate_horizontal'>
                     <div id='handle_preset_submit' class='preset_button action inline'>Update</div>
-                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                     <div id='handle_preset_autostart' class='preset_button action inline'></div>
-                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                     <div id='handle_preset_delete' class='preset_button action inline'>Delete</div>
-
-                    <div id='handle_preset_open' class='preset_button action'>Open</div>
                 </div>
+                <div id='handle_preset_open' class='preset_button action'>Open</div>
             </div>
         </script>
 
         <script id='template_open_preset' type='text/x-handlebars-template' class='template'>
             <div id='open_preset_container' class='unselectable' tabindex='0'>
-                <div>
+                <div class='separate_horizontal'>
                     <div id='open_preset_here' class='generic_button action inline'>Open Here</div>
-                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                     <div id='open_preset_space' class='generic_button action inline'>New Space</div>
                 </div>
         </script>
@@ -212,9 +205,10 @@
         <script id='template_handle_history' type='text/x-handlebars-template' class='template'>
             <div id='handle_history_container' class='unselectable' tabindex='0'>
                 <div>
-                    <div id='handle_history_open' class='generic_button action inline'>Open Here</div>
-                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                    <div id='handle_history_copy' class='generic_button action inline'>Copy URL</div>
+                    <div class='separate_horizontal'>
+                        <div id='handle_history_open' class='generic_button action inline'>Open Here</div>
+                        <div id='handle_history_copy' class='generic_button action inline'>Copy URL</div>
+                    </div>
                     <div id='handle_history_layout_container'>
                         <div>Open In</div>
                         <div id='handle_history_layout'></div>

@@ -10,6 +10,7 @@ const main = remote.require('./index.js')
 const Msg = require('msg-modal')
 const ColorLib = require('colorlib2')
 const Handlebars = require('handlebars')
+const Separator = require('separator2')
 
 // Init main object and some properties
 
@@ -45,7 +46,8 @@ Bone.config =
     swap_max_url_length: 50,
     modules_path: './js/main/modules/',
     resize_double_click_delay: 350,
-    startpage: 'http://www.tiledhn.com/'
+    startpage: 'http://www.tiledhn.com/',
+    max_global_history_items: 1000
 }
 
 // This gets called when body loads
@@ -73,7 +75,7 @@ Bone.init = function()
     Bone.activate_resize_listener()
     Bone.setup_autostart()
     Bone.setup_handle_history()
-    Bone.setup_focus()
+    Bone.setup_separator()
 
     Bone.remove_splash()
 
