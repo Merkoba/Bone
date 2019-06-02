@@ -19,6 +19,7 @@
             <div id='panel' class='unselectable'>
                 <i id='menu_icon' class='fas fa-th-large panel_icon action'></i>
                 <div id='panel_toolbar'>
+                    <div id='panel_focused' class='panel_toolbar_item action'>[1]</div>
                     <div id='panel_history' class='panel_toolbar_item action'>History</div>
                     <i id='panel_zoom_in' class='fas fa-plus panel_toolbar_item action'></i>
                     <i id='panel_zoom_out' class='fas fa-minus panel_toolbar_item action'></i>
@@ -219,21 +220,8 @@
                     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                     <div id='handle_history_copy' class='generic_button action inline'>Copy URL</div>
                     <div id='handle_history_second_row'>
-                        <div id='handle_history_open_in_1_container' class='inline'>
-                            <div id='handle_history_open_in_1' class='generic_button action inline'>Open In Webview 1</div>
-                        </div>
-                        <div id='handle_history_open_in_2_container' class='inline'>
-                            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                            <div id='handle_history_open_in_2' class='generic_button action inline'>Open In Webview 2</div>
-                        </div>
-                        <div id='handle_history_open_in_3_container' class='inline'>
-                            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                            <div id='handle_history_open_in_3' class='generic_button action inline'>Open In Webview 3</div>
-                        </div>
-                        <div id='handle_history_open_in_4_container' class='inline'>
-                            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                            <div id='handle_history_open_in_4' class='generic_button action inline'>Open In Webview 4</div>
-                        </div>
+                        <div>Open In</div>
+                        <div id='handle_history_layout'></div>
                     </div>
                 </div>
             </div>

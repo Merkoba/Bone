@@ -421,6 +421,11 @@ select
     cursor: pointer;
 }
 
+.history_item:first-child
+{
+    font-size: 1.2rem;
+}
+
 .resize_handle_ns
 {
     height: 5px;
@@ -519,7 +524,7 @@ select
     grid-auto-flow: column;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     justify-self: flex-start;
 }
 
@@ -538,4 +543,9 @@ select
 #handle_history_second_row
 {
     margin-top: 20px;
+}
+
+#handle_history_layout
+{
+    margin-top: 8px;
 }

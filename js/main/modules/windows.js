@@ -159,3 +159,12 @@ Bone.remove_splash = function()
         }, 1500)
     }, 500)
 }
+
+// Setups focus
+Bone.setup_focus = function()
+{
+    window.addEventListener('focus', function()
+    {
+        Bone.focus_webview()
+    })
+}

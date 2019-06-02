@@ -9,9 +9,9 @@ Bone.create_space = function(obj)
 }
 
 // Gets the current space or a specified space
-Bone.space = function(n=-1)
+Bone.space = function(n=false)
 {
-    if(n === -1)
+    if(!n)
     {
         n = Bone.current_space
     }
@@ -44,10 +44,12 @@ Bone.change_space = function(n, obj=false)
     Bone.update_spaces()
     Bone.apply_layout(false, false)
     Bone.update_menu_widgets()
+    Bone.focus_webview()
+    Bone.update_focused_webview()
 }
 
 // Returns the active webview container
-Bone.webview_container = function(n=0)
+Bone.webview_container = function(n=false)
 {   
     if(!n)
     {
@@ -58,9 +60,9 @@ Bone.webview_container = function(n=0)
 }
 
 // Gets a webview by its number
-Bone.wv = function(num)
+Bone.wv = function(num, space_number=false)
 {
-    return Bone.webview_container().querySelector(`.webview_${num}`)
+    return Bone.webview_container(space_number).querySelector(`.webview_${num}`)
 }
 
 // Updates spaces in the top panel
@@ -69,6 +71,11 @@ Bone.update_spaces = function()
     let spaces = Bone.get_spaces()
     let c = Bone.$('#spaces')
     c.innerHTML = ''
+
+    if(spaces.length <= 1)
+    {
+        return false
+    }
 
     let n = 1
 

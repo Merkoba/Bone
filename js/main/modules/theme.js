@@ -56,7 +56,7 @@ Bone.apply_theme = function()
         color: ${font_color_1} !important;
     }
 
-    .menu_layout_item:hover
+    .menu_layout_item:not(.menu_layout_item_2):hover
     {
         box-shadow: 0 0 5px ${font_color_1} !important;
     }
@@ -65,6 +65,11 @@ Bone.apply_theme = function()
     .layout_square_row > div, .layout_square_column > div
     {
         box-shadow: 0 0 1px ${font_color_1} !important;
+    }
+
+    .menu_layout_item_2 .layout_square_item:hover
+    {
+        background-color: ${bg_color_4} !important;
     }
 
     .layout_selected

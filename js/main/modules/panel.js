@@ -123,6 +123,18 @@ Bone.setup_panel = function()
         Bone.decrease_zoom(Bone.num())
     })
 
+    Bone.$('#panel_focused').addEventListener('click', function(e)
+    {
+        let num = Bone.num() + 1
+
+        if(num > Bone.wvs().length)
+        {
+            num = 1
+        }
+
+        Bone.focus_webview(num)
+    })
+
     panel.style.height = `${Bone.config.panel_height}px`
 }
 

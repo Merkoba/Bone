@@ -73,7 +73,8 @@ Bone.init = function()
     Bone.activate_resize_listener()
     Bone.setup_autostart()
     Bone.setup_handle_history()
-    
+    Bone.setup_focus()
+
     Bone.remove_splash()
 
     console.info('Bone started')

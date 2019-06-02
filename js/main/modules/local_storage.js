@@ -81,7 +81,7 @@ Bone.check_local_storage = function(obj)
 
     if(obj.auto_hide_panel === undefined)
     {
-        obj.auto_hide_panel = true
+        obj.auto_hide_panel = false
         save = true
     }
 

@@ -10,12 +10,13 @@ Bone.create_webview = function(num)
 
     wv.addEventListener('dom-ready', function()
     {
-        Bone.on_webview_dom_ready(this, num)
+        Bone.on_webview_dom_ready(this)
     })
 
     wv.addEventListener('focus', function()
     {
         Bone.space().focused_webview = this
+        Bone.update_focused_webview()
     })
 
     wv.addEventListener('will-navigate', function(e)
@@ -55,8 +56,9 @@ Bone.create_webview = function(num)
 // Applies webview layout setup from current layout
 Bone.apply_layout = function(reset_size=true, force_url_change=false, create='auto')
 {
-    let nspace = Bone.space().num
-    let layout = Bone.space().layout
+    let space = Bone.space()
+    let nspace = space.num
+    let layout = space.layout
     let rhs = `${Bone.storage.resize_handle_size}px`
     let css = ''
     let wv = {}
@@ -69,7 +71,7 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
         }
 
         wv[i] = {}
-        wv[i].size = Bone.space()[`webview_${i}`].size
+        wv[i].size = space[`webview_${i}`].size
     }
 
     if(reset_size)
@@ -81,7 +83,7 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
 
     if(create === 'auto')
     {
-        if(Bone.space().current_layout === layout)
+        if(space.current_layout === layout)
         {
             create_elements = false
         }
@@ -372,7 +374,7 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             resize.append(Bone.create_resize_handle('ns', [1, 2], [3, 4], 2, 'after_special_row_1'))
         }
 
-        let space = Bone.space()
+        let space = space
         let row_1 = 1
 
         if(space.special && space.special.row_1)
@@ -577,11 +579,12 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
         }
     }
 
-    Bone.space().current_layout = layout
+    space.current_layout = layout
 
     if(create_elements)
     {
-        Bone.space().focused_webview = Bone.wv(1)
+        space.focused_webview = Bone.wv(1)
+        Bone.update_focused_webview()
     }
 }
 
@@ -657,12 +660,13 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 }
 
 // Applies zoom level and factor to a loaded webview
-Bone.apply_zoom = function(num)
+Bone.apply_zoom = function(num, space_number=false)
 {
     try
     {
-        let webview = Bone.wv(num)
-        let zoom = Bone.space()[`webview_${num}`].zoom
+        let webview = Bone.wv(num, space_number)
+        let zoom = Bone.space(space_number)[`webview_${num}`].zoom
+
         webview.setZoomLevel(0)
         webview.setZoomFactor(zoom)
         Bone.set_zoom_label(num)
@@ -869,9 +873,11 @@ Bone.do_webview_swap = function(num_1, num_2)
 }
 
 // What to do when a webview is dom ready
-Bone.on_webview_dom_ready = function(webview, num)
+Bone.on_webview_dom_ready = function(webview)
 {
-    Bone.apply_zoom(num)
+    let num = parseInt(webview.dataset.num)
+    let space = parseInt(webview.dataset.space)
+    Bone.apply_zoom(num, space)
 }
 
 // Populates and shows the webview history
@@ -1374,65 +1380,41 @@ Bone.setup_handle_history = function()
             Bone.history_item_open()
         }
     })
-
-    Bone.$('#handle_history_open_in_1').addEventListener('click', function()
-    {
-        Bone.remake_webview(1, Bone.handled_history_item.dataset.url, false, false)
-        Bone.close_all_windows()
-    })
-
-    Bone.$('#handle_history_open_in_2').addEventListener('click', function()
-    {
-        Bone.remake_webview(2, Bone.handled_history_item.dataset.url, false, false)
-        Bone.close_all_windows()
-    })
-
-    Bone.$('#handle_history_open_in_3').addEventListener('click', function()
-    {
-        Bone.remake_webview(3, Bone.handled_history_item.dataset.url, false, false)
-        Bone.close_all_windows()
-    })
-
-    Bone.$('#handle_history_open_in_4').addEventListener('click', function()
-    {
-        Bone.remake_webview(4, Bone.handled_history_item.dataset.url, false, false)
-        Bone.close_all_windows()
-    })
 }
 
 // Shows the handle history window
 Bone.show_handle_history = function()
 {
     let num = Bone.wvs().length
+    let layout = Bone.$('#handle_history_layout')
+    layout.innerHTML = ''
 
-    if(num < 4)
+    if(num > 1)
     {
-        Bone.$('#handle_history_open_in_4_container').style.display = 'none'
+        let clone = Bone.$(`#layout_${Bone.space().current_layout}`).cloneNode(true)
+        clone.id = ''
+        clone.classList.add('menu_layout_item_2')
+
+        let items = clone.querySelectorAll('.layout_square_item')
+
+        for(let item of items)
+        {
+            item.classList.add('action')
+
+            item.addEventListener('click', function()
+            {
+                Bone.remake_webview(parseInt(this.innerHTML), Bone.handled_history_item.dataset.url, false, false)
+                Bone.close_all_windows()
+            })
+        }
+
+        layout.append(clone)
+        layout.style.dispay = 'block'
     }
-    
+
     else
     {
-        Bone.$('#handle_history_open_in_4_container').style.display = 'inline-block'
-    }
-
-    if(num < 3)
-    {
-        Bone.$('#handle_history_open_in_3_container').style.display = 'none'
-    }
-    
-    else
-    {
-        Bone.$('#handle_history_open_in_3_container').style.display = 'inline-block'
-    }
-
-    if(num < 2)
-    {
-        Bone.$('#handle_history_open_in_2_container').style.display = 'none'
-    }
-    
-    else
-    {
-        Bone.$('#handle_history_open_in_2_container').style.display = 'inline-block'
+        layout.style.display = 'none'
     }
 
     Bone.msg_handle_history.set_title(Bone.handled_history_item.dataset.url.substring(0, 50))
@@ -1460,4 +1442,24 @@ Bone.history_item_open = function()
 
     Bone.remake_webview(num, url, false, false)
     Bone.close_all_windows()
+}
+
+// Updates the webview indicator in the panel
+Bone.update_focused_webview = function()
+{
+    Bone.$('#panel_focused').textContent = `Focused: ${Bone.num()}`
+}
+
+// Focuses current webview
+Bone.focus_webview = function(num=false)
+{
+    if(!num)
+    {
+        Bone.space().focused_webview.focus()
+    }
+
+    else
+    {
+        Bone.wv(num).focus()
+    }
 }
