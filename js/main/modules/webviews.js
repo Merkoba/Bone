@@ -1,5 +1,5 @@
 // Create a webview from a template
-Bone.create_webview = function(num)
+Bone.create_webview = function(num, space)
 {
     let h = Bone.template_webview({num:num})
     let el = document.createElement('div')
@@ -14,7 +14,7 @@ Bone.create_webview = function(num)
 
     wv.addEventListener('focus', function()
     {
-        Bone.focused_webview = this
+        Bone.space().focused_webview = this
     })
 
     wv.addEventListener('did-navigate', function(e)
@@ -24,7 +24,7 @@ Bone.create_webview = function(num)
             return false
         }
 
-        let history = Bone.history[`webview_${num}`]
+        let history = Bone.space(space).history[`webview_${num}`]
         
         if(history.slice(-1)[0] === e.url)
         {
@@ -563,7 +563,7 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
 
     if(create_elements)
     {
-        Bone.focused_webview = Bone.wv(1)
+        Bone.space().focused_webview = Bone.wv(1)
     }
 }
 
@@ -600,7 +600,7 @@ Bone.apply_url = function(num)
 Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 {
     let wv = Bone.wv(num)
-    let rep = Bone.create_webview(num)
+    let rep = Bone.create_webview(num, Bone.current_space)
 
     if(no_display)
     {
@@ -622,7 +622,7 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 
     if(reset_history)
     {
-        Bone.history[`webview_${num}`] = []
+        Bone.space().history[`webview_${num}`] = []
     }
 
     Bone.replace_element(rep, wv)
@@ -859,12 +859,12 @@ Bone.show_history = function(num)
     let c = Bone.$('#history_container')
     c.innerHTML = ''
 
-    for(let item of Bone.history[`webview_${num}`])
+    for(let item of Bone.space().history[`webview_${num}`])
     {
         let el = document.createElement('div')
         el.classList.add('history_item')
         el.classList.add('action')
-        el.textContent = item.substring(0, Bone.history_max_url_length)
+        el.textContent = item.substring(0, Bone.config.history_max_url_length)
         el.dataset.url = item
         el.dataset.num = num
         c.prepend(el)
@@ -885,12 +885,12 @@ Bone.setup_history = function()
 
         let url = e.target.dataset.url
         let num = e.target.dataset.num
-        let history = Bone.history[`webview_${num}`]
+        let history = Bone.space().history[`webview_${num}`]
         let index = 0 - Bone.get_child_index(e.target)
 
         if(index < 0)
         {
-            Bone.history[`webview_${num}`] = history.slice(0, index)
+            Bone.space().history[`webview_${num}`] = history.slice(0, index)
         }
 
         Bone.remake_webview(num, url, false, false)
@@ -1006,14 +1006,14 @@ Bone.setup_webview_container = function(num, amount)
 
     if(num === 1)
     {
-        c.appendChild(Bone.create_webview(1))
+        c.appendChild(Bone.create_webview(1, Bone.current_space))
     }
 
     else if(num === 2)
     {
         for(let i=1; i<=amount; i++)
         {
-            c.appendChild(Bone.create_webview(i))
+            c.appendChild(Bone.create_webview(i, Bone.current_space))
         }
     }
 
@@ -1021,14 +1021,14 @@ Bone.setup_webview_container = function(num, amount)
     {
         let top = document.createElement('div')
         top.classList.add('webview_top')
-        top.appendChild(Bone.create_webview(1))
+        top.appendChild(Bone.create_webview(1, Bone.current_space))
 
         let bottom = document.createElement('div')
         bottom.classList.add('webview_bottom')
         
         for(let i=2; i<=amount; i++)
         {
-            bottom.appendChild(Bone.create_webview(i)) 
+            bottom.appendChild(Bone.create_webview(i, Bone.current_space)) 
         }
 
         c.prepend(bottom)
@@ -1042,12 +1042,12 @@ Bone.setup_webview_container = function(num, amount)
 
         for(let i=1; i<=amount-1; i++)
         {
-            top.appendChild(Bone.create_webview(i)) 
+            top.appendChild(Bone.create_webview(i, Bone.current_space)) 
         }
 
         let bottom = document.createElement('div')
         bottom.classList.add('webview_bottom')
-        bottom.appendChild(Bone.create_webview(amount))
+        bottom.appendChild(Bone.create_webview(amount, Bone.current_space))
         
         c.prepend(bottom)
         c.prepend(top)
@@ -1060,7 +1060,7 @@ Bone.setup_webview_container = function(num, amount)
 
         for(let i=1; i<=amount/2; i++)
         {
-            top.appendChild(Bone.create_webview(i)) 
+            top.appendChild(Bone.create_webview(i, Bone.current_space)) 
         }
 
         let resize = document.createElement('div')
@@ -1071,7 +1071,7 @@ Bone.setup_webview_container = function(num, amount)
 
         for(let i=amount/2+1; i<=amount; i++)
         {
-            bottom.appendChild(Bone.create_webview(i)) 
+            bottom.appendChild(Bone.create_webview(i, Bone.current_space)) 
         }
         
         c.prepend(bottom)
@@ -1083,14 +1083,14 @@ Bone.setup_webview_container = function(num, amount)
     {
         let left = document.createElement('div')
         left.classList.add('webview_left')
-        left.appendChild(Bone.create_webview(1))
+        left.appendChild(Bone.create_webview(1, Bone.current_space))
 
         let right = document.createElement('div')
         right.classList.add('webview_right')
         
         for(let i=2; i<=amount; i++)
         {
-            right.appendChild(Bone.create_webview(i)) 
+            right.appendChild(Bone.create_webview(i, Bone.current_space)) 
         }
 
         c.prepend(right)
@@ -1104,12 +1104,12 @@ Bone.setup_webview_container = function(num, amount)
 
         for(let i=1; i<=amount-1; i++)
         {
-            left.appendChild(Bone.create_webview(i)) 
+            left.appendChild(Bone.create_webview(i, Bone.current_space)) 
         }
 
         let right = document.createElement('div')
         right.classList.add('webview_right')
-        right.appendChild(Bone.create_webview(amount))
+        right.appendChild(Bone.create_webview(amount, Bone.current_space))
         
         c.prepend(right)
         c.prepend(left)

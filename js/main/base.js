@@ -31,14 +31,6 @@ Bone.active_resize_handle = false
 Bone.spaces = []
 Bone.current_space = 0
 
-Bone.history =
-{
-    webview_1: [],
-    webview_2: [],
-    webview_3: [],
-    webview_4: []
-}
-
 Bone.config =
 {
     num_webviews: 4,

@@ -128,6 +128,15 @@ Bone.create_space_from_object = function(obj, n)
     space.layout = obj.layout
     space.name = obj.name
     space.num = n
+
+    space.history =
+    {
+        webview_1: [],
+        webview_2: [],
+        webview_3: [],
+        webview_4: []
+    }
+
     return space
 }
 
