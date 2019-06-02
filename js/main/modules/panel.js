@@ -108,6 +108,21 @@ Bone.setup_panel = function()
         }
     })
 
+    Bone.$('#panel_history').addEventListener('click', function(e)
+    {
+        Bone.show_history()
+    })
+
+    Bone.$('#panel_zoom_in').addEventListener('click', function(e)
+    {
+        Bone.increase_zoom(Bone.num())
+    })
+
+    Bone.$('#panel_zoom_out').addEventListener('click', function(e)
+    {
+        Bone.decrease_zoom(Bone.num())
+    })
+
     panel.style.height = `${Bone.config.panel_height}px`
 }
 

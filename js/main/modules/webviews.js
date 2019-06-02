@@ -1,11 +1,12 @@
 // Create a webview from a template
-Bone.create_webview = function(num, space)
+Bone.create_webview = function(num)
 {
     let h = Bone.template_webview({num:num})
     let el = document.createElement('div')
     el.innerHTML = h
     let wv = el.querySelector('webview')
     wv.dataset.num = num
+    wv.dataset.space = Bone.current_space
 
     wv.addEventListener('dom-ready', function()
     {
@@ -17,6 +18,16 @@ Bone.create_webview = function(num, space)
         Bone.space().focused_webview = this
     })
 
+    wv.addEventListener('will-navigate', function(e)
+    {
+        if(!e.url)
+        {
+            return false
+        }
+
+        Bone.remake_webview(num, e.url, false, false)
+    })
+
     wv.addEventListener('did-navigate', function(e)
     {
         if(!e.url)
@@ -24,7 +35,7 @@ Bone.create_webview = function(num, space)
             return false
         }
 
-        let history = Bone.space(space).history[`webview_${num}`]
+        let history = Bone.space(wv.dataset.space).history[`webview_${wv.dataset.num}`]
         
         if(history.slice(-1)[0] === e.url)
         {
@@ -653,7 +664,10 @@ Bone.apply_zoom = function(num)
         Bone.set_zoom_label(num)
     }
 
-    catch(err){}
+    catch(err)
+    {
+        console.error(err)
+    }
 }
 
 // Sets the zoom level to a webview
@@ -857,8 +871,18 @@ Bone.on_webview_dom_ready = function(webview, num)
 }
 
 // Populates and shows the webview history
-Bone.show_history = function(num)
+Bone.show_history = function(num=false)
 {
+    if(!Bone.space().focused_webview)
+    {
+        return false
+    }
+
+    if(!num)
+    {
+        num = Bone.num()
+    }
+
     let c = Bone.$('#history_container')
     c.innerHTML = ''
 
@@ -873,6 +897,8 @@ Bone.show_history = function(num)
         c.prepend(el)
     }
 
+    Bone.handled_history_webview = num
+    Bone.msg_history.set_title(`Webview ${num} History`)
     Bone.msg_history.show()
 }
 
@@ -886,19 +912,20 @@ Bone.setup_history = function()
             return false
         }
 
-        let space = Bone.space()
-        let url = e.target.dataset.url
-        let num = e.target.dataset.num
-        let history = space.history[`webview_${num}`]
-        let index = 0 - Bone.get_child_index(e.target)
+        Bone.handled_history_item = e.target
+        Bone.show_handle_history()
+    })
 
-        if(index < 0)
+    Bone.$('#Msg-titlebar-history').addEventListener('click', function()
+    {
+        let num = Bone.handled_history_webview + 1
+
+        if(num > Bone.config.num_webviews)
         {
-            space.history[`webview_${num}`] = history.slice(0, index)
+            num = 1
         }
 
-        Bone.remake_webview(num, url, false, false)
-        Bone.close_all_windows()
+        Bone.show_history(num)
     })
 }
 
@@ -1281,8 +1308,7 @@ Bone.create_webview_object = function(n, url='')
 Bone.get_current_url = function()
 {
     let url = false
-    let space = Bone.space()
-    let history = space.history[`webview_${space.focused_webview.dataset.num}`]
+    let history = Bone.history()
 
     if(history.length > 0)
     {
@@ -1290,4 +1316,144 @@ Bone.get_current_url = function()
     }
 
     return url
+}
+
+// Goes back in history
+Bone.go_back = function()
+{
+    let space = Bone.space()
+
+    if(space.focused_webview)
+    {
+        let history = Bone.history()
+        let num = Bone.num()
+
+        if(history && history.length > 1)
+        {
+            history.pop()
+            Bone.remake_webview(num, history.slice(-1)[0], false, false)
+            Bone.close_all_windows()
+        }
+    }
+}
+
+// Returns the number of the focused webview
+Bone.num = function()
+{
+    return parseInt(Bone.space().focused_webview.dataset.num)
+}
+
+// Returns the history of the focused webview
+Bone.history = function()
+{
+    return Bone.space().history[`webview_${Bone.num()}`]
+}
+
+// Setups the handle history window
+Bone.setup_handle_history = function()
+{
+    Bone.$('#handle_history_open').addEventListener('click', function()
+    {
+        Bone.history_item_open()
+    })
+ 
+    Bone.$('#handle_history_copy').addEventListener('click', function()
+    {
+        Bone.copy_string(Bone.handled_history_item.dataset.url)
+        Bone.info('URL copied to clipboard')
+    })
+
+    Bone.$('#handle_history_container').addEventListener('keyup', function(e)
+    {
+        if(e.key === 'Enter')
+        {
+            Bone.history_item_open()
+        }
+    })
+
+    Bone.$('#handle_history_open_in_1').addEventListener('click', function()
+    {
+        Bone.remake_webview(1, Bone.handled_history_item.dataset.url, false, false)
+        Bone.close_all_windows()
+    })
+
+    Bone.$('#handle_history_open_in_2').addEventListener('click', function()
+    {
+        Bone.remake_webview(2, Bone.handled_history_item.dataset.url, false, false)
+        Bone.close_all_windows()
+    })
+
+    Bone.$('#handle_history_open_in_3').addEventListener('click', function()
+    {
+        Bone.remake_webview(3, Bone.handled_history_item.dataset.url, false, false)
+        Bone.close_all_windows()
+    })
+
+    Bone.$('#handle_history_open_in_4').addEventListener('click', function()
+    {
+        Bone.remake_webview(4, Bone.handled_history_item.dataset.url, false, false)
+        Bone.close_all_windows()
+    })
+}
+
+// Shows the handle history window
+Bone.show_handle_history = function()
+{
+    let num = Bone.wvs().length
+
+    if(num < 4)
+    {
+        Bone.$('#handle_history_open_in_4_container').style.display = 'none'
+    }
+    
+    else
+    {
+        Bone.$('#handle_history_open_in_4_container').style.display = 'inline-block'
+    }
+
+    if(num < 3)
+    {
+        Bone.$('#handle_history_open_in_3_container').style.display = 'none'
+    }
+    
+    else
+    {
+        Bone.$('#handle_history_open_in_3_container').style.display = 'inline-block'
+    }
+
+    if(num < 2)
+    {
+        Bone.$('#handle_history_open_in_2_container').style.display = 'none'
+    }
+    
+    else
+    {
+        Bone.$('#handle_history_open_in_2_container').style.display = 'inline-block'
+    }
+
+    Bone.msg_handle_history.set_title(Bone.handled_history_item.dataset.url.substring(0, 50))
+
+    Bone.msg_handle_history.show(function()
+    {
+        Bone.$('#handle_history_container').focus()
+    })
+}
+
+// Opens a history item
+Bone.history_item_open = function()
+{
+    let item = Bone.handled_history_item
+    let space = Bone.space()
+    let url = item.dataset.url
+    let num = item.dataset.num
+    let history = space.history[`webview_${num}`]
+    let index = 0 - Bone.get_child_index(item)
+
+    if(index < 0)
+    {
+        space.history[`webview_${num}`] = history.slice(0, index)
+    }
+
+    Bone.remake_webview(num, url, false, false)
+    Bone.close_all_windows()
 }

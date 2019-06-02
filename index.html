@@ -18,6 +18,11 @@
         <div id='main_container'>
             <div id='panel' class='unselectable'>
                 <i id='menu_icon' class='fas fa-th-large panel_icon action'></i>
+                <div id='panel_toolbar'>
+                    <div id='panel_history' class='panel_toolbar_item action'>History</div>
+                    <i id='panel_zoom_in' class='fas fa-plus panel_toolbar_item action'></i>
+                    <i id='panel_zoom_out' class='fas fa-minus panel_toolbar_item action'></i>
+                </div>
                 <div id='spaces'></div>
             </div>
             <div id='webview_containers'></div>
@@ -204,6 +209,33 @@
                     <div class='small_info'>Presets load from top to bottom</div>
                 </div>
                 <div id='autostart_items'></div>
+            </div>
+        </script>
+
+        <script id='template_handle_history' type='text/x-handlebars-template' class='template'>
+            <div id='handle_history_container' class='unselectable' tabindex='0'>
+                <div>
+                    <div id='handle_history_open' class='generic_button action inline'>Open</div>
+                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                    <div id='handle_history_copy' class='generic_button action inline'>Copy URL</div>
+                    <div id='handle_history_second_row'>
+                        <div id='handle_history_open_in_1_container' class='inline'>
+                            <div id='handle_history_open_in_1' class='generic_button action inline'>Open In Webview 1</div>
+                        </div>
+                        <div id='handle_history_open_in_2_container' class='inline'>
+                            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                            <div id='handle_history_open_in_2' class='generic_button action inline'>Open In Webview 2</div>
+                        </div>
+                        <div id='handle_history_open_in_3_container' class='inline'>
+                            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                            <div id='handle_history_open_in_3' class='generic_button action inline'>Open In Webview 3</div>
+                        </div>
+                        <div id='handle_history_open_in_4_container' class='inline'>
+                            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                            <div id='handle_history_open_in_4' class='generic_button action inline'>Open In Webview 4</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </script>
     </body>

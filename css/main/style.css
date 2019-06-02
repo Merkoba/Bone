@@ -52,6 +52,8 @@ body, html
     padding: 0;
     overflow: hidden;
     display: none;
+    background-color: white;
+    color: black;
 }
 
 #panel
@@ -508,4 +510,32 @@ select
 {
     outline: none;
     border: 0px solid grey;
+}
+
+#panel_toolbar
+{
+    display: grid;
+    grid-gap: 0px;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    justify-self: flex-start;
+}
+
+.panel_toolbar_item
+{
+    cursor: pointer;
+    padding: 10px;
+}
+
+#handle_history_container
+{
+    outline: none;
+    border: 0px solid grey;
+}
+
+#handle_history_second_row
+{
+    margin-top: 20px;
 }

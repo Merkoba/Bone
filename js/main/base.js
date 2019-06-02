@@ -73,6 +73,7 @@ Bone.init = function()
     Bone.activate_resize_listener()
     Bone.setup_autostart()
     Bone.remove_splash()
+    Bone.setup_handle_history()
 
     console.info('Boneless started')
 }

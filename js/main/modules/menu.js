@@ -245,20 +245,7 @@ Bone.setup_menu = function()
 
     Bone.$('#menu_back').addEventListener('click', function()
     {
-        let space = Bone.space()
-
-        if(space.focused_webview)
-        {
-            let history = space.history[`webview_${space.focused_webview.dataset.num}`]
-            let num = space.focused_webview.dataset.num
-
-            if(history && history.length > 1)
-            {
-                history.pop()
-                Bone.remake_webview(num, history.slice(-1)[0], false, false)
-                Bone.close_all_windows()
-            }
-        }
+        Bone.go_back()
     })
 
     Bone.$('#menu_history').addEventListener('click', function()
@@ -267,7 +254,7 @@ Bone.setup_menu = function()
 
         if(space.focused_webview)
         {
-            Bone.show_history(space.focused_webview.dataset.num)
+            Bone.show_history()
         }
     })
 
@@ -461,12 +448,11 @@ Bone.show_menu = function()
 {
     Bone.msg_menu.show(function()
     {
-        let space = Bone.space()
         let disable_back = true
 
-        if(space.focused_webview)
+        if(Bone.space().focused_webview)
         {
-            let history = space.history[`webview_${space.focused_webview.dataset.num}`]
+            let history = Bone.history()
 
             if(history && history.length > 1)
             {

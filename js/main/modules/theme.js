@@ -13,13 +13,9 @@ Bone.apply_theme = function()
     let font_color_1_alpha = Bone.colorlib.rgb_to_rgba(font_color_1, 0.7)
     let bg_color_2 = Bone.colorlib.get_lighter_or_darker(bg_color_1, 0.1)
     let bg_color_3 = Bone.colorlib.get_lighter_or_darker(bg_color_1, 0.3)
+    let bg_color_4 = Bone.colorlib.get_lighter_or_darker(bg_color_1, 0.2)
 
     let css = `
-    #main_container
-    {
-        background-color: ${bg_color_1} !important;
-    }
-
     #panel
     {
         background-color: ${bg_color_1} !important;
@@ -37,9 +33,20 @@ Bone.apply_theme = function()
         color: ${font_color_1} !important;
     }
 
-    .Msg-window-inner-x:hover
+    .titlebar_inner_x
     {
         background-color: ${bg_color_2} !important;
+    }
+
+    .titlebar_inner_x:hover
+    {
+        background-color: ${bg_color_4} !important;
+    }
+
+    .custom_titlebar
+    {
+        background-color: ${bg_color_2} !important;
+        color: ${font_color_1} !important;
     }
 
     .menu_layout_item

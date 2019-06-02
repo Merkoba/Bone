@@ -18,12 +18,20 @@ Bone.create_windows = function()
         close_effect: 'none'
     }
 
+    let titlebar =
+    {
+        enable_titlebar: true,
+        center_titlebar: true,
+        titlebar_class: '!custom_titlebar !unselectable',
+        window_inner_x_class: '!titlebar_inner_x'
+    }
+
     Bone.msg_menu = Msg.factory(Object.assign({}, common, 
     {
         id: 'menu'
     }))
 
-    Bone.msg_create_preset = Msg.factory(Object.assign({}, common, 
+    Bone.msg_create_preset = Msg.factory(Object.assign({}, common, titlebar,
     {
         id: 'create_preset',
         after_close: function()
@@ -32,7 +40,7 @@ Bone.create_windows = function()
         }
     }))
 
-    Bone.msg_handle_preset = Msg.factory(Object.assign({}, common,
+    Bone.msg_handle_preset = Msg.factory(Object.assign({}, common, titlebar,
     {
         id: 'handle_preset',
         after_close: function()
@@ -51,7 +59,7 @@ Bone.create_windows = function()
         id: 'info'
     }))
 
-    Bone.msg_history = Msg.factory(Object.assign({}, common,
+    Bone.msg_history = Msg.factory(Object.assign({}, common, titlebar,
     {
         id: 'history'
     }))
@@ -61,9 +69,14 @@ Bone.create_windows = function()
         id: 'open_preset'
     }))
 
-    Bone.msg_autostart = Msg.factory(Object.assign({}, common,
+    Bone.msg_autostart = Msg.factory(Object.assign({}, common, titlebar,
     {
         id: 'autostart'
+    }))
+
+    Bone.msg_handle_history = Msg.factory(Object.assign({}, common, titlebar,
+    {
+        id: 'handle_history'
     }))
 
     Bone.msg_menu.set(Bone.template_menu())
@@ -74,6 +87,11 @@ Bone.create_windows = function()
     Bone.msg_history.set(Bone.template_history())
     Bone.msg_open_preset.set(Bone.template_open_preset())
     Bone.msg_autostart.set(Bone.template_autostart())
+    Bone.msg_handle_history.set(Bone.template_handle_history())
+
+    Bone.msg_create_preset.set_title('Save Preset')
+    Bone.msg_autostart.set_title('AutoStart Presets')
+    Bone.msg_handle_preset.set_title('Handle Preset')
 }
 
 // Closes all modal windows
