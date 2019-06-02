@@ -755,7 +755,6 @@ Bone.increase_size = function(num, mode='normal')
 // Resets a webview size to size_default
 Bone.reset_size = function(num, apply=true, mode='')
 {
-    console.log(mode)
     if(mode.includes('special'))
     {
         Bone.space().special[mode.replace(/.*special_/, '')] = Bone.config.size_default
