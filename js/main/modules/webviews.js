@@ -667,7 +667,7 @@ Bone.apply_zoom = function(num, space_number=false)
     try
     {
         let webview = Bone.wv(num, space_number)
-        let zoom = Bone.swv(num, space).zoom
+        let zoom = Bone.swv(num, space_number).zoom
 
         webview.setZoomLevel(0)
         webview.setZoomFactor(zoom)
