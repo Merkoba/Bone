@@ -57,6 +57,11 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
         wv[i].size = Bone.space()[`webview_${i}`].size
     }
 
+    if(reset_size)
+    {
+        Bone.reset_size(0, false, 'special_row_1')
+    }
+
     let create_elements = true
 
     if(create === 'auto')
@@ -750,19 +755,20 @@ Bone.increase_size = function(num, mode='normal')
 // Resets a webview size to size_default
 Bone.reset_size = function(num, apply=true, mode='')
 {
+    console.log(mode)
     if(mode.includes('special'))
     {
-        Bone.space().special[mode.replace(/.*_special_/, '')] = Bone.config.size_default
+        Bone.space().special[mode.replace(/.*special_/, '')] = Bone.config.size_default
     }
 
     else
     {
         Bone.space()[`webview_${num}`].size = Bone.config.size_default
+        Bone.set_size_label(num)
     }
 
     Bone.space_modified()
     Bone.save_local_storage()
-    Bone.set_size_label(num)
 
     if(apply)
     {
@@ -1201,7 +1207,7 @@ Bone.resize_mouseup_function = function(e)
         {
             if(owned)
             {
-                space.special[mode.replace(/.*_special_/, '')] = size
+                space.special[mode.replace(/.*special_/, '')] = size
             }
         }
 
