@@ -1,12 +1,7 @@
 // Creates a space and adds it to the spaces array
 Bone.create_space = function(obj)
 {
-    if(!obj.name)
-    {
-        obj.name = ''
-    }
-
-    let space = Bone.create_space_from_object(obj, Bone.spaces.length + 1)
+    let space = Bone.create_space_from_object(obj)
     Bone.spaces.push(space)
     Bone.create_webview_container(Bone.spaces.length)
     Bone.change_space(Bone.spaces.length)
@@ -117,16 +112,37 @@ Bone.wvs = function()
 }
 
 // Creates and prepares a space object
-Bone.create_space_from_object = function(obj, n)
+Bone.create_space_from_object = function(obj, n=false)
 {
+    if(!n)
+    {
+        n = Bone.spaces.length + 1
+    }
+
     let space = {}
-    space.webview_1 = Bone.clone_object(obj.webview_1)
-    space.webview_2 = Bone.clone_object(obj.webview_2)
-    space.webview_3 = Bone.clone_object(obj.webview_3)
-    space.webview_4 = Bone.clone_object(obj.webview_4)
-    space.special = Bone.clone_object(obj.special)
-    space.layout = obj.layout
-    space.name = obj.name
+
+    if(Object.keys(obj).length > 0)
+    {
+        space.webview_1 = Bone.clone_object(obj.webview_1)
+        space.webview_2 = Bone.clone_object(obj.webview_2)
+        space.webview_3 = Bone.clone_object(obj.webview_3)
+        space.webview_4 = Bone.clone_object(obj.webview_4)
+        space.special = Bone.clone_object(obj.special)
+        space.layout = obj.layout
+        space.name = obj.name || ''
+    }
+
+    else
+    {
+        space.webview_1 = Bone.create_webview_object(1, Bone.config.startpage)
+        space.webview_2 = Bone.create_webview_object(2, Bone.config.startpage)
+        space.webview_3 = Bone.create_webview_object(3, Bone.config.startpage)
+        space.webview_4 = Bone.create_webview_object(4, Bone.config.startpage)
+        space.special = Bone.create_special_object()
+        space.layout = 'single'
+        space.name = ''
+    }
+
     space.num = n
 
     space.history =
@@ -350,4 +366,10 @@ Bone.duplicate_space = function()
     {
         Bone.create_space(Bone.storage)
     }
+}
+
+// Creates a new empty space
+Bone.new_space = function()
+{
+    Bone.create_space({})
 }

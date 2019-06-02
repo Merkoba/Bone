@@ -12,7 +12,7 @@ Bone.setup_panel = function()
     {
         if(e.which === 2)
         {
-            Bone.cycle_presets()
+            Bone.new_space()
         }
     })
 

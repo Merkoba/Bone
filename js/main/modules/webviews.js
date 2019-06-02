@@ -1262,3 +1262,13 @@ Bone.create_webview_container = function(num)
     Bone.$('#webview_containers').append(wvc)
     Bone.setup_resize_handles(num)
 }
+
+// Creates a webview object for storage
+Bone.create_webview_object = function(n, url='')
+{
+    let obj = {}
+    obj.url = url
+    obj.size = Bone.config.size_default
+    obj.zoom = Bone.config.zoom_default
+    return obj
+}

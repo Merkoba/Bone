@@ -44,7 +44,8 @@ Bone.config =
     history_max_url_length: 50,
     swap_max_url_length: 50,
     modules_path: './js/main/modules/',
-    resize_double_click_delay: 350
+    resize_double_click_delay: 350,
+    startpage: 'https://en.wikipedia.org/wiki/Special:Random'
 }
 
 // This gets called when body loads

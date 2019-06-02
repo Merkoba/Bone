@@ -57,97 +57,25 @@ Bone.check_local_storage = function(obj)
 
     if(obj.webview_1 === undefined)
     {
-        obj.webview_1 = {}
-        save = true
-    }
-
-    if(obj.webview_1.url === undefined)
-    {
-        obj.webview_1.url = 'https://mastodon.social'
-        save = true
-    }
-
-    if(obj.webview_1.zoom === undefined)
-    {
-        obj.webview_1.zoom = Bone.config.zoom_default
-        save = true
-    }
-
-    if(obj.webview_1.size === undefined)
-    {
-        obj.webview_1.size = Bone.config.size_default
+        obj.webview_1 = Bone.create_webview_object(1, 'https://mastodon.social')
         save = true
     }
 
     if(obj.webview_2 === undefined)
     {
-        obj.webview_2 = {}
-        save = true
-    }
-
-    if(obj.webview_2.url === undefined)
-    {
-        obj.webview_2.url = 'https://www.dubtrack.fm/join/the-underground'
-        save = true
-    }
-
-    if(obj.webview_2.zoom === undefined)
-    {
-        obj.webview_2.zoom = Bone.config.zoom_default
-        save = true
-    }
-
-    if(obj.webview_2.size === undefined)
-    {
-        obj.webview_2.size = Bone.config.size_default
+        obj.webview_2 = Bone.create_webview_object(2, 'https://www.dubtrack.fm/join/the-underground')
         save = true
     }
 
     if(obj.webview_3 === undefined)
     {
-        obj.webview_3 = {}
-        save = true
-    }
-
-    if(obj.webview_3.url === undefined)
-    {
-        obj.webview_3.url = 'http://lab.serotoninphobia.info/'
-        save = true
-    }
-
-    if(obj.webview_3.zoom === undefined)
-    {
-        obj.webview_3.zoom = Bone.config.zoom_default
-        save = true
-    }
-
-    if(obj.webview_3.size === undefined)
-    {
-        obj.webview_3.size = Bone.config.size_default
+        obj.webview_3 = Bone.create_webview_object(3, 'http://lab.serotoninphobia.info/')
         save = true
     }
 
     if(obj.webview_4 === undefined)
     {
-        obj.webview_4 = {}
-        save = true
-    }
-
-    if(obj.webview_4.url === undefined)
-    {
-        obj.webview_4.url = 'https://arisuchan.jp/'
-        save = true
-    }
-
-    if(obj.webview_4.zoom === undefined)
-    {
-        obj.webview_4.zoom = Bone.config.zoom_default
-        save = true
-    }
-
-    if(obj.webview_4.size === undefined)
-    {
-        obj.webview_4.size = Bone.config.size_default
+        obj.webview_4 = Bone.create_webview_object(4, 'https://arisuchan.jp/')
         save = true
     }
 
@@ -183,13 +111,8 @@ Bone.check_local_storage = function(obj)
 
     if(obj.special === undefined)
     {
-        obj.special = {}
+        obj.special = Bone.create_special_object()
         save = true
-    }
-
-    if(obj.special['row_1'] === undefined)
-    {
-        obj.special['row_1'] = Bone.config.size_default
     }
 
     return save
@@ -225,4 +148,12 @@ Bone.reset_storage = function()
     Bone.apply_theme()
     Bone.destroy_spaces()
     Bone.create_space(Bone.storage)
+}
+
+// Creates a default special object
+Bone.create_special_object = function()
+{
+    let obj = {}
+    obj.row_1 = Bone.config.size_default
+    return obj
 }

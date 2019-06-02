@@ -343,6 +343,12 @@ Bone.setup_menu = function()
         Bone.duplicate_space()
     })
 
+    Bone.$('#menu_new_space').addEventListener('click', function()
+    {
+        Bone.new_space()
+        Bone.close_all_windows()
+    })
+
     Bone.$('#menu_cycle_spaces_on_wheel_checkbox').addEventListener('change', function()
     {
         Bone.storage.cycle_spaces_on_wheel = this.checked
