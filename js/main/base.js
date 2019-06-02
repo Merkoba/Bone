@@ -15,7 +15,7 @@ const Handlebars = require('handlebars')
 
 let Bone = {}
 
-Bone.ls_name = 'boneless_v20'
+Bone.ls_name = 'bone_v1'
 
 Bone.layouts =
 [
