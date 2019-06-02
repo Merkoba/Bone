@@ -20,16 +20,6 @@ Bone.create_webview = function(num)
         Bone.update_url()
     })
 
-    wv.addEventListener('will-navigate', function(e)
-    {
-        if(!e.url)
-        {
-            return false
-        }
-
-        Bone.remake_webview(wv.dataset.num, e.url, false, false)
-    })
-
     wv.addEventListener('did-navigate', function(e)
     {
         if(!e.url)
@@ -664,7 +654,12 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 // Sets the zoom level to a webview
 Bone.set_zoom_label = function(num, space_num=false)
 {
-    let wv = Bone.wv(num, space_num)
+    if(space_num !== Bone.current_space)
+    {
+        return false
+    }
+
+    let wv = Bone.wv(num)
 
     if(!wv)
     {
@@ -1369,6 +1364,7 @@ Bone.setup_handle_history = function()
 Bone.show_handle_history = function()
 {
     let num = Bone.wvs().length
+    let container = Bone.$('#handle_history_layout_container')
     let layout = Bone.$('#handle_history_layout')
     layout.innerHTML = ''
 
@@ -1392,12 +1388,12 @@ Bone.show_handle_history = function()
         }
 
         layout.append(clone)
-        layout.style.dispay = 'block'
+        container.style.display = 'block'
     }
 
     else
     {
-        layout.style.display = 'none'
+        container.style.display = 'none'
     }
 
     Bone.msg_handle_history.set_title(Bone.handled_history_item.dataset.url.substring(0, 50))

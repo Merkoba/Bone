@@ -14,6 +14,7 @@ Bone.apply_theme = function()
     let bg_color_2 = Bone.colorlib.get_lighter_or_darker(bg_color_1, 0.1)
     let bg_color_3 = Bone.colorlib.get_lighter_or_darker(bg_color_1, 0.3)
     let bg_color_4 = Bone.colorlib.get_lighter_or_darker(bg_color_1, 0.2)
+    let bg_color_5 = Bone.colorlib.get_lighter_or_darker(bg_color_1, 0.4)
 
     let css = `
     #panel
@@ -77,7 +78,7 @@ Bone.apply_theme = function()
 
     .menu_layout_item_2 .layout_square_item:hover
     {
-        background-color: ${bg_color_4} !important;
+        background-color: ${bg_color_5} !important;
     }
 
     .layout_selected

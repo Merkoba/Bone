@@ -542,7 +542,7 @@ select
     border: 0px solid grey;
 }
 
-#handle_history_second_row
+#handle_history_layout_container
 {
     margin-top: 20px;
 }
