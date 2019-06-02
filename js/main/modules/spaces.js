@@ -59,12 +59,6 @@ Bone.webview_container = function(n=false)
     return Bone.$(`#webview_container_${n}`)
 }
 
-// Gets a webview by its number
-Bone.wv = function(num, space_number=false)
-{
-    return Bone.webview_container(space_number).querySelector(`.webview_${num}`)
-}
-
 // Updates spaces in the top panel
 Bone.update_spaces = function()
 {
@@ -379,4 +373,14 @@ Bone.duplicate_space = function()
 Bone.new_space = function()
 {
     Bone.create_space({})
+}
+
+Bone.swv = function(num=false, space=false)
+{
+    if(!num)
+    {
+        num = Bone.num()
+    }
+
+    return Bone.space(space)[`webview_${num}`]
 }

@@ -112,3 +112,17 @@ Bone.copy_string = function(s)
     document.execCommand('copy')
     document.body.removeChild(textareaEl)
 }
+
+// Checks and prepares a url
+Bone.check_url = function(url)
+{
+    if(!url.startsWith('http://') && !url.startsWith('https://'))
+    {
+        if(!url.startsWith('localhost') && !url.startsWith('127.0.0.1'))
+        {
+            url = `http://${url}`
+        }
+    }
+
+    return url
+}

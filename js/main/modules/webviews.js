@@ -17,6 +17,7 @@ Bone.create_webview = function(num)
     {
         Bone.space().focused_webview = this
         Bone.update_focused_webview()
+        Bone.update_url()
     })
 
     wv.addEventListener('will-navigate', function(e)
@@ -44,10 +45,11 @@ Bone.create_webview = function(num)
         }
 
         history.push(e.url)
-        Bone.space()[`webview_${wv.dataset.num}`].url = e.url
+        Bone.swv(wv.dataset.num).url = e.url
         Bone.space_modified()
         Bone.save_local_storage()
         Bone.$(`#menu_url_${wv.dataset.num}`).value = e.url
+        Bone.update_url()
     })
 
     return wv
@@ -592,7 +594,7 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
 Bone.apply_url = function(num)
 {
     let webview = Bone.wv(num)
-    let url = Bone.space()[`webview_${num}`].url
+    let url = Bone.swv(num).url
 
     if(webview.style.display === 'none')
     {
@@ -638,7 +640,7 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 
     if(url)
     {
-        rep.src = url
+        rep.src = Bone.check_url(url)
     }
 
     if(reset_history)
@@ -665,7 +667,7 @@ Bone.apply_zoom = function(num, space_number=false)
     try
     {
         let webview = Bone.wv(num, space_number)
-        let zoom = Bone.space(space_number)[`webview_${num}`].zoom
+        let zoom = Bone.swv(num, space).zoom
 
         webview.setZoomLevel(0)
         webview.setZoomFactor(zoom)
@@ -681,7 +683,7 @@ Bone.apply_zoom = function(num, space_number=false)
 // Sets the zoom level to a webview
 Bone.set_zoom_label = function(num)
 {
-    let zoom = Bone.space()[`webview_${num}`].zoom
+    let zoom = Bone.swv(num).zoom
     Bone.$(`#webview_${num}_zoom_label`).textContent = `Zoom (${Number(zoom).toFixed(2)})`
 }
 
@@ -695,8 +697,8 @@ Bone.decrease_zoom = function(num, mode='normal')
         step *= 2
     }
 
-    let zoom = Bone.round(Bone.space()[`webview_${num}`].zoom - step, 2)
-    Bone.space()[`webview_${num}`].zoom = zoom
+    let zoom = Bone.round(Bone.swv(num).zoom - step, 2)
+    Bone.swv(num).zoom = zoom
     Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_zoom(num)
@@ -712,8 +714,8 @@ Bone.increase_zoom = function(num, mode='normal')
         step *= 2
     }
 
-    let zoom = Bone.round(Bone.space()[`webview_${num}`].zoom + step, 2)
-    Bone.space()[`webview_${num}`].zoom = zoom
+    let zoom = Bone.round(Bone.swv(num).zoom + step, 2)
+    Bone.swv(num).zoom = zoom
     Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_zoom(num)
@@ -722,7 +724,7 @@ Bone.increase_zoom = function(num, mode='normal')
 // Resets a webview zoom level to zoom_default
 Bone.reset_zoom = function(num)
 {
-    Bone.space()[`webview_${num}`].zoom = Bone.config.zoom_default
+    Bone.swv(num).zoom = Bone.config.zoom_default
     Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_zoom(num)
@@ -731,7 +733,7 @@ Bone.reset_zoom = function(num)
 // Sets the size to a webview
 Bone.set_size_label = function(num)
 {
-    let size = Bone.space()[`webview_${num}`].size
+    let size = Bone.swv(num).size
     Bone.$(`#webview_${num}_size_label`).textContent = `Size (${Number(size).toFixed(2)})`
 }
 
@@ -745,14 +747,14 @@ Bone.decrease_size = function(num, mode='normal')
         step *= 2
     }
 
-    let size = Bone.round(Bone.space()[`webview_${num}`].size - step, 2)
+    let size = Bone.round(Bone.swv(num).size - step, 2)
 
     if(size < 0)
     {
         size = 0
     }
 
-    Bone.space()[`webview_${num}`].size = size
+    Bone.swv(num).size = size
     Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_layout(false)
@@ -769,8 +771,8 @@ Bone.increase_size = function(num, mode='normal')
         step *= 2
     }
 
-    let size = Bone.round(Bone.space()[`webview_${num}`].size + step, 2)
-    Bone.space()[`webview_${num}`].size = size
+    let size = Bone.round(Bone.swv(num).size + step, 2)
+    Bone.swv(num).size = size
     Bone.space_modified()
     Bone.save_local_storage()
     Bone.apply_layout(false)
@@ -787,7 +789,7 @@ Bone.reset_size = function(num, apply=true, mode='')
 
     else
     {
-        Bone.space()[`webview_${num}`].size = Bone.config.size_default
+        Bone.swv(num).size = Bone.config.size_default
         Bone.set_size_label(num)
     }
 
@@ -803,7 +805,7 @@ Bone.reset_size = function(num, apply=true, mode='')
 // Refreshes a webview with configured url
 Bone.refresh_webview = function(num)
 {
-    let url = Bone.space()[`webview_${num}`].url
+    let url = Bone.swv(num).url
     Bone.remake_webview(num, url, false)
 }
 
@@ -823,7 +825,7 @@ Bone.swap_webview = function(num)
 
         else
         {
-            let wv = Bone.space()[`webview_${num_2}`]
+            let wv = Bone.swv(num_2)
             item.style.display = 'block'
             item.textContent = `Swap With: (${num_2}) ${wv.url.substring(0, Bone.config.swap_max_url_length)}`
         }
@@ -852,8 +854,8 @@ Bone.setup_swap_webviews = function()
 // Does the webview swapping
 Bone.do_webview_swap = function(num_1, num_2)
 {
-    let w1 = Bone.space()[`webview_${num_1}`]
-    let w2 = Bone.space()[`webview_${num_2}`]
+    let w1 = Bone.swv(num_1)
+    let w2 = Bone.swv(num_2)
     let ourl_1 = w1.url
     let ozoom_1 = w1.zoom
 
@@ -1444,12 +1446,6 @@ Bone.history_item_open = function()
     Bone.close_all_windows()
 }
 
-// Updates the webview indicator in the panel
-Bone.update_focused_webview = function()
-{
-    Bone.$('#panel_focused').textContent = `Focused: ${Bone.num()}`
-}
-
 // Focuses current webview
 Bone.focus_webview = function(num=false)
 {
@@ -1462,4 +1458,15 @@ Bone.focus_webview = function(num=false)
     {
         Bone.wv(num).focus()
     }
+}
+
+// Gets a webview by its number
+Bone.wv = function(num=false, space_number=false)
+{
+    if(!num)
+    {
+        num = Bone.num()
+    }
+
+    return Bone.webview_container(space_number).querySelector(`.webview_${num}`)
 }

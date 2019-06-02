@@ -549,3 +549,15 @@ select
 {
     margin-top: 8px;
 }
+
+#url
+{
+    height: 100%;
+    font-size: 0.8rem;
+    padding: 4px;
+    outline: none;
+    border: 0px solid grey;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-right: 100px;
+}

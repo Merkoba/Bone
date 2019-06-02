@@ -86,6 +86,13 @@ Bone.apply_theme = function()
     {
         background-color: ${bg_color_1} !important;
     }
+
+    #url
+    {
+        background-color: ${bg_color_2} !important;
+        color: ${font_color_1} !important;
+        border: 5px solid ${bg_color_1} !important;
+    }
     `
 
     let styles = Bone.$$('.appended_theme_style')

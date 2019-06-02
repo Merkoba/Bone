@@ -382,7 +382,7 @@ Bone.update_menu_widgets = function()
     for(let input of url_inputs)
     {
         let num = input.id.replace('menu_url_', '')
-        input.value = Bone.space()[`webview_${num}`].url
+        input.value = Bone.swv(num).url
     }
 
     for(let i=1; i<=Bone.config.num_webviews; i++)
@@ -432,10 +432,11 @@ Bone.update_selected_layout = function()
 Bone.do_url_change = function(url, num)
 {
     url = url.trim()
+    let swv = Bone.swv(num)
 
-    if(Bone.space()[`webview_${num}`].url !== url)
+    if(swv.url !== url)
     {
-        Bone.space()[`webview_${num}`].url = url
+        swv.url = url
         Bone.space_modified()
         Bone.spacesi
         Bone.save_local_storage()

@@ -135,6 +135,15 @@ Bone.setup_panel = function()
         Bone.focus_webview(num)
     })
 
+    Bone.$('#url').addEventListener('keyup', function(e)
+    {
+        if(e.key === 'Enter')
+        {
+            let url = this.value.trim()
+            Bone.remake_webview(Bone.num(), url, false, false)
+        }
+    })
+
     panel.style.height = `${Bone.config.panel_height}px`
 }
 
@@ -188,4 +197,17 @@ Bone.apply_auto_hide_panel = function()
         Bone.$('#webview_containers').style.top = `${Bone.config.panel_height}px`
         Bone.show_panel()
     }    
+}
+
+// Updates the webview indicator in the panel
+Bone.update_focused_webview = function()
+{
+    Bone.$('#panel_focused').textContent = `Focused: ${Bone.num()}`
+}
+
+// Sets the url in the panel
+Bone.update_url = function()
+{
+    let input = Bone.$('#url')
+    input.value = Bone.swv().url
 }
