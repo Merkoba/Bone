@@ -114,6 +114,7 @@ body, html
 #menu_icon
 {
     padding: 10px;
+    cursor: pointer;
 }
 
 .action, .action_2
@@ -559,5 +560,6 @@ select
     border: 0px solid grey;
     flex-grow: 1;
     flex-shrink: 1;
+    margin-left: 5px;
     margin-right: 5px;
 }

@@ -22,10 +22,7 @@ Bone.setup_panel = function()
     {
         if(e.target === this)
         {
-            if(Bone.storage.show_menu_on_panel_click)
-            {
-                Bone.show_menu()
-            }
+            Bone.show_menu()
         }
     })
 

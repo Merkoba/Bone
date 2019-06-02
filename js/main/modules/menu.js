@@ -364,12 +364,6 @@ Bone.setup_menu = function()
         Bone.storage.wrap_spaces_on_wheel = this.checked
         Bone.save_local_storage()
     })
-
-    Bone.$('#menu_show_menu_on_panel_click_checkbox').addEventListener('change', function()
-    {
-        Bone.storage.show_menu_on_panel_click = this.checked
-        Bone.save_local_storage()
-    })
 }
 
 // Updates widgest in the menu window
@@ -396,7 +390,6 @@ Bone.update_menu_widgets = function()
     Bone.$('#menu_resize_handle_size_input').value = Bone.storage.resize_handle_size
     Bone.$('#menu_cycle_spaces_on_wheel_checkbox').checked = Bone.storage.cycle_spaces_on_wheel
     Bone.$('#menu_wrap_spaces_on_wheel_checkbox').checked = Bone.storage.wrap_spaces_on_wheel
-    Bone.$('#menu_show_menu_on_panel_click_checkbox').checked = Bone.storage.show_menu_on_panel_click
 
     Bone.update_wrap_spaces_on_wheel_container()
 }

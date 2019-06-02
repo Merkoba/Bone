@@ -103,12 +103,6 @@ Bone.check_local_storage = function(obj)
         save = true
     }
 
-    if(obj.show_menu_on_panel_click === undefined)
-    {
-        obj.show_menu_on_panel_click = true
-        save = true
-    }
-
     if(obj.special === undefined)
     {
         obj.special = Bone.create_special_object()
