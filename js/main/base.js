@@ -8,9 +8,9 @@ const contextMenu = require('electron-context-menu')
 const remote = require('electron').remote
 const main = remote.require('./index.js')
 const Msg = require('msg-modal')
-const ColorLib = require('colorlib2')
+const ColorLib = require('mad-colorlib')
+const Separator = require('mad-separator')
 const Handlebars = require('handlebars')
-const Separator = require('separator2')
 
 // Init main object and some properties
 
