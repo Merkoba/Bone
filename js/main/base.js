@@ -45,7 +45,7 @@ Bone.config =
     swap_max_url_length: 50,
     modules_path: './js/main/modules/',
     resize_double_click_delay: 350,
-    startpage: 'https://en.wikipedia.org/wiki/Special:Random'
+    startpage: 'http://www.tiledhn.com/'
 }
 
 // This gets called when body loads

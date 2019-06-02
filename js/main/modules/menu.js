@@ -249,13 +249,14 @@ Bone.setup_menu = function()
 
         if(space.focused_webview)
         {
-            let history = space.history[space.focused_webview.id]
+            let history = space.history[`webview_${space.focused_webview.dataset.num}`]
             let num = space.focused_webview.dataset.num
 
             if(history && history.length > 1)
             {
                 history.pop()
                 Bone.remake_webview(num, history.slice(-1)[0], false, false)
+                Bone.close_all_windows()
             }
         }
     })
@@ -465,7 +466,7 @@ Bone.show_menu = function()
 
         if(space.focused_webview)
         {
-            let history = space.history[space.focused_webview.id]
+            let history = space.history[`webview_${space.focused_webview.dataset.num}`]
 
             if(history && history.length > 1)
             {
