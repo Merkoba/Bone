@@ -1,43 +1,40 @@
+// Fetch a single element
 Bone.$ = function(s)
 {
     return document.querySelector(s)
 }
 
+// Fetch multiple elements
 Bone.$$ = function(s)
 {
     return Array.from(document.querySelectorAll(s))
 }
 
+// Returns a cloned object
 Bone.clone_object = function(obj)
 {
     return JSON.parse(JSON.stringify(obj))
 }
 
+// Rounds to the specified decimal point
 Bone.round = function(value, decimals)
 {
     return Number(Math.round(value+'e'+decimals)+'e-'+decimals)
 }
 
-Bone.get_percentage = function(n1, n2, whole=false)
-{
-    return (n1 / n2) * 100
-}
-
-Bone.get_remaining_percentage = function(sum)
-{
-    return Math.floor(100 - sum) - 0.1
-}
-
+// Gets the element index relative to its parent
 Bone.get_child_index = function(element) 
 {
     return Array.from(element.parentNode.children).indexOf(element)
 }
 
+// Inserts an element after another one
 Bone.insert_after = function(el, reference_node) 
 {
     reference_node.parentNode.insertBefore(el, reference_node.nextSibling)
 }
 
+// Inserts an element before another one
 Bone.insert_before = function(el, reference_node) 
 {
     reference_node.parentNode.insertBefore(el, reference_node)
@@ -87,17 +84,31 @@ Bone.debounce = function(func, wait, immediate)
     }
 }
 
+// Gets the index of the element relative to its parent
 Bone.get_element_index = function(element) 
 {
     return [...element.parentNode.children].indexOf(element)
 }
 
+// Removes an element
 Bone.remove_element = function(element)
 {
     element.parentNode.removeChild(element)
 }
 
+// Replaces an element with another one
 Bone.replace_element = function(replacement, original)
 {
     original.parentNode.replaceChild(replacement, original)
+}
+
+// Copies a string to the clipboard
+Bone.copy_string = function(s)
+{
+    let textareaEl = document.createElement('textarea')
+    document.body.appendChild(textareaEl)
+    textareaEl.value = s
+    textareaEl.select()
+    document.execCommand('copy')
+    document.body.removeChild(textareaEl)
 }

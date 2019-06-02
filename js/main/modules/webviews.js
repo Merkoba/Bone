@@ -93,7 +93,10 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
 
     if(layout === 'single')
     {
-        Bone.setup_webview_container(1)
+        if(create_elements)
+        {
+            Bone.setup_webview_container(1)
+        }
     }
 
     else if(layout === '2_column')
@@ -883,14 +886,15 @@ Bone.setup_history = function()
             return false
         }
 
+        let space = Bone.space()
         let url = e.target.dataset.url
         let num = e.target.dataset.num
-        let history = Bone.space().history[`webview_${num}`]
+        let history = space.history[`webview_${num}`]
         let index = 0 - Bone.get_child_index(e.target)
 
         if(index < 0)
         {
-            Bone.space().history[`webview_${num}`] = history.slice(0, index)
+            space.history[`webview_${num}`] = history.slice(0, index)
         }
 
         Bone.remake_webview(num, url, false, false)
@@ -1271,4 +1275,19 @@ Bone.create_webview_object = function(n, url='')
     obj.size = Bone.config.size_default
     obj.zoom = Bone.config.zoom_default
     return obj
+}
+
+// Returns the current url based on history
+Bone.get_current_url = function()
+{
+    let url = false
+    let space = Bone.space()
+    let history = space.history[`webview_${space.focused_webview.dataset.num}`]
+
+    if(history.length > 0)
+    {
+        url = history[history.length - 1]
+    }
+
+    return url
 }
