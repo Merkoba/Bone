@@ -27,7 +27,7 @@ Bone.create_webview = function(num)
             return false
         }
 
-        Bone.remake_webview(num, e.url, false, false)
+        Bone.remake_webview(wv.dataset.num, e.url, false, false)
     })
 
     wv.addEventListener('did-navigate', function(e)
@@ -661,29 +661,17 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
     })
 }
 
-// Applies zoom level and factor to a loaded webview
-Bone.apply_zoom = function(num, space_number=false)
-{
-    try
-    {
-        let webview = Bone.wv(num, space_number)
-        let zoom = Bone.swv(num, space_number).zoom
-
-        webview.setZoomLevel(0)
-        webview.setZoomFactor(zoom)
-        Bone.set_zoom_label(num)
-    }
-
-    catch(err)
-    {
-        console.error(err)
-    }
-}
-
 // Sets the zoom level to a webview
-Bone.set_zoom_label = function(num)
+Bone.set_zoom_label = function(num, space_num=false)
 {
-    let zoom = Bone.swv(num).zoom
+    let wv = Bone.wv(num, space_num)
+
+    if(!wv)
+    {
+        return false
+    }
+
+    let zoom = wv.getZoomFactor()
     Bone.$(`#webview_${num}_zoom_label`).textContent = `Zoom (${Number(zoom).toFixed(2)})`
 }
 
@@ -697,11 +685,10 @@ Bone.decrease_zoom = function(num, mode='normal')
         step *= 2
     }
 
-    let zoom = Bone.round(Bone.swv(num).zoom - step, 2)
-    Bone.swv(num).zoom = zoom
-    Bone.space_modified()
-    Bone.save_local_storage()
-    Bone.apply_zoom(num)
+    let wv = Bone.wv(num)
+    let zoom = Bone.round(wv.getZoomFactor() - step, 2)
+    wv.setZoomFactor(zoom)
+    Bone.set_zoom_label(num)
 }
 
 // Increases a webview zoom level by config.zoom_step
@@ -714,20 +701,17 @@ Bone.increase_zoom = function(num, mode='normal')
         step *= 2
     }
 
-    let zoom = Bone.round(Bone.swv(num).zoom + step, 2)
-    Bone.swv(num).zoom = zoom
-    Bone.space_modified()
-    Bone.save_local_storage()
-    Bone.apply_zoom(num)
+    let wv = Bone.wv(num)
+    let zoom = Bone.round(wv.getZoomFactor() + step, 2)
+    wv.setZoomFactor(zoom)
+    Bone.set_zoom_label(num)
 }
 
 // Resets a webview zoom level to zoom_default
 Bone.reset_zoom = function(num)
 {
-    Bone.swv(num).zoom = Bone.config.zoom_default
-    Bone.space_modified()
-    Bone.save_local_storage()
-    Bone.apply_zoom(num)
+    Bone.wv(num).setZoomFactor(Bone.config.zoom_default)
+    Bone.set_zoom_label(num)
 }
 
 // Sets the size to a webview
@@ -870,8 +854,6 @@ Bone.do_webview_swap = function(num_1, num_2)
     Bone.save_local_storage()
     Bone.apply_url(num_1)
     Bone.apply_url(num_2)
-    Bone.apply_zoom(num_1)
-    Bone.apply_zoom(num_2)
 }
 
 // What to do when a webview is dom ready
@@ -879,7 +861,7 @@ Bone.on_webview_dom_ready = function(webview)
 {
     let num = parseInt(webview.dataset.num)
     let space = parseInt(webview.dataset.space)
-    Bone.apply_zoom(num, space)
+    Bone.set_zoom_label(num, space)
 }
 
 // Populates and shows the webview history
@@ -1312,7 +1294,6 @@ Bone.create_webview_object = function(n, url='')
     let obj = {}
     obj.url = url
     obj.size = Bone.config.size_default
-    obj.zoom = Bone.config.zoom_default
     return obj
 }
 

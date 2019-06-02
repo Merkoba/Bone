@@ -42,6 +42,7 @@ body, html
     background-position: center center;
     transition: opacity 1.5s linear;
     z-index: 999;
+    background-color: black;
 }
 			
 #main_container
@@ -414,7 +415,7 @@ select
     grid-gap: 20px;
     grid-auto-columns: auto;
     align-items: center;
-    max-width: 450px;
+    max-width: 500px;
 }
 
 .history_item
