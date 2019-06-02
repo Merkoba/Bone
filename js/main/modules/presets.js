@@ -185,6 +185,7 @@ Bone.save_preset = function(name, replace=false)
     obj.webview_2 = Bone.clone_object(space.webview_2)
     obj.webview_3 = Bone.clone_object(space.webview_3)
     obj.webview_4 = Bone.clone_object(space.webview_4)
+    obj.special = Bone.clone_object(space.special)
     obj.layout = space.layout
     obj.last_used = Date.now()
     Bone.storage.presets[name] = obj
@@ -239,7 +240,7 @@ Bone.delete_preset = function(name)
     {
         if(space.name === name)
         {
-            space.name = ""
+            space.name = ''
             changed = true
         }
     }

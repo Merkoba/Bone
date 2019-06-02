@@ -69,13 +69,13 @@ Bone.check_local_storage = function(obj)
 
     if(obj.webview_1.zoom === undefined)
     {
-        obj.webview_1.zoom = 1
+        obj.webview_1.zoom = Bone.config.zoom_default
         save = true
     }
 
     if(obj.webview_1.size === undefined)
     {
-        obj.webview_1.size = 1
+        obj.webview_1.size = Bone.config.size_default
         save = true
     }
 
@@ -93,13 +93,13 @@ Bone.check_local_storage = function(obj)
 
     if(obj.webview_2.zoom === undefined)
     {
-        obj.webview_2.zoom = 1
+        obj.webview_2.zoom = Bone.config.zoom_default
         save = true
     }
 
     if(obj.webview_2.size === undefined)
     {
-        obj.webview_2.size = 1
+        obj.webview_2.size = Bone.config.size_default
         save = true
     }
 
@@ -117,13 +117,13 @@ Bone.check_local_storage = function(obj)
 
     if(obj.webview_3.zoom === undefined)
     {
-        obj.webview_3.zoom = 1
+        obj.webview_3.zoom = Bone.config.zoom_default
         save = true
     }
 
     if(obj.webview_3.size === undefined)
     {
-        obj.webview_3.size = 1
+        obj.webview_3.size = Bone.config.size_default
         save = true
     }
 
@@ -141,13 +141,13 @@ Bone.check_local_storage = function(obj)
 
     if(obj.webview_4.zoom === undefined)
     {
-        obj.webview_4.zoom = 1
+        obj.webview_4.zoom = Bone.config.zoom_default
         save = true
     }
 
     if(obj.webview_4.size === undefined)
     {
-        obj.webview_4.size = 1
+        obj.webview_4.size = Bone.config.size_default
         save = true
     }
 
@@ -181,6 +181,17 @@ Bone.check_local_storage = function(obj)
         save = true
     }
 
+    if(obj.special === undefined)
+    {
+        obj.special = {}
+        save = true
+    }
+
+    if(obj.special['row_1'] === undefined)
+    {
+        obj.special['row_1'] = Bone.config.size_default
+    }
+
     return save
 }
 
@@ -196,6 +207,7 @@ Bone.save_local_storage = function()
         Bone.storage.webview_3 = Bone.clone_object(space.webview_3)
         Bone.storage.webview_4 = Bone.clone_object(space.webview_4)
         Bone.storage.layout = space.layout
+        Bone.storage.special = space.special
     }
 
     localStorage.setItem(Bone.ls_name, JSON.stringify(Bone.storage))

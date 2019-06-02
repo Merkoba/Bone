@@ -124,6 +124,7 @@ Bone.create_space_from_object = function(obj, n)
     space.webview_2 = Bone.clone_object(obj.webview_2)
     space.webview_3 = Bone.clone_object(obj.webview_3)
     space.webview_4 = Bone.clone_object(obj.webview_4)
+    space.special = Bone.clone_object(obj.special)
     space.layout = obj.layout
     space.name = obj.name
     space.num = n

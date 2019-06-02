@@ -344,14 +344,25 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             Bone.setup_webview_container(5, 4)
             Bone.insert_after(Bone.create_resize_handle('ew', 1, [2], 2), Bone.wv(1))
             Bone.insert_after(Bone.create_resize_handle('ew', 3, [4], 2), Bone.wv(3))
+
+            let resize = document.querySelector(`#webview_container_${nspace} .webview_resize`)
+            resize.append(Bone.create_resize_handle('ns', [1, 2], [3, 4], 2, 'after_special_row_1'))
+        }
+
+        let space = Bone.space()
+        let row_1 = 1
+
+        if(space.special && space.special.row_1)
+        {
+            row_1 = space.special.row_1
         }
 
         css = `
         #webview_container_${nspace}
         {
             grid-template-columns: 1fr;
-            grid-template-rows: 1fr 1fr;
-            grid-template-areas: 'top' 'bottom';
+            grid-template-rows: ${row_1}fr ${rhs} ${2 - row_1}fr;
+            grid-template-areas: 'top' 'resize' 'bottom';
         }
     
         #webview_container_${nspace} .webview_top
@@ -361,6 +372,15 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             grid-template-rows: 1fr;
             grid-template-areas: '. . .';
             grid-area: top;
+        }
+
+        #webview_container_${nspace} .webview_resize
+        { 
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+            grid-template-areas: '.';
+            grid-area: resize;
         }
     
         #webview_container_${nspace} .webview_bottom
@@ -728,9 +748,18 @@ Bone.increase_size = function(num, mode='normal')
 }
 
 // Resets a webview size to size_default
-Bone.reset_size = function(num, apply=true)
+Bone.reset_size = function(num, apply=true, mode='')
 {
-    Bone.space()[`webview_${num}`].size = Bone.config.size_default
+    if(mode.includes('special'))
+    {
+        Bone.space().special[mode.replace(/.*_special_/, '')] = Bone.config.size_default
+    }
+
+    else
+    {
+        Bone.space()[`webview_${num}`].size = Bone.config.size_default
+    }
+
     Bone.space_modified()
     Bone.save_local_storage()
     Bone.set_size_label(num)
@@ -915,6 +944,7 @@ Bone.setup_resize_handles = function(num)
             {
                 let owner = Bone.active_resize_handle.dataset.owner
                 let siblings = Bone.active_resize_handle.dataset.siblings
+                let mode = Bone.active_resize_handle.dataset.mode
                 let elements
 
                 if(siblings.length === 1)
@@ -926,10 +956,18 @@ Bone.setup_resize_handles = function(num)
                 {
                     elements = [owner]
                 }
-                
-                for(let num of elements)
+
+                if(mode.includes('special'))
                 {
-                    Bone.reset_size(num)
+                    Bone.reset_size(num, true, mode)
+                }
+
+                else
+                {
+                    for(let num of elements)
+                    {
+                        Bone.reset_size(num, true)
+                    }
                 }
 
                 Bone.leave_resize_mode()
@@ -1020,6 +1058,9 @@ Bone.setup_webview_container = function(num, amount)
             top.appendChild(Bone.create_webview(i)) 
         }
 
+        let resize = document.createElement('div')
+        resize.classList.add('webview_resize')
+
         let bottom = document.createElement('div')
         bottom.classList.add('webview_bottom')
 
@@ -1029,6 +1070,7 @@ Bone.setup_webview_container = function(num, amount)
         }
         
         c.prepend(bottom)
+        c.prepend(resize)
         c.prepend(top)
     }
 
@@ -1098,7 +1140,7 @@ Bone.resize_mouseup_function = function(e)
     let c = Bone.webview_container()
     let direction = Bone.active_resize_handle.dataset.direction
     let siblings_list = Bone.active_resize_handle.dataset.siblings.split(',')
-    let owner = Bone.active_resize_handle.dataset.owner
+    let owner = Bone.active_resize_handle.dataset.owner.split(',')
     let group = Bone.active_resize_handle.dataset.group
     let mode = Bone.active_resize_handle.dataset.mode
     let diff_x = e.clientX - Bone.initial_resize_x
@@ -1107,12 +1149,12 @@ Bone.resize_mouseup_function = function(e)
 
     if(siblings_list.length === 1)
     {
-        elements = [owner, ...siblings_list]
+        elements = [...owner, ...siblings_list]
     }
 
     else
     {
-        elements = [owner]
+        elements = [...owner]
     }
 
     let diff, oname
@@ -1134,14 +1176,17 @@ Bone.resize_mouseup_function = function(e)
         return false
     }
 
+    
     for(let num of elements)
     {
+        let owned = false
         let el = Bone.wv(num)
         let nsize
 
-        if(num === owner && mode === 'after')
+        if(owner.includes(num) && mode.startsWith('after'))
         {
             nsize = el[oname] + diff
+            owned = true
         }
         
         else
@@ -1150,8 +1195,21 @@ Bone.resize_mouseup_function = function(e)
         }
 
         let size = Bone.round((nsize / c[oname]) * group, 3)
-        Bone.space()[`webview_${num}`].size = size
-        Bone.set_size_label(num)
+        let space = Bone.space()
+
+        if(mode.includes('special'))
+        {
+            if(owned)
+            {
+                space.special[mode.replace(/.*_special_/, '')] = size
+            }
+        }
+
+        else
+        {
+            space[`webview_${num}`].size = size
+            Bone.set_size_label(num)
+        }
     }
 
     Bone.space_modified()
