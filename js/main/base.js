@@ -75,7 +75,7 @@ Bone.init = function()
     Bone.remove_splash()
     Bone.setup_handle_history()
 
-    console.info('Boneless started')
+    console.info('Bone started')
 }
 
 Bone.load_files = function()

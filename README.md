@@ -1,6 +1,4 @@
-Boneless is meant as a tool to display websites without the overhead of tabs, decorations, and other interface elements that can make it bloaty.
-
-This is NOT meant as a browser. It's meant for displaying websites that don't change often in spare monitors/desktops.
+Bone is meant as a tool to display websites without the overhead of tabs, decorations, and other interface elements that can make it bloaty. That was the original idea, but continued development is transforming it into a simple yet interesting browser.
 
 It supports up to 4 different websites displayed at the same time.
 
