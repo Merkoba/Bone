@@ -146,7 +146,8 @@ Bone.remove_splash = function()
 {
     setTimeout(function()
     {
-        Bone.$('#main_container').style.display = 'block'
+        let container = Bone.$('#main_container')
+        container.style.display = 'block'
         
         let splash = Bone.$('#splash')
         splash.style.opacity = 0
@@ -154,6 +155,7 @@ Bone.remove_splash = function()
         setTimeout(function()
         {
             splash.style.display = 'none'
+            container.style.backgroundColor = 'white'
         }, 1500)
     }, 500)
 }

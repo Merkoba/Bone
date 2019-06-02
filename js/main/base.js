@@ -72,8 +72,9 @@ Bone.init = function()
     Bone.setup_history()
     Bone.activate_resize_listener()
     Bone.setup_autostart()
-    Bone.remove_splash()
     Bone.setup_handle_history()
+    
+    Bone.remove_splash()
 
     console.info('Bone started')
 }
