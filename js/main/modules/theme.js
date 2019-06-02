@@ -102,6 +102,17 @@ Bone.apply_theme = function()
         color: ${font_color_1} !important;
         border: 5px solid ${bg_color_1} !important;
     }
+
+    #url_suggest
+    {
+        background-color: ${bg_color_2} !important;
+        color: ${font_color_1} !important;
+    }
+
+    .url_suggest_selected
+    {
+        background-color: ${bg_color_3} !important;
+    }
     `
 
     let styles = Bone.$$('.appended_theme_style')

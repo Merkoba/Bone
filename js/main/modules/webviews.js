@@ -27,7 +27,7 @@ Bone.create_webview = function(num)
             return false
         }
 
-        Bone.remake_webview(wv.dataset.num, e.url, false, false)
+        Bone.change_url(e.url, wv.dataset.num)
     })
 
     wv.addEventListener('did-navigate', function(e)
@@ -1330,7 +1330,7 @@ Bone.go_back = function()
         if(history && history.length > 1)
         {
             history.pop()
-            Bone.remake_webview(num, history.slice(-1)[0], false, false)
+            Bone.change_url(history.slice(-1)[0], num)
             Bone.close_all_windows()
         }
     }
@@ -1393,7 +1393,7 @@ Bone.show_handle_history = function()
 
             item.addEventListener('click', function()
             {
-                Bone.remake_webview(parseInt(this.innerHTML), Bone.handled_history_item.dataset.url, false, false)
+                Bone.change_url(parseInt(Bone.handled_history_item.dataset.url), this.innerHTML)
                 Bone.close_all_windows()
             })
         }
@@ -1430,7 +1430,7 @@ Bone.history_item_open = function()
         space.history[`webview_${num}`] = history.slice(0, index)
     }
 
-    Bone.remake_webview(num, url, false, false)
+    Bone.change_url(url, num)
     Bone.close_all_windows()
 }
 
@@ -1463,15 +1463,30 @@ Bone.wv = function(num=false, space_number=false)
 // This is used to show url suggestions in the url bar
 Bone.add_url_to_global_history = function(url)
 {
+    url = url.trim()
+
     if(Bone.storage.global_history.includes(url))
     {
         return false
     }
-    
+
     Bone.storage.global_history.push(url)
 
     if(Bone.storage.global_history.length > Bone.config.max_global_history_items)
     {
         Bone.storage.global_history = Bone.storage.global_history.slice(0 - Bone.config.max_global_history_items)
     }
+
+    Bone.save_local_storage()
+}
+
+// Changes the url of a specified webview
+Bone.change_url = function(url, num=false)
+{
+    if(!num)
+    {
+        num = Bone.num()
+    }
+
+    Bone.remake_webview(num, url, false, false)
 }

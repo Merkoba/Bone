@@ -76,6 +76,8 @@ Bone.init = function()
     Bone.setup_autostart()
     Bone.setup_handle_history()
     Bone.setup_separator()
+    Bone.setup_url_input()
+    Bone.setup_url_suggest()
 
     Bone.remove_splash()
 

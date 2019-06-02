@@ -585,3 +585,25 @@ select
 {
     margin-top: 20px;
 }
+
+#url_suggest
+{
+    display: none;
+    position: fixed;
+    background-color: white;
+    color: black;
+    z-index: 999;
+    max-height: 500px;
+    max-width: 800px;
+    grid-gap: 2px;
+    grid-auto-columns: auto;
+    align-items: center;
+}
+
+.url_suggest_item
+{
+    font-size: 1.1rem;
+    box-shadow: 0 0 1px currentColor;
+    padding: 5px;
+    cursor: pointer;
+}

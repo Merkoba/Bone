@@ -28,6 +28,12 @@ Bone.get_child_index = function(element)
     return Array.from(element.parentNode.children).indexOf(element)
 }
 
+// Gets a child element at a given index
+Bone.get_child_at_index = function(parent, index)
+{
+    return Array.from(parent.children)[index]
+}
+
 // Inserts an element after another one
 Bone.insert_after = function(el, reference_node) 
 {
@@ -125,4 +131,27 @@ Bone.check_url = function(url)
     }
 
     return url
+}
+
+// Finds global history urls that match a certain url
+Bone.find_url_matches = function(url)
+{
+    url = url.trim()
+
+    if(!url)
+    {
+        return []
+    }
+
+    let matches = []
+
+    for(let url_2 of Bone.storage.global_history)
+    {
+        if(url.includes(url_2) || url_2.includes(url))
+        {
+            matches.push(url_2)
+        }
+    }
+
+    return matches
 }
