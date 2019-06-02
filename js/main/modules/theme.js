@@ -33,14 +33,22 @@ Bone.apply_theme = function()
         color: ${font_color_1} !important;
     }
 
+    .Msg-window-inner-x
+    {
+        background-color: ${bg_color_1} !important;
+        color: ${font_color_1};
+    }
+
     .titlebar_inner_x
     {
         background-color: ${bg_color_2} !important;
+        color: ${font_color_1};
     }
 
-    .titlebar_inner_x:hover
+    .Msg-window-inner-x:hover, .titlebar_inner_x:hover
     {
         background-color: ${bg_color_4} !important;
+        color: ${font_color_1};
     }
 
     .custom_titlebar

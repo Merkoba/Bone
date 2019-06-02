@@ -63,12 +63,16 @@ Bone.webview_container = function(n=false)
 Bone.update_spaces = function()
 {
     let spaces = Bone.get_spaces()
+    let name = ""
     let c = Bone.$('#spaces')
     c.innerHTML = ''
 
-    if(spaces.length <= 1)
+    if(spaces.length === 1)
     {
-        return false
+        if(!spaces[0].name)
+        {
+            name = 'Default Space'
+        }
     }
 
     let n = 1
@@ -78,7 +82,7 @@ Bone.update_spaces = function()
         let el = document.createElement('div')
         el.classList.add('spaces_item')
         el.classList.add('action')
-        el.textContent = space.name || n
+        el.textContent = space.name || name || n
         el.dataset.num = space.num
         c.append(el)
         n += 1
