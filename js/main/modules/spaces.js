@@ -63,7 +63,7 @@ Bone.webview_container = function(n=false)
 Bone.update_spaces = function()
 {
     let spaces = Bone.get_spaces()
-    let name = ""
+    let name = ''
     let c = Bone.$('#spaces')
     c.innerHTML = ''
 
