@@ -1,4 +1,4 @@
-const {session, app, BrowserWindow} = require('electron')
+const {session, app, BrowserWindow, globalShortcut} = require('electron')
 const path = require('path')
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -35,6 +35,22 @@ exports.create_window = function()
         // when you should delete the corresponding element.
         win = null
     })
+
+    win.on('focus', () => 
+    {
+        globalShortcut.register('CommandOrControl+F', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-find', '')
+            }
+        })
+    })
+
+    win.on('blur', () => 
+    {
+        globalShortcut.unregister('CommandOrControl+F')
+    })
 }
 
 app.commandLine.appendSwitch('--autoplay-policy', 'no-user-gesture-required')
@@ -48,6 +64,8 @@ app.on('ready', exports.create_window)
 // Quit when all windows are closed.
 app.on('window-all-closed', () => 
 {
+    globalShortcut.unregister('CommandOrControl+F')
+
     // On macOS it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if(process.platform !== 'darwin') 
@@ -66,6 +84,7 @@ app.on('window-all-closed', () =>
             app.quit()
         })
     }
+
 })
 
 app.on('activate', () => 

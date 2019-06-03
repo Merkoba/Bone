@@ -4,9 +4,11 @@
 
 const fs = require('fs')
 const path = require('path')
-const contextMenu = require('electron-context-menu')
-const remote = require('electron').remote
+// const remote = require('electron').remote
+const {remote, ipcRenderer} = require('electron')
 const main = remote.require('./index.js')
+const contextMenu = require('electron-context-menu')
+const {FindInPage} = require('electron-find')
 const Msg = require('msg-modal')
 const ColorLib = require('mad-colorlib')
 const Separator = require('mad-separator')
@@ -79,6 +81,7 @@ Bone.init = function()
     Bone.setup_separator()
     Bone.setup_url_input()
     Bone.setup_url_suggest()
+    Bone.setup_find()
 
     Bone.remove_splash()
 

@@ -190,3 +190,14 @@ Bone.setup_separator = function()
         Bone.horizontal_separator_2.separate(container)
     }
 }
+
+// Setups the find functionality and widget
+Bone.setup_find = function()
+{
+    Bone.find = new FindInPage(remote.getCurrentWebContents())
+
+    ipcRenderer.on('on-find', (e, args) => 
+    {
+        Bone.find.openFindWindow()
+    })
+}
