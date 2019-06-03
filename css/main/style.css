@@ -112,12 +112,6 @@ body, html
     font-size: 14px;
 }
 
-#menu_icon
-{
-    padding: 10px;
-    cursor: pointer;
-}
-
 .action, .action_2
 {
     transition: text-shadow 500ms, box-shadow 500ms
@@ -458,7 +452,7 @@ select
     grid-auto-flow: column;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     justify-self: flex-start;
 }
 
@@ -553,7 +547,7 @@ select
 #url
 {
     height: 100%;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding: 4px;
     outline: none;
     border: 0px solid grey;
@@ -614,7 +608,7 @@ select
 
 .url_suggest_item
 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     box-shadow: 0 0 1px currentColor;
     padding: 5px;
     cursor: pointer;
@@ -627,12 +621,24 @@ select
     font-size: 0.8rem;
 }
 
-#panel_new_space_icon
-{
-    cursor: pointer;
-}
-
 #handle_new_space_empty
 {
     margin-top: 20px;
+}
+
+#handle_close_space_close
+{
+    margin-top: 20px;
+}
+
+#panel_toolbar_right
+{
+    display: grid;
+    grid-gap: 0px;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    justify-self: flex-end;
+    height: 100%;
 }

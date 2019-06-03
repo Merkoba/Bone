@@ -18,14 +18,6 @@ Bone.setup_panel = function()
 
     let panel = Bone.$('#panel')
 
-    panel.addEventListener('click', function(e)
-    {
-        if(e.target === this)
-        {
-            Bone.show_menu()
-        }
-    })
-
     panel.addEventListener('mouseenter', function()
     {
         clearInterval(Bone.panel_autohide_timeout)
@@ -135,6 +127,22 @@ Bone.setup_panel = function()
     Bone.$('#panel_space_options').addEventListener('click', function()
     {
         Bone.show_space_options()
+    })
+
+    Bone.$('#panel_toolbar').addEventListener('click', function(e)
+    {
+        if(e.target === this)
+        {
+            Bone.show_menu()
+        }
+    })
+
+    Bone.$('#panel_toolbar_right').addEventListener('click', function(e)
+    {
+        if(e.target === this)
+        {
+            Bone.show_space_options()
+        }
     })
 
     panel.style.height = `${Bone.config.panel_height}px`

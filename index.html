@@ -17,8 +17,8 @@
         
         <div id='main_container'>
             <div id='panel' class='unselectable'>
-                <i id='menu_icon' class='fas fa-th-large panel_icon action'></i>
                 <div id='panel_toolbar'>
+                    <i id='menu_icon' class='fas fa-th-large panel_icon panel_toolbar_item action'></i>
                     <div id='panel_focused' class='panel_toolbar_item action'>[1]</div>
                     <div id='panel_history' class='panel_toolbar_item action'>History</div>
                     <i id='panel_zoom_in' class='fas fa-plus panel_toolbar_item action'></i>
@@ -26,7 +26,9 @@
                 </div>
                 <input type='text' id='url'>
                 <div id='spaces'></div>
-                <i class='fas fa-caret-down panel_toolbar_item panel_icon action' id='panel_space_options'></i>
+                <div id='panel_toolbar_right'>
+                    <i class='fas fa-caret-down panel_toolbar_item panel_icon action' id='panel_space_options'></i>
+                </div>
             </div>
             <div id='webview_containers'></div>
             <div id='url_suggest'></div>
@@ -170,7 +172,7 @@
                     <div id='handle_preset_autostart' class='preset_button action inline'></div>
                     <div id='handle_preset_delete' class='preset_button action inline'>Delete</div>
                 </div>
-                <div id='handle_preset_open' class='preset_button action'>Open</div>
+                <div><div id='handle_preset_open' class='preset_button action inline'>Open</div></div>
             </div>
         </script>
 
@@ -228,16 +230,6 @@
             </div>
         </script>
 
-        <script id='template_handle_close_space' type='text/x-handlebars-template' class='template'>
-            <div class='separate_horizontal unselectable'>
-                <div id='handle_close_space_close' class='generic_button action inline'>Close</div>
-                <div id='handle_close_space_close_left' class='generic_button action inline'>Close All Left</div>
-                <div id='handle_close_space_close_right' class='generic_button action inline'>Close All Right</div>
-                <div id='handle_close_space_close_others' class='generic_button action inline'>Close Others</div>
-                <div id='handle_close_space_close_all' class='generic_button action inline'>Close All</div>
-            </div>
-        </script>
-
         <script id='template_space_options' type='text/x-handlebars-template' class='template'>
             <div class='separate_horizontal unselectable'>
                 <div id='space_options_new' class='generic_button action inline'>New Space</div>
@@ -250,6 +242,16 @@
                 <select id='handle_new_space_presets'></select>
                 <div id='handle_new_space_empty' class='generic_button action'>Empty Space</div>
             </div>
+        </script>
+
+        <script id='template_handle_close_space' type='text/x-handlebars-template' class='template'>
+            <div class='separate_horizontal unselectable'>
+                <div id='handle_close_space_close_left' class='generic_button action inline'>Close All Left</div>
+                <div id='handle_close_space_close_right' class='generic_button action inline'>Close All Right</div>
+                <div id='handle_close_space_close_others' class='generic_button action inline'>Close Others</div>
+                <div id='handle_close_space_close_all' class='generic_button action inline'>Close All</div>
+            </div>
+            <div><div id='handle_close_space_close' class='generic_button action inline'>Close</div></div>
         </script>
     </body>
 
