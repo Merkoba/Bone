@@ -45,7 +45,7 @@ Bone.check_local_storage = function(obj)
 
     if(obj.theme === undefined)
     {
-        obj.theme = '#265c67'
+        obj.theme = '#464f6c'
         save = true
     }
 
