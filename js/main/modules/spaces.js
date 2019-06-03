@@ -194,7 +194,7 @@ Bone.switch_space = function(direction='right')
     Bone.change_space(new_space.num)
 }
 
-Bone.start_spaces = function()
+Bone.start_autostart_spaces = function()
 {
     let autostart = Bone.get_autostart_presets()
 
@@ -387,4 +387,121 @@ Bone.swv = function(num=false, space=false)
     }
 
     return Bone.space(space)[`webview_${num}`]
+}
+
+// Setups the handle close space window
+Bone.setup_handle_close_space = function()
+{
+    Bone.$('#handle_close_space_close').addEventListener('click', function(e)
+    {
+        Bone.close_space(Bone.handled_close_space)
+        Bone.msg_handle_close_space.close()
+    })
+ 
+    Bone.$('#handle_close_space_close_left').addEventListener('click', function(e)
+    {
+        Bone.close_space_left(Bone.handled_close_space)
+        Bone.msg_handle_close_space.close()
+    })
+ 
+    Bone.$('#handle_close_space_close_right').addEventListener('click', function(e)
+    {
+        Bone.close_space_right(Bone.handled_close_space)
+        Bone.msg_handle_close_space.close()
+    })
+ 
+    Bone.$('#handle_close_space_close_others').addEventListener('click', function(e)
+    {
+        Bone.close_space_others(Bone.handled_close_space)
+        Bone.msg_handle_close_space.close()
+    })
+ 
+    Bone.$('#handle_close_space_close_all').addEventListener('click', function(e)
+    {
+        Bone.close_space_all(Bone.handled_close_space)
+        Bone.msg_handle_close_space.close()
+    })
+}
+
+Bone.show_handle_close_space = function(n=false)
+{
+    if(!n)
+    {
+        n = Bone.num()
+    }
+
+    Bone.handled_close_space = n
+    Bone.msg_handle_close_space.show()
+}
+
+Bone.close_space_left = function(n)
+{
+    let spaces = Bone.get_spaces()
+    
+    for(let space of spaces)
+    {
+        if(space.num !== n)
+        {
+            Bone.close_space(space.num)
+        }
+
+        else
+        {
+            break
+        }
+    }
+}
+
+Bone.close_space_right = function(n)
+{
+    let spaces = Bone.get_spaces()
+    
+    for(let space of spaces.slice(0).reverse())
+    {
+        if(space.num !== n)
+        {
+            Bone.close_space(space.num)
+        }
+
+        else
+        {
+            break
+        }
+    }
+}
+
+Bone.close_space_others = function(n)
+{
+    let spaces = Bone.get_spaces()
+    
+    for(let space of spaces.slice(0).reverse())
+    {
+        if(space.num !== n)
+        {
+            Bone.close_space(space.num)
+        }
+    }
+}
+
+Bone.close_space_all = function()
+{
+    let spaces = Bone.get_spaces()
+    
+    for(let space of spaces.slice(0).reverse())
+    {
+        Bone.close_space(space.num)
+    }
+}
+
+// Closes all spaces and restarts using the autostart presets
+Bone.restart_autostart_spaces = function()
+{
+    if(!confirm('Are you sure you want to restart using the AutoStart presets?'))
+    {
+        return false
+    }
+
+    Bone.destroy_spaces()
+    Bone.start_autostart_spaces()
+    Bone.close_all_windows()
 }

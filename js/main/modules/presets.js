@@ -442,9 +442,14 @@ Bone.setup_autostart = function()
         Bone.update_autostart_order()
     })
 
-    Bone.$('#autostart_disable_all').addEventListener('click', function(e)
+    Bone.$('#autostart_disable').addEventListener('click', function(e)
     {
         Bone.disable_all_autostart()
+    })
+
+    Bone.$('#autostart_restart').addEventListener('click', function(e)
+    {
+        Bone.restart_autostart_spaces()
     })
 
     Bone.update_autostart_order()
@@ -478,14 +483,14 @@ Bone.update_autostart_presets = function()
         }
 
         Bone.$('#autostart_info').style.display = 'block'
-        Bone.$('#autostart_disable_all').style.display = 'block'
+        Bone.$('#autostart_buttons').style.display = 'flex'
     }
     
     else
     {
         c.textContent = `You haven't set any preset to autostart yet`
         Bone.$('#autostart_info').style.display = 'none'
-        Bone.$('#autostart_disable_all').style.display = 'none'
+        Bone.$('#autostart_buttons').style.display = 'none'
     }
 }
 

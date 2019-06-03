@@ -80,6 +80,11 @@ Bone.create_windows = function()
         id: 'handle_history'
     }))
 
+    Bone.msg_handle_close_space = Msg.factory(Object.assign({}, common, titlebar,
+    {
+        id: 'handle_close_space'
+    }))
+
     Bone.msg_menu.set(Bone.template_menu())
     Bone.msg_create_preset.set(Bone.template_create_preset())
     Bone.msg_handle_preset.set(Bone.template_handle_preset())
@@ -89,6 +94,7 @@ Bone.create_windows = function()
     Bone.msg_open_preset.set(Bone.template_open_preset())
     Bone.msg_autostart.set(Bone.template_autostart())
     Bone.msg_handle_history.set(Bone.template_handle_history())
+    Bone.msg_handle_close_space.set(Bone.template_handle_close_space())
 
     Bone.msg_create_preset.set_title('Save Preset')
     Bone.msg_autostart.set_title('AutoStart Presets')

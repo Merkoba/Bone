@@ -206,7 +206,10 @@
                     <div class='small_info'>Presets load from top to bottom</div>
                 </div>
                 <div id='autostart_items'></div>
-                <div id='autostart_disable_all'>Disable All</div>
+                <div class='separate_horizontal' id='autostart_buttons'>
+                    <div id='autostart_disable' class='action pointer'>Disable</div>
+                    <div id='autostart_restart' class='action pointer'>Restart</div>
+                </div>
             </div>
         </script>
 
@@ -222,6 +225,16 @@
                         <div id='handle_history_layout'></div>
                     </div>
                 </div>
+            </div>
+        </script>
+
+        <script id='template_handle_close_space' type='text/x-handlebars-template' class='template'>
+            <div class='separate_horizontal unselectable'>
+                <div id='handle_close_space_close' class='generic_button action inline'>Close</div>
+                <div id='handle_close_space_close_left' class='generic_button action inline'>Close All Left</div>
+                <div id='handle_close_space_close_right' class='generic_button action inline'>Close All Right</div>
+                <div id='handle_close_space_close_others' class='generic_button action inline'>Close Others</div>
+                <div id='handle_close_space_close_all' class='generic_button action inline'>Close All</div>
             </div>
         </script>
     </body>

@@ -331,11 +331,7 @@ Bone.setup_menu = function()
 
     Bone.$('#menu_close_space').addEventListener('click', function()
     {
-        if(confirm('Are you sure you want to close this space?'))
-        {
-            Bone.close_space()
-            Bone.close_all_windows()
-        }
+        Bone.show_handle_close_space()
     })
 
     Bone.$('#menu_duplicate_space').addEventListener('click', function()
@@ -455,16 +451,6 @@ Bone.show_menu = function()
         if(disable_back)
         {
             Bone.$('#menu_back').classList.add('disabled')
-        }
-
-        if(Bone.get_spaces().length > 1)
-        {
-            Bone.$('#menu_close_space').classList.remove('disabled')
-        }
-        
-        else
-        {
-            Bone.$('#menu_close_space').classList.add('disabled')
         }
     })
 }
