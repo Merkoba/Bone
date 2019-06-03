@@ -506,7 +506,7 @@ select
     border: 0px solid grey;
 }
 
-#panel_toolbar
+#panel_toolbar, #panel_toolbar_right
 {
     display: grid;
     grid-gap: 0px;
@@ -515,12 +515,23 @@ select
     justify-content: center;
     font-size: 0.9rem;
     justify-self: flex-start;
+    height: 100%;
+}
+
+#panel_toolbar_right
+{
+    justify-self: flex-end;
 }
 
 .panel_toolbar_item
 {
     cursor: pointer;
-    padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #handle_history_container
@@ -624,16 +635,4 @@ select
 #handle_close_space_close
 {
     margin-top: 20px;
-}
-
-#panel_toolbar_right
-{
-    display: grid;
-    grid-gap: 0px;
-    grid-auto-flow: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    justify-self: flex-end;
-    height: 100%;
 }
