@@ -627,3 +627,8 @@ select
     font-size: 0.8rem;
     cursor: pointer;
 }
+
+#panel_new_space_icon
+{
+    cursor: pointer;
+}

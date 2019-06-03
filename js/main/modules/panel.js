@@ -132,6 +132,11 @@ Bone.setup_panel = function()
         Bone.focus_webview(num)
     })
 
+    Bone.$('#panel_new_space_icon').addEventListener('click', function()
+    {
+        Bone.new_space()
+    })
+
     panel.style.height = `${Bone.config.panel_height}px`
 }
 
