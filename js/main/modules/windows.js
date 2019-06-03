@@ -37,6 +37,7 @@ Bone.create_windows = function()
         after_close: function()
         {
             Bone.$('#create_preset_name').value = ''
+            Bone.$('#create_preset_autostart').checked = true
         }
     }))
 

@@ -586,6 +586,16 @@ select
     margin-top: 20px;
 }
 
+#create_preset_autostart_container
+{
+    margin-top: 20px;
+}
+
+#create_preset_autostart_label
+{
+    margin-bottom: 5px;
+}
+
 #url_suggest
 {
     display: none;

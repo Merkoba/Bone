@@ -3,14 +3,14 @@ Bone.setup_create_preset = function()
 {
     Bone.$('#create_preset_submit').addEventListener('click', function()
     {
-        Bone.do_create_preset(Bone.$('#create_preset_name').value)
+        Bone.do_create_preset()
     })
 
     Bone.$('#create_preset_name').addEventListener('keyup', function(e)
     {
         if(e.key === 'Enter')
         {
-            Bone.do_create_preset(this.value)
+            Bone.do_create_preset()
         }
     })
 }
@@ -18,14 +18,23 @@ Bone.setup_create_preset = function()
 // Does the create preset action
 Bone.do_create_preset = function(name)
 {
-    if(!Bone.save_preset(name))
+    let obj = {}
+    obj.name = Bone.$('#create_preset_name').value
+    obj.autostart = Bone.$('#create_preset_autostart').checked
+
+    if(!Bone.save_preset(obj))
     {
         return false
     }
 
     Bone.update_presets()
     Bone.msg_create_preset.close()
-    Bone.info(`Preset '${name}' created`)
+    Bone.info(`Preset '${obj.name}' created`)
+
+    if(obj.autostart)
+    {
+        Bone.update_autostart_order()
+    }
 }
 
 // Setups the edit preset window
@@ -39,6 +48,11 @@ Bone.setup_handle_preset = function()
     Bone.$('#handle_preset_submit').addEventListener('click', function()
     {
         Bone.do_handle_preset_update(Bone.$('#handle_preset_name').value)
+    })
+
+    Bone.$('#handle_preset_save').addEventListener('click', function()
+    {
+        Bone.show_create_preset()
     })
     
     Bone.$('#handle_preset_delete').addEventListener('click', function()
@@ -96,7 +110,13 @@ Bone.do_handle_preset_update = function(name)
     if(confirm('Are you sure you want to update this preset with the current settings?'))
     {
         let oname = Bone.handled_preset
-        Bone.save_preset(name, oname)
+
+        if(name !== oname)
+        {
+            Bone.replace_preset(oname, name)
+        }
+        
+        Bone.save_preset({name:name}, false)
         Bone.update_presets()
         Bone.msg_handle_preset.close()
         Bone.info(`Preset '${name}' updated`)
@@ -140,16 +160,16 @@ Bone.update_presets = function()
 }
 
 // Saves a preset based on current state
-Bone.save_preset = function(name, replace=false)
+Bone.save_preset = function(obj, warn_replace=true)
 {
-    name = name.trim()
+    obj.name = obj.name.trim()
     
-    if(!name)
+    if(!obj.name)
     {
         return false
     }
     
-    let preset = Bone.storage.presets[name]
+    let preset = Bone.storage.presets[obj.name]
     let space = Bone.space()
     let autostart = false
 
@@ -158,37 +178,27 @@ Bone.save_preset = function(name, replace=false)
         autostart = preset.autostart
     }
 
-    if(replace && name !== replace)
+    if(Bone.storage.presets[obj.name])
     {
-        delete Bone.storage.presets[replace]
-
-        let changed = false
-
-        for(let space of Bone.get_spaces())
+        if(warn_replace)
         {
-            if(space.name === replace)
+            if(!confirm('A preset with this name already exists. Are you sure you want to overwrite it?'))
             {
-                space.name = name
-                changed = true
+                return false
             }
-        }
-
-        if(changed)
-        {
-            Bone.update_spaces()
         }
     }
     
-    let obj = {}
-    obj.autostart = autostart
-    obj.webview_1 = Bone.clone_object(space.webview_1)
-    obj.webview_2 = Bone.clone_object(space.webview_2)
-    obj.webview_3 = Bone.clone_object(space.webview_3)
-    obj.webview_4 = Bone.clone_object(space.webview_4)
-    obj.special = Bone.clone_object(space.special)
-    obj.layout = space.layout
-    obj.last_used = Date.now()
-    Bone.storage.presets[name] = obj
+    let obj_2 = {}
+    obj_2.autostart = obj.autostart
+    obj_2.webview_1 = Bone.clone_object(space.webview_1)
+    obj_2.webview_2 = Bone.clone_object(space.webview_2)
+    obj_2.webview_3 = Bone.clone_object(space.webview_3)
+    obj_2.webview_4 = Bone.clone_object(space.webview_4)
+    obj_2.special = Bone.clone_object(space.special)
+    obj_2.layout = space.layout
+    obj_2.last_used = Date.now()
+    Bone.storage.presets[obj.name] = obj_2
     Bone.save_local_storage()
 
     return true
@@ -491,4 +501,35 @@ Bone.show_open_preset = function()
     {
         Bone.$('#open_preset_container').focus()
     })
+}
+
+// Shows the create preset window
+Bone.show_create_preset = function()
+{
+    Bone.msg_create_preset.show(function()
+    {
+        Bone.$('#create_preset_name').focus()
+    })
+}
+
+// Deletes a preset
+Bone.replace_preset = function(oname, name)
+{
+    delete Bone.presets[name]
+
+    let changed = false
+
+    for(let space of Bone.get_spaces())
+    {
+        if(space.name === oname)
+        {
+            space.name = name
+            changed = true
+        }
+    }
+
+    if(changed)
+    {
+        Bone.update_spaces()
+    }
 }

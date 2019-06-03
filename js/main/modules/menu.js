@@ -276,10 +276,7 @@ Bone.setup_menu = function()
 
     Bone.$('#menu_save_preset').addEventListener('click', function()
     {
-        Bone.msg_create_preset.show(function()
-        {
-            Bone.$('#create_preset_name').focus()
-        })
+        Bone.show_create_preset()
     })
 
     Bone.$('#menu_clear_presets').addEventListener('click', function()

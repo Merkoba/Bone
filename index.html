@@ -153,6 +153,10 @@
 
         <script id='template_create_preset' type='text/x-handlebars-template' class='template'>
             <input type='text' id='create_preset_name' class='preset_input' placeholder='Name'>
+            <div id='create_preset_autostart_container'>
+                <div id='create_preset_autostart_label'>Enable AutoStart</div>
+                <input type='checkbox' id='create_preset_autostart' checked>
+            </div>
             <div><div id='create_preset_submit' class='preset_button action inline unselectable'>Save</div></div>
         </script>
 
@@ -161,6 +165,7 @@
                 <input type='text' id='handle_preset_name' class='preset_input' placeholder='Name'>
                 <div id='handle_preset_row_1' class='separate_horizontal'>
                     <div id='handle_preset_submit' class='preset_button action inline'>Update</div>
+                    <div id='handle_preset_save' class='preset_button action inline'>Save</div>
                     <div id='handle_preset_autostart' class='preset_button action inline'></div>
                     <div id='handle_preset_delete' class='preset_button action inline'>Delete</div>
                 </div>
