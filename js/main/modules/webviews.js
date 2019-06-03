@@ -377,7 +377,6 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             resize.append(Bone.create_resize_handle('ns', [1, 2], [3, 4], 2, 'after_special_row_1'))
         }
 
-        let space = space
         let row_1 = 1
 
         if(space.special && space.special.row_1)
