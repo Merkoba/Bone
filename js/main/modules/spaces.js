@@ -43,7 +43,7 @@ Bone.change_space = function(n, obj=false)
     Bone.current_space = n
     Bone.update_spaces()
     Bone.apply_layout(false, false)
-    Bone.update_menu_widgets()
+    Bone.update_webview_widgets()
     Bone.focus_webview()
     Bone.update_focused_webview()
 }
@@ -128,7 +128,7 @@ Bone.create_space_from_object = function(obj, n=false)
 
     if(Object.keys(obj).length > 0)
     {
-        space.webview_1 = Bone.clone_object(obj.webview_1)
+        space.webview_1 =Bone.clone_object(obj.webview_1)
         space.webview_2 = Bone.clone_object(obj.webview_2)
         space.webview_3 = Bone.clone_object(obj.webview_3)
         space.webview_4 = Bone.clone_object(obj.webview_4)
@@ -149,7 +149,7 @@ Bone.create_space_from_object = function(obj, n=false)
     }
 
     space.num = n
-
+    
     space.history =
     {
         webview_1: [],

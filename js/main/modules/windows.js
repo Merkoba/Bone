@@ -50,7 +50,7 @@ Bone.create_windows = function()
         }
     }))
 
-    Bone.msg_swap_webviews = Msg.factory(Object.assign({}, common,
+    Bone.msg_swap_webviews = Msg.factory(Object.assign({}, common, titlebar,
     {
         id: 'swap_webviews'
     }))
@@ -65,7 +65,7 @@ Bone.create_windows = function()
         id: 'history'
     }))
 
-    Bone.msg_open_preset = Msg.factory(Object.assign({}, common,
+    Bone.msg_open_preset = Msg.factory(Object.assign({}, common, titlebar,
     {
         id: 'open_preset'
     }))
@@ -114,6 +114,8 @@ Bone.create_windows = function()
     Bone.msg_space_options.set_title('Space Options')
     Bone.msg_handle_new_space.set_title('New Space')
     Bone.msg_handle_close_space.set_title('Close Space')
+    Bone.msg_swap_webviews.set_title('Swap Webviews')
+    Bone.msg_open_preset.set_title('Open Preset')
 }
 
 // Closes all modal windows

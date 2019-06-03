@@ -362,28 +362,13 @@ Bone.setup_menu = function()
 // Updates widgest in the menu window
 Bone.update_menu_widgets = function()
 {
-    Bone.update_selected_layout()
-
-    let url_inputs = Bone.$$('.menu_url_input')
-
-    for(let input of url_inputs)
-    {
-        let num = input.id.replace('menu_url_', '')
-        input.value = Bone.swv(num).url
-    }
-
-    for(let i=1; i<=Bone.config.num_webviews; i++)
-    {
-        Bone.set_size_label(i)
-        Bone.set_zoom_label(i)
-    }
-
     Bone.$('#menu_theme_color_picker').value = Bone.storage.theme
     Bone.$('#menu_auto_hide_panel_checkbox').checked = Bone.storage.auto_hide_panel
     Bone.$('#menu_resize_handle_size_input').value = Bone.storage.resize_handle_size
     Bone.$('#menu_cycle_spaces_on_wheel_checkbox').checked = Bone.storage.cycle_spaces_on_wheel
     Bone.$('#menu_wrap_spaces_on_wheel_checkbox').checked = Bone.storage.wrap_spaces_on_wheel
-
+    
+    Bone.update_webview_widgets()
     Bone.update_wrap_spaces_on_wheel_container()
 }
 
@@ -453,4 +438,32 @@ Bone.show_menu = function()
             Bone.$('#menu_back').classList.add('disabled')
         }
     })
+}
+
+// Updates the webview widgets
+Bone.update_webview_widgets = function(space_num=false)
+{
+    if(space_num)
+    {
+        if(space_num !== Bone.current_space)
+        {
+            return false
+        }
+    }
+
+    Bone.update_selected_layout()
+
+    let url_inputs = Bone.$$('.menu_url_input')
+
+    for(let input of url_inputs)
+    {
+        let num = input.id.replace('menu_url_', '')
+        input.value = Bone.swv(num).url
+    }
+
+    for(let i=1; i<=Bone.config.num_webviews; i++)
+    {
+        Bone.set_size_label(i)
+        Bone.set_zoom_label(i)
+    }   
 }

@@ -45,10 +45,10 @@ Bone.create_webview = function(num)
         }
 
         history.push(e.url)
-        Bone.swv(wv.dataset.num).url = e.url
+        Bone.swv(wv.dataset.num, wv.dataset.space).url = e.url
         Bone.space_modified()
         Bone.save_local_storage()
-        Bone.$(`#menu_url_${wv.dataset.num}`).value = e.url
+        Bone.update_webview_widgets(wv.dataset.space)
         Bone.update_url()
         Bone.add_url_to_global_history(e.url)
     })
@@ -810,7 +810,7 @@ Bone.swap_webview = function(num)
 
     for(let item of items)
     {
-        let num_2 = parseInt(item.id.replace('swap_webviews_', ''))
+        let num_2 = parseInt(item.dataset.num)
 
         if(num === num_2)
         {
@@ -819,9 +819,10 @@ Bone.swap_webview = function(num)
 
         else
         {
-            let wv = Bone.swv(num_2)
+            let swv = Bone.swv(num_2)
             item.style.display = 'block'
-            item.textContent = `Swap With: (${num_2}) ${wv.url.substring(0, Bone.config.swap_max_url_length)}`
+            item.textContent = `Swap With: (${num_2}) ${swv.url.substring(0, Bone.config.swap_max_url_length)}`
+            item.dataset.url = swv.url
         }
     }
 
@@ -839,7 +840,7 @@ Bone.setup_swap_webviews = function()
             return false
         }
 
-        let num = parseInt(e.target.id.replace('swap_webviews_', ''))
+        let num = parseInt(e.target.dataset.num)
         Bone.do_webview_swap(Bone.swapping_webview, num)
         Bone.msg_swap_webviews.close()
     })
@@ -858,8 +859,8 @@ Bone.do_webview_swap = function(num_1, num_2)
     w1.zoom = w2.zoom
     w2.zoom = ozoom_1
 
-    Bone.$(`#menu_url_${num_1}`).value = w1.url
-    Bone.$(`#menu_url_${num_2}`).value = w2.url
+    Bone.$(`#menu_url_${num_1}`).dataset.url = w1.url
+    Bone.$(`#menu_url_${num_2}`).dataset.url = w2.url
 
     Bone.save_local_storage()
     Bone.apply_url(num_1)
