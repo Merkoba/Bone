@@ -160,14 +160,14 @@ Bone.update_url_suggest = function()
         return false
     }
 
-    let matches = Bone.find_url_matches(value)
+    let matches = Bone.find_url_matches(value, 20)
 
     if(matches.length === 0)
     {
         return false
     }
     
-    for(let url of matches.slice(0, 20))
+    for(let url of matches)
     {
         let item = document.createElement('div')
         item.classList.add('url_suggest_item')

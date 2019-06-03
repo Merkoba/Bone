@@ -134,7 +134,7 @@ Bone.check_url = function(url)
 }
 
 // Finds global history urls that match a certain url
-Bone.find_url_matches = function(url)
+Bone.find_url_matches = function(url, max=false)
 {
     url = url.trim()
 
@@ -144,12 +144,19 @@ Bone.find_url_matches = function(url)
     }
 
     let matches = []
+    let found = 0
 
     for(let url_2 of Bone.storage.global_history)
     {
         if(url.includes(url_2) || url_2.includes(url))
         {
             matches.push(url_2)
+            found += 1
+
+            if(max && found >= max)
+            {
+                break
+            }
         }
     }
 

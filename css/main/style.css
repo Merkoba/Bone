@@ -598,6 +598,8 @@ select
     grid-gap: 2px;
     grid-auto-columns: auto;
     align-items: center;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .url_suggest_item
@@ -606,4 +608,5 @@ select
     box-shadow: 0 0 1px currentColor;
     padding: 5px;
     cursor: pointer;
+    white-space: nowrap;
 }

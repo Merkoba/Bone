@@ -86,7 +86,7 @@ Bone.apply_theme = function()
         background-color: ${bg_color_3} !important;
     }
 
-    .Msg-container ::-webkit-scrollbar-thumb
+    ::-webkit-scrollbar-thumb
     {
         background-color: ${bg_color_3} !important;
     }
