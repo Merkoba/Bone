@@ -82,7 +82,7 @@ Bone.setup_panel = function()
 
             else
             {
-                Bone.info('You can create presets based on current settings. You can open them in different spaces, as well as setting them to autostart.')
+                Bone.show_create_preset()                
             }
         }
 

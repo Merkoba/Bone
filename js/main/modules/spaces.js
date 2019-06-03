@@ -220,14 +220,14 @@ Bone.start_spaces = function()
 // Closes current or specified space
 Bone.close_space = function(n=false)
 {
-    if(Bone.get_spaces().length === 1)
-    {
-        return false
-    }
-
     if(n === false)
     {
         n = Bone.current_space
+    }
+
+    if(Bone.get_spaces().length === 1)
+    {
+        Bone.new_space()
     }
 
     if(n === Bone.current_space)

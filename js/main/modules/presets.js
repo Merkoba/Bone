@@ -35,6 +35,10 @@ Bone.do_create_preset = function(name)
     {
         Bone.update_autostart_order()
     }
+
+    Bone.space().name = obj.name
+    Bone.space_modified()
+    Bone.update_spaces()
 }
 
 // Setups the edit preset window
