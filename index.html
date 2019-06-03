@@ -26,7 +26,7 @@
                 </div>
                 <input type='text' id='url'>
                 <div id='spaces'></div>
-                <i class='fas fa-plus panel_toolbar_item panel_icon action' id='panel_new_space_icon'></i>
+                <i class='fas fa-caret-down panel_toolbar_item panel_icon action' id='panel_space_options'></i>
             </div>
             <div id='webview_containers'></div>
             <div id='url_suggest'></div>
@@ -235,6 +235,13 @@
                 <div id='handle_close_space_close_right' class='generic_button action inline'>Close All Right</div>
                 <div id='handle_close_space_close_others' class='generic_button action inline'>Close Others</div>
                 <div id='handle_close_space_close_all' class='generic_button action inline'>Close All</div>
+            </div>
+        </script>
+
+        <script id='template_space_options' type='text/x-handlebars-template' class='template'>
+            <div class='separate_horizontal unselectable'>
+                <div id='space_options_new' class='generic_button action inline'>New Space</div>
+                <div id='space_options_close' class='generic_button action inline'>Close Space</div>
             </div>
         </script>
     </body>

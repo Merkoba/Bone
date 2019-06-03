@@ -427,7 +427,7 @@ Bone.show_handle_close_space = function(n=false)
 {
     if(!n)
     {
-        n = Bone.num()
+        n = Bone.current_space
     }
 
     Bone.handled_close_space = n
@@ -504,4 +504,26 @@ Bone.restart_autostart_spaces = function()
     Bone.destroy_spaces()
     Bone.start_autostart_spaces()
     Bone.close_all_windows()
+}
+
+// Setups the space options window
+Bone.setup_space_options = function()
+{
+    Bone.$('#space_options_new').addEventListener('click', function(e)
+    {
+        Bone.new_space()
+        Bone.msg_space_options.close()
+    })
+    
+    Bone.$('#space_options_close').addEventListener('click', function(e)
+    {
+        Bone.show_handle_close_space()
+        Bone.msg_space_options.close()
+    })
+}
+
+// Shows the space options window
+Bone.show_space_options = function()
+{
+    Bone.msg_space_options.show()
 }

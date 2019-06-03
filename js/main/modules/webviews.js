@@ -666,7 +666,7 @@ Bone.set_zoom_label = function(num, space_num=false)
 {
     if(!space_num)
     {
-        space_num = Bone.num()
+        space_num = Bone.current_space
     }
 
     if(space_num !== Bone.current_space)
