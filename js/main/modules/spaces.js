@@ -511,7 +511,7 @@ Bone.setup_space_options = function()
 {
     Bone.$('#space_options_new').addEventListener('click', function(e)
     {
-        Bone.new_space()
+        Bone.show_handle_new_space()
         Bone.msg_space_options.close()
     })
     
@@ -526,4 +526,36 @@ Bone.setup_space_options = function()
 Bone.show_space_options = function()
 {
     Bone.msg_space_options.show()
+}
+
+// Setups the handle new space window
+Bone.setup_handle_new_space = function()
+{
+    Bone.$('#handle_new_space_empty').addEventListener('click', function(e)
+    {
+        Bone.new_space()
+        Bone.close_all_windows() 
+    })
+
+    Bone.$('#handle_new_space_presets').addEventListener('change', function(e)
+    {
+        let selected = this.options[this.selectedIndex]
+
+        if(!selected.value)
+        {
+            return false
+        }
+
+        Bone.create_space(Bone.storage.presets[selected.value])
+
+        this.selectedIndex = 0
+
+        Bone.close_all_windows()
+    })
+}
+
+// Shows the handle new space window
+Bone.show_handle_new_space = function()
+{
+    Bone.msg_handle_new_space.show()
 }

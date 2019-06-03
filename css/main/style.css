@@ -631,3 +631,8 @@ select
 {
     cursor: pointer;
 }
+
+#handle_new_space_empty
+{
+    margin-top: 20px;
+}

@@ -85,6 +85,7 @@ Bone.init = function()
     Bone.setup_signals()
     Bone.setup_handle_close_space()
     Bone.setup_space_options()
+    Bone.setup_handle_new_space()
 
     Bone.remove_splash()
 

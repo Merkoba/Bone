@@ -131,6 +131,7 @@ Bone.do_handle_preset_update = function(name)
 Bone.update_presets = function()
 {
     let c = Bone.$('#menu_presets_select')
+    let c_2 = Bone.$('#handle_new_space_presets')
     c.innerHTML = ''
 
     let keys_sorted = Object.keys(Bone.storage.presets).sort(function(a, b)
@@ -143,14 +144,19 @@ Bone.update_presets = function()
         let el = document.createElement('option')
         el.textContent = name
         el.value = name
+        let el_2 = el.cloneNode(true)
         c.prepend(el)
+        c_2.prepend(el_2)
     }
 
     let el = document.createElement('option')
     el.textContent = '-- Presets --'
     el.value = ''
     el.selected = true
+    let el_2 = el.cloneNode(true)
+    el_2.selected = true
     c.prepend(el)
+    c_2.prepend(el_2)
 
     if(keys_sorted.length > 0)
     {
