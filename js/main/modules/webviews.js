@@ -664,6 +664,11 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 // Sets the zoom level to a webview
 Bone.set_zoom_label = function(num, space_num=false)
 {
+    if(!space_num)
+    {
+        space_num = Bone.num()
+    }
+
     if(space_num !== Bone.current_space)
     {
         return false
