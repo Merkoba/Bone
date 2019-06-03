@@ -107,11 +107,6 @@ body, html
     flex-direction: row;
 }
 
-.panel_icon
-{
-    font-size: 14px;
-}
-
 .action, .action_2
 {
     transition: text-shadow 500ms, box-shadow 500ms
