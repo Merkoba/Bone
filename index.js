@@ -45,11 +45,29 @@ exports.create_window = function()
                 win.webContents.send('on-find', '')
             }
         })
+
+        globalShortcut.register('CommandOrControl+T', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-new-space', '')
+            }
+        })
+
+        globalShortcut.register('CommandOrControl+N', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-new-space', '')
+            }
+        })
     })
 
     win.on('blur', () => 
     {
         globalShortcut.unregister('CommandOrControl+F')
+        globalShortcut.unregister('CommandOrControl+T')
+        globalShortcut.unregister('CommandOrControl+N')
     })
 }
 
@@ -65,6 +83,8 @@ app.on('ready', exports.create_window)
 app.on('window-all-closed', () => 
 {
     globalShortcut.unregister('CommandOrControl+F')
+    globalShortcut.unregister('CommandOrControl+T')
+    globalShortcut.unregister('CommandOrControl+N')
 
     // On macOS it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q

@@ -49,7 +49,7 @@ Bone.config =
     swap_max_url_length: 50,
     modules_path: './js/main/modules/',
     resize_double_click_delay: 350,
-    startpage: 'http://www.tiledhn.com/',
+    startpage: 'https://www.startpage.com',
     max_global_history_items: 1000
 }
 
@@ -82,6 +82,7 @@ Bone.init = function()
     Bone.setup_url_input()
     Bone.setup_url_suggest()
     Bone.setup_find()
+    Bone.setup_signals()
 
     Bone.remove_splash()
 

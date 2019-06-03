@@ -196,9 +196,18 @@ Bone.setup_separator = function()
 Bone.setup_find = function()
 {
     Bone.find = new FindInPage(remote.getCurrentWebContents())
+}
 
+// Setups signals between the main process and here
+Bone.setup_signals = function()
+{
     ipcRenderer.on('on-find', (e, args) => 
     {
         Bone.find.openFindWindow()
+    })
+    
+    ipcRenderer.on('on-new-space', (e, args) => 
+    {
+        Bone.new_space()
     })
 }
