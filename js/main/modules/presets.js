@@ -119,7 +119,7 @@ Bone.do_handle_preset_update = function(name)
         {
             Bone.replace_preset(oname, name)
         }
-        
+
         Bone.save_preset({name:name}, false)
         Bone.update_presets()
         Bone.msg_handle_preset.close()
@@ -188,6 +188,11 @@ Bone.save_preset = function(obj, warn_replace=true)
         autostart = preset.autostart
     }
 
+    else
+    {
+        autostart = obj.autostart || false
+    }
+
     if(Bone.storage.presets[obj.name])
     {
         if(warn_replace)
@@ -200,7 +205,7 @@ Bone.save_preset = function(obj, warn_replace=true)
     }
     
     let obj_2 = {}
-    obj_2.autostart = obj.autostart
+    obj_2.autostart = autostart
     obj_2.webview_1 = Bone.clone_object(space.webview_1)
     obj_2.webview_2 = Bone.clone_object(space.webview_2)
     obj_2.webview_3 = Bone.clone_object(space.webview_3)
@@ -427,7 +432,8 @@ Bone.setup_autostart = function()
 
             else
             {
-                return false
+                let el = e.target.parentNode.children[e.target.parentNode.children.length - 1]
+                el.after(e.target)
             }
         }
 
@@ -441,7 +447,8 @@ Bone.setup_autostart = function()
 
             else
             {
-                return false
+                let el = e.target.parentNode.children[0]
+                el.before(e.target)
             }
         }
 
