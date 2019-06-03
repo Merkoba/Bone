@@ -1392,7 +1392,7 @@ Bone.show_handle_history = function()
 
             item.addEventListener('click', function()
             {
-                Bone.change_url(parseInt(Bone.handled_history_item.dataset.url), this.innerHTML)
+                Bone.change_url(Bone.handled_history_item.dataset.url, parseInt(this.innerHTML))
                 Bone.close_all_windows()
             })
         }

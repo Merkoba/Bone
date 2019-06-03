@@ -438,6 +438,11 @@ Bone.setup_autostart = function()
         Bone.update_autostart_order()
     })
 
+    Bone.$('#autostart_disable_all').addEventListener('click', function(e)
+    {
+        Bone.disable_all_autostart()
+    })
+
     Bone.update_autostart_order()
 }
 
@@ -469,12 +474,14 @@ Bone.update_autostart_presets = function()
         }
 
         Bone.$('#autostart_info').style.display = 'block'
+        Bone.$('#autostart_disable_all').style.display = 'block'
     }
     
     else
     {
         c.textContent = `You haven't set any preset to autostart yet`
         Bone.$('#autostart_info').style.display = 'none'
+        Bone.$('#autostart_disable_all').style.display = 'none'
     }
 }
 
@@ -515,7 +522,7 @@ Bone.show_create_preset = function()
 // Deletes a preset
 Bone.replace_preset = function(oname, name)
 {
-    delete Bone.presets[name]
+    delete Bone.storage.presets[name]
 
     let changed = false
 
@@ -532,4 +539,23 @@ Bone.replace_preset = function(oname, name)
     {
         Bone.update_spaces()
     }
+}
+
+// Disables all autostart presets from autostarting
+Bone.disable_all_autostart = function()
+{
+    if(!confirm('Are you sure you want to disable all AutoStart presets?'))
+    {
+        return false
+    }
+    
+    let autostart = Bone.get_autostart_presets()
+
+    for(let name of autostart)
+    {
+        Bone.storage.presets[name].autostart = false
+    }
+
+    Bone.save_local_storage()
+    Bone.update_autostart_presets()
 }

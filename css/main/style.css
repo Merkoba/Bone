@@ -620,3 +620,10 @@ select
     cursor: pointer;
     white-space: nowrap;
 }
+
+#autostart_disable_all
+{
+    margin-top: 15px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
