@@ -546,7 +546,10 @@ Bone.setup_handle_new_space = function()
             return false
         }
 
-        Bone.create_space(Bone.storage.presets[selected.value])
+        let preset = Bone.storage.presets[selected.value]
+        preset.name = selected.value
+
+        Bone.create_space(preset)
 
         this.selectedIndex = 0
 
