@@ -155,3 +155,15 @@ Bone.find_url_matches = function(url)
 
     return matches
 }
+
+// Checks if all text in a text element is selected
+Bone.check_if_all_text_selected = function(element)
+{
+    return element.selectionStart === 0 && element.selectionEnd === element.value.length
+}
+
+// Moves the cursor to the end
+Bone.move_cursor_to_end = function(element)
+{
+    element.selectionStart = element.selectionEnd = element.value.length
+}

@@ -1483,6 +1483,8 @@ Bone.add_url_to_global_history = function(url)
 // Changes the url of a specified webview
 Bone.change_url = function(url, num=false)
 {
+    url = url.trim()
+    
     if(!num)
     {
         num = Bone.num()

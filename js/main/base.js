@@ -31,6 +31,7 @@ Bone.panel_active = true
 Bone.active_resize_handle = false
 Bone.spaces = []
 Bone.current_space = 0
+Bone.input_selected = false
 
 Bone.config =
 {
