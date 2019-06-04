@@ -4,9 +4,7 @@
 
 const fs = require('fs')
 const path = require('path')
-// const remote = require('electron').remote
 const {remote, ipcRenderer} = require('electron')
-const main = remote.require('./index.js')
 const contextMenu = require('electron-context-menu')
 const {FindInPage} = require('electron-find')
 const Msg = require('msg-modal')
@@ -14,6 +12,7 @@ const ColorLib = require('mad-colorlib')
 const Separator = require('mad-separator')
 const Handlebars = require('handlebars')
 const Tippy = require('tippy.js')
+const root_path = require('electron-root-path').rootPath
 
 // Init main object and some properties
 
@@ -35,6 +34,8 @@ Bone.active_resize_handle = false
 Bone.spaces = []
 Bone.current_space = 0
 Bone.input_selected = false
+Bone.hash_calculated = false
+Bone.hash_calculating = false
 
 Bone.config =
 {

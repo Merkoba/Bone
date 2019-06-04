@@ -653,3 +653,8 @@ select
 {
     text-decoration: underline;
 }
+
+#about_content
+{
+    font-size: 1.2rem;
+}

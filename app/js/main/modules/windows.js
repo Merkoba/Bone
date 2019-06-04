@@ -95,6 +95,11 @@ Bone.create_windows = function()
         id: 'handle_close_space'
     }))
 
+    Bone.msg_about = Msg.factory(Object.assign({}, common, titlebar,
+    {
+        id: 'about'
+    }))
+
     Bone.msg_menu.set(Bone.template_menu())
     Bone.msg_create_preset.set(Bone.template_create_preset())
     Bone.msg_handle_preset.set(Bone.template_handle_preset())
@@ -107,6 +112,7 @@ Bone.create_windows = function()
     Bone.msg_space_options.set(Bone.template_space_options())
     Bone.msg_handle_new_space.set(Bone.template_handle_new_space())
     Bone.msg_handle_close_space.set(Bone.template_handle_close_space())
+    Bone.msg_about.set(Bone.template_about())
 
     Bone.msg_create_preset.set_title('Save Preset')
     Bone.msg_autostart.set_title('AutoStart Presets')
@@ -250,4 +256,30 @@ Bone.start_tooltips = function()
             a11y: false
         })
     }
+}
+
+// Gets the project hash if it doesn't exist already and shows the about window
+Bone.show_about = function()
+{
+    if(Bone.calculating_hash)
+    {
+        return false
+    }
+
+    if(Bone.hash_calculated)
+    {
+        return Bone.msg_about.show()
+    }
+
+    Bone.calculating_hash = true
+    const HashFiles = require('hash-files')
+
+    HashFiles({files:`${root_path}/app/**`}, function(error, hash)
+    {
+        Bone.calculating_hash = false
+        Bone.hash_calculated = true
+        Bone.hash = hash
+        Bone.msg_about.set_title(Bone.hash)
+        Bone.msg_about.show()
+    })
 }

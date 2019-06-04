@@ -140,6 +140,14 @@ Bone.setup_panel = function()
         Bone.show_menu()
     })
 
+    panel_menu_container.addEventListener('auxclick', function(e)
+    {
+        if(e.which === 2)
+        {
+            Bone.show_about()
+        }
+    })
+
     Bone.$('#panel_space_options_container').addEventListener('click', function(e)
     {
         Bone.show_space_options()

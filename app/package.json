@@ -2,7 +2,7 @@
   "name": "Bone",
   "productName": "Bone",
   "version": "1.0.0",
-  "main": "app/index.js",
+  "main": "index.js",
   "dependencies": {
     "electron-context-menu": "~0.12.1",
     "electron-find": "~1.0.5",
