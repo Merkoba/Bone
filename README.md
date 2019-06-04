@@ -34,6 +34,6 @@ To run it without building it
 
 ### Screenshots
 
-![](https://i.imgur.com/p9lBtoH.png)
+![](https://i.imgur.com/p9lBtoH.jpg)
 
-![](https://i.imgur.com/W9dYoL7.png)
+![](https://i.imgur.com/W9dYoL7.jpg)
