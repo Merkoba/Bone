@@ -169,6 +169,14 @@ Bone.setup_panel = function()
         }
     })
 
+    Bone.$('#panel_zoom_container').addEventListener('auxclick', function(e)
+    {
+        if(e.which === 2)
+        {
+            Bone.reset_zoom(Bone.num())
+        }
+    })
+
     panel.style.height = `${Bone.config.panel_height}px`
 }
 

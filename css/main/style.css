@@ -538,6 +538,14 @@ select
     border: 0px solid grey;
 }
 
+#panel_zoom_container
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
 #handle_history_layout_container
 {
     margin-top: 20px;

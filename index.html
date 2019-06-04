@@ -23,8 +23,10 @@
                 <div id='panel_toolbar'>
                     <div id='panel_focused' class='panel_toolbar_item action'>[1]</div>
                     <div id='panel_history' class='panel_toolbar_item action'>History</div>
-                    <i id='panel_zoom_in' class='fas fa-plus panel_toolbar_item action'></i>
-                    <i id='panel_zoom_out' class='fas fa-minus panel_toolbar_item action'></i>
+                    <div id='panel_zoom_container' data-tippy-content='Middle click to reset zoom' class='nice_title'>
+                        <i id='panel_zoom_in' class='fas fa-plus panel_toolbar_item action'></i>
+                        <i id='panel_zoom_out' class='fas fa-minus panel_toolbar_item action'></i>
+                    </div>
                 </div>
                 <input type='text' id='url'>
                 <div id='spaces' data-tippy-content='Wheel or click to switch. Shift+Wheel to move. Middle click to close.' class='nice_title'></div>
@@ -98,8 +100,6 @@
                     </div>
                 </div>
                 
-                <div id='menu_webview_controls' class='menu_item'></div>
-
                 <div class='menu_item'>
                     <div class='menu_label'>Theme</div>
                     <input type='color' id='menu_theme_color_picker'>
@@ -127,31 +127,6 @@
 
                 <div class='menu_item'>
                     <div></div><div id='menu_reset' class='action pointer inline'>Reset To Defaults</div></div>
-                </div>
-            </div>
-        </script>
-
-        <script id='template_webview_control' type='text/x-handlebars-template' class='template'>
-            <div class='menu_webview_control'>
-                <div class='menu_label'>Webview {{num}}</div>
-                <input type='text' id='menu_url_{{num}}' class='menu_url_input menu_input_text'>
-
-                <div class='menu_size_controls menu_webview_controls'>
-                    <i class='fas fa-minus menu_control_icon action webview_control_icon_minus'></i>
-                    <div id='webview_{{num}}_size_label' class='webview_control_label action'>Size</div>
-                    <i class='fas fa-plus menu_control_icon action webview_control_icon_plus'></i>
-                </div>
-
-                <div class='menu_zoom_controls menu_webview_controls'>
-                    <i class='fas fa-minus menu_control_icon action webview_control_icon_minus'></i>
-                    <div id='webview_{{num}}_zoom_label' class='webview_control_label action'>Zoom</div>
-                    <i class='fas fa-plus menu_control_icon action webview_control_icon_plus'></i>
-                </div>
-
-                <div class='menu_action_controls menu_webview_controls'>
-                    <span class='webview_refresh action pointer'>Refresh</span>
-                    <span>|</span>
-                    <span class='webview_swap action pointer'>Swap</span>
                 </div>
             </div>
         </script>

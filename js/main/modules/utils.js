@@ -119,50 +119,6 @@ Bone.copy_string = function(s)
     document.body.removeChild(textareaEl)
 }
 
-// Checks and prepares a url
-Bone.check_url = function(url)
-{
-    if(!url.startsWith('http://') && !url.startsWith('https://'))
-    {
-        if(!url.startsWith('localhost') && !url.startsWith('127.0.0.1'))
-        {
-            url = `http://${url}`
-        }
-    }
-
-    return url
-}
-
-// Finds global history urls that match a certain url
-Bone.find_url_matches = function(url, max=false)
-{
-    url = url.trim()
-
-    if(!url)
-    {
-        return []
-    }
-
-    let matches = []
-    let found = 0
-
-    for(let url_2 of Bone.storage.global_history)
-    {
-        if(url.includes(url_2) || url_2.includes(url))
-        {
-            matches.push(url_2)
-            found += 1
-
-            if(max && found >= max)
-            {
-                break
-            }
-        }
-    }
-
-    return matches
-}
-
 // Checks if all text in a text element is selected
 Bone.check_if_all_text_selected = function(element)
 {

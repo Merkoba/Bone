@@ -53,7 +53,6 @@ Bone.create_webview = function(num)
         Bone.swv(wv.dataset.num, wv.dataset.space).url = e.url
         Bone.space_modified()
         Bone.save_local_storage()
-        Bone.update_webview_widgets(wv.dataset.space)
         Bone.update_url()
         Bone.add_url_to_global_history(e.url)
     })
@@ -666,30 +665,6 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
     })
 }
 
-// Sets the zoom level to a webview
-Bone.set_zoom_label = function(num, space_num=false)
-{
-    if(!space_num)
-    {
-        space_num = Bone.current_space
-    }
-
-    if(space_num !== Bone.current_space)
-    {
-        return false
-    }
-
-    let wv = Bone.wv(num)
-
-    if(!wv)
-    {
-        return false
-    }
-
-    let zoom = wv.getZoomFactor()
-    Bone.$(`#webview_${num}_zoom_label`).textContent = `Zoom (${Number(zoom).toFixed(2)})`
-}
-
 // Decreases a webview zoom level by config.zoom_step
 Bone.decrease_zoom = function(num, mode='normal')
 {
@@ -703,7 +678,6 @@ Bone.decrease_zoom = function(num, mode='normal')
     let wv = Bone.wv(num)
     let zoom = Bone.round(wv.getZoomFactor() - step, 2)
     wv.setZoomFactor(zoom)
-    Bone.set_zoom_label(num)
 }
 
 // Increases a webview zoom level by config.zoom_step
@@ -719,77 +693,25 @@ Bone.increase_zoom = function(num, mode='normal')
     let wv = Bone.wv(num)
     let zoom = Bone.round(wv.getZoomFactor() + step, 2)
     wv.setZoomFactor(zoom)
-    Bone.set_zoom_label(num)
 }
 
 // Resets a webview zoom level to zoom_default
 Bone.reset_zoom = function(num)
 {
     Bone.wv(num).setZoomFactor(Bone.config.zoom_default)
-    Bone.set_zoom_label(num)
 }
 
-// Sets the size to a webview
-Bone.set_size_label = function(num)
-{
-    let size = Bone.swv(num).size
-    Bone.$(`#webview_${num}_size_label`).textContent = `Size (${Number(size).toFixed(2)})`
-}
-
-// Decreases a webview size by size_step
-Bone.decrease_size = function(num, mode='normal')
-{
-    let step = Bone.config.size_step
-
-    if(mode === 'double')
-    {
-        step *= 2
-    }
-
-    let size = Bone.round(Bone.swv(num).size - step, 2)
-
-    if(size < 0)
-    {
-        size = 0
-    }
-
-    Bone.swv(num).size = size
-    Bone.space_modified()
-    Bone.save_local_storage()
-    Bone.apply_layout(false)
-    Bone.set_size_label(num)
-}
-
-// Increases a webview size by size_step
-Bone.increase_size = function(num, mode='normal')
-{
-    let step = Bone.config.size_step
-
-    if(mode === 'double')
-    {
-        step *= 2
-    }
-
-    let size = Bone.round(Bone.swv(num).size + step, 2)
-    Bone.swv(num).size = size
-    Bone.space_modified()
-    Bone.save_local_storage()
-    Bone.apply_layout(false)
-    Bone.set_size_label(num)
-}
-
-// Resets a webview size to size_default
+// Resets a webview size to default
 Bone.reset_size = function(num, apply=true, mode='')
 {
     if(mode.includes('special'))
     {
-        Bone.space().special[mode.replace(/.*special_/, '')] = Bone.config.size_default
+        Bone.space().special[mode.replace(/.*special_/, '')] = 1
     }
 
     else
     {
-        Bone.swv(num).size = Bone.config.size_default
-        Bone.set_size_label(num)
+        Bone.swv(num).size = 1
     }
 
     Bone.space_modified()
@@ -857,15 +779,9 @@ Bone.do_webview_swap = function(num_1, num_2)
     let w1 = Bone.swv(num_1)
     let w2 = Bone.swv(num_2)
     let ourl_1 = w1.url
-    let ozoom_1 = w1.zoom
 
     w1.url = w2.url
     w2.url = ourl_1
-    w1.zoom = w2.zoom
-    w2.zoom = ozoom_1
-
-    Bone.$(`#menu_url_${num_1}`).dataset.url = w1.url
-    Bone.$(`#menu_url_${num_2}`).dataset.url = w2.url
 
     Bone.save_local_storage()
     Bone.apply_url(num_1)
@@ -875,15 +791,13 @@ Bone.do_webview_swap = function(num_1, num_2)
 // What to do when a webview is dom ready
 Bone.on_webview_dom_ready = function(webview)
 {
-    let num = parseInt(webview.dataset.num)
-    let space = parseInt(webview.dataset.space)
-    Bone.set_zoom_label(num, space)
+    // Do nothing for now
 }
 
 // Populates and shows the webview history
 Bone.show_history = function(num=false)
 {
-    if(!Bone.space().focused_webview)
+    if(!Bone.focused())
     {
         return false
     }
@@ -1254,7 +1168,6 @@ Bone.resize_mouseup_function = function(e)
         else
         {
             space[`webview_${num}`].size = size
-            Bone.set_size_label(num)
         }
     }
 
@@ -1309,7 +1222,7 @@ Bone.create_webview_object = function(n, url='')
 {
     let obj = {}
     obj.url = url
-    obj.size = Bone.config.size_default
+    obj.size = 1
     return obj
 }
 
@@ -1349,7 +1262,7 @@ Bone.go_back = function()
 // Returns the number of the focused webview
 Bone.num = function()
 {
-    return parseInt(Bone.space().focused_webview.dataset.num)
+    return parseInt(Bone.focused().dataset.num)
 }
 
 // Returns the history of the focused webview
@@ -1451,7 +1364,7 @@ Bone.focus_webview = function(num=false)
 
     if(!num)
     {
-        wv = Bone.space().focused_webview
+        wv = Bone.focused()
     }
 
     else
@@ -1474,25 +1387,99 @@ Bone.wv = function(num=false, space_number=false)
     return Bone.webview_container(space_number).querySelector(`.webview_${num}`)
 }
 
-// Adds a url to the global history
+// Setups global history
+Bone.setup_global_history = function()
+{
+    Bone.sort_global_history()
+}
+
+// Adds a url to the history
 // This is used to show url suggestions in the url bar
 Bone.add_url_to_global_history = function(url)
 {
     url = url.trim()
 
-    if(Bone.storage.global_history.includes(url))
+    if(url.length > Bone.config.global_history_url_max_length)
     {
         return false
     }
 
-    Bone.storage.global_history.push(url)
+    let urls = Bone.storage.global_history.map(obj => obj.url)
+
+    if(urls.includes(url))
+    {
+        let item = Bone.get_global_history_item(url)
+        item.num_used += 1
+        item.last_used = Date.now()
+        Bone.sort_global_history()
+        Bone.save_local_storage()
+        return false
+    }
+    
+    let obj = {url:url, last_used:Date.now(), num_used:1}
+
+    Bone.storage.global_history.unshift(obj)
+    Bone.sort_global_history()
 
     if(Bone.storage.global_history.length > Bone.config.max_global_history_items)
     {
-        Bone.storage.global_history = Bone.storage.global_history.slice(0 - Bone.config.max_global_history_items)
+        Bone.storage.global_history = Bone.storage.global_history.slice(0, Bone.config.max_global_history_items)
     }
 
     Bone.save_local_storage()
+}
+
+// Gets a global history item from a given url
+Bone.get_global_history_item = function(url)
+{
+    for(let item of Bone.storage.global_history)
+    {
+        if(item.url === url)
+        {
+            return item
+        }
+    }
+
+    return false
+}
+
+// Sorts global history by last used date
+Bone.sort_global_history = function()
+{
+    Bone.storage.global_history.sort(function(a, b)
+    {
+        return b.last_used - a.last_used
+    })
+}
+
+// Finds history urls that match a certain url
+Bone.find_global_history_matches = function(url, max=false)
+{
+    url = url.trim()
+
+    if(!url)
+    {
+        return []
+    }
+
+    let matches = []
+    let found = 0
+
+    for(let item of Bone.storage.global_history)
+    {
+        if(url.includes(item.url) || item.url.includes(url))
+        {
+            matches.push(item.url)
+            found += 1
+
+            if(max && found >= max)
+            {
+                break
+            }
+        }
+    }
+
+    return matches
 }
 
 // Changes the url of a specified webview
@@ -1505,7 +1492,7 @@ Bone.change_url = function(url, num=false)
         num = Bone.num()
     }
 
-    if(parseInt(Bone.space().focused_webview.dataset.num) === num)
+    if(parseInt(Bone.focused().dataset.num) === num)
     {
         let url_el = Bone.$('#url')
         url_el.value = url
@@ -1524,4 +1511,24 @@ Bone.handle_navigation = function(wv, e)
     }
 
     Bone.change_url(e.url, wv.dataset.num)
+}
+
+// Checks and prepares a url
+Bone.check_url = function(url)
+{
+    if(!url.startsWith('http://') && !url.startsWith('https://'))
+    {
+        if(!url.startsWith('localhost') && !url.startsWith('127.0.0.1'))
+        {
+            url = `http://${url}`
+        }
+    }
+
+    return url
+}
+
+// Returns the focused webview
+Bone.focused = function()
+{
+    return Bone.space().focused_webview
 }

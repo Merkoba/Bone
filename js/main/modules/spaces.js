@@ -43,7 +43,7 @@ Bone.change_space = function(n, obj=false)
     Bone.current_space = n
     Bone.update_spaces()
     Bone.apply_layout(false, false)
-    Bone.update_webview_widgets()
+    Bone.update_menu_space_widgets()
     Bone.focus_webview()
     Bone.update_focused_webview()
 }
@@ -128,7 +128,7 @@ Bone.create_space_from_object = function(obj, n=false)
 
     if(Object.keys(obj).length > 0)
     {
-        space.webview_1 =Bone.clone_object(obj.webview_1)
+        space.webview_1 = Bone.clone_object(obj.webview_1)
         space.webview_2 = Bone.clone_object(obj.webview_2)
         space.webview_3 = Bone.clone_object(obj.webview_3)
         space.webview_4 = Bone.clone_object(obj.webview_4)
@@ -200,9 +200,8 @@ Bone.start_autostart_spaces = function()
 
     if(autostart.length > 0)
     {
-        for(let name of autostart)
+        for(let preset of autostart)
         {
-            let preset = Bone.storage.presets[name]
             preset.last_used = Date.now()
             Bone.create_space(preset)
         }
@@ -362,8 +361,7 @@ Bone.duplicate_space = function()
 
     if(space.name)
     {
-        let preset = Bone.storage.presets[space.name]
-        preset.name = space.name
+        let preset = Bone.get_preset(space.name)
         Bone.create_space(preset)
     }
 
@@ -546,7 +544,7 @@ Bone.setup_handle_new_space = function()
             return false
         }
 
-        let preset = Bone.storage.presets[selected.value]
+        let preset = Bone.get_preset(selected.value)
         preset.name = selected.value
 
         Bone.create_space(preset)

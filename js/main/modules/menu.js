@@ -127,115 +127,6 @@ Bone.setup_menu = function()
         Bone.apply_layout()
     })
 
-    let webview_controls = Bone.$('#menu_webview_controls')
-
-    for(let i=1; i<=Bone.config.num_webviews; i++)
-    {
-        let h = Bone.template_webview_control({num:i})
-        let el = document.createElement('div')
-        el.innerHTML = h
-        let wvc = el.querySelector('.menu_webview_control')
-        let zoom = wvc.querySelector('.menu_zoom_controls')
-
-        zoom.querySelector('.webview_control_icon_minus').addEventListener('click', function()
-        {
-            Bone.decrease_zoom(i)
-        })
-
-        zoom.querySelector('.webview_control_icon_plus').addEventListener('click', function()
-        {
-            Bone.increase_zoom(i)
-        })
-
-        zoom.querySelector('.webview_control_label').addEventListener('click', function()
-        {
-            Bone.reset_zoom(i)
-        })
-
-        zoom.querySelector('.webview_control_icon_minus').addEventListener('auxclick', function(e)
-        {
-            if(e.which === 2)
-            {
-                Bone.decrease_zoom(i, 'double')
-            }
-        })
-
-        zoom.querySelector('.webview_control_icon_plus').addEventListener('auxclick', function(e)
-        {
-            if(e.which === 2)
-            {
-                Bone.increase_zoom(i, 'double')
-            }
-        })
-
-        let size = wvc.querySelector('.menu_size_controls')
-
-        size.querySelector('.webview_control_icon_minus').addEventListener('click', function()
-        {
-            Bone.decrease_size(i)
-        })
-
-        size.querySelector('.webview_control_icon_plus').addEventListener('click', function()
-        {
-            Bone.increase_size(i)
-        })
-
-        size.querySelector('.webview_control_label').addEventListener('click', function()
-        {
-            Bone.reset_size(i)
-        })
-
-        size.querySelector('.webview_control_icon_minus').addEventListener('auxclick', function(e)
-        {
-            if(e.which === 2)
-            {
-                Bone.decrease_size(i, 'double')
-            }
-        })
-
-        size.querySelector('.webview_control_icon_plus').addEventListener('auxclick', function(e)
-        {
-            if(e.which === 2)
-            {
-                Bone.increase_size(i, 'double')
-            }
-        })
-
-        let action = wvc.querySelector('.menu_action_controls')
-
-        action.querySelector('.webview_refresh').addEventListener('click', function()
-        {
-            Bone.refresh_webview(i)
-        })
-
-        action.querySelector('.webview_swap').addEventListener('click', function()
-        {
-            Bone.swap_webview(i)
-        })
-
-        webview_controls.appendChild(wvc)
-    }
-
-    let url_inputs = Bone.$$('.menu_url_input')
-
-    for(let input of url_inputs)
-    {
-        let num = input.id.replace('menu_url_', '')
-
-        input.addEventListener('blur', function()
-        {
-            Bone.do_url_change(this.value, num)
-        })
-
-        input.addEventListener('keyup', function(e)
-        {
-            if(e.key === 'Enter')
-            {
-                Bone.do_url_change(this.value, num)
-            }
-        })
-    }
-
     Bone.$('#menu_theme_color_picker').addEventListener('change', function()
     {
         Bone.storage.theme = this.value
@@ -357,6 +248,8 @@ Bone.setup_menu = function()
         Bone.storage.wrap_spaces_on_wheel = this.checked
         Bone.save_local_storage()
     })
+
+    Bone.update_menu_widgets()
 }
 
 // Updates widgest in the menu window
@@ -368,7 +261,6 @@ Bone.update_menu_widgets = function()
     Bone.$('#menu_cycle_spaces_on_wheel_checkbox').checked = Bone.storage.cycle_spaces_on_wheel
     Bone.$('#menu_wrap_spaces_on_wheel_checkbox').checked = Bone.storage.wrap_spaces_on_wheel
     
-    Bone.update_webview_widgets()
     Bone.update_wrap_spaces_on_wheel_container()
 }
 
@@ -422,7 +314,7 @@ Bone.show_menu = function()
     {
         let disable_back = true
 
-        if(Bone.space().focused_webview)
+        if(Bone.focused())
         {
             let history = Bone.history()
 
@@ -440,8 +332,8 @@ Bone.show_menu = function()
     })
 }
 
-// Updates the webview widgets
-Bone.update_webview_widgets = function(space_num=false)
+// Updates the menu widgets that are space dependent
+Bone.update_menu_space_widgets = function(space_num=false)
 {
     if(space_num)
     {
@@ -452,18 +344,4 @@ Bone.update_webview_widgets = function(space_num=false)
     }
 
     Bone.update_selected_layout()
-
-    let url_inputs = Bone.$$('.menu_url_input')
-
-    for(let input of url_inputs)
-    {
-        let num = input.id.replace('menu_url_', '')
-        input.value = Bone.swv(num).url
-    }
-
-    for(let i=1; i<=Bone.config.num_webviews; i++)
-    {
-        Bone.set_size_label(i)
-        Bone.set_zoom_label(i)
-    }   
 }

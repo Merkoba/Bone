@@ -39,10 +39,8 @@ Bone.input_selected = false
 Bone.config =
 {
     num_webviews: 4,
-    zoom_step: 0.05,
+    zoom_step: 0.1,
     zoom_default: 1,
-    size_step: 0.05,
-    size_default: 1,
     panel_height: 36,
     panel_hidden_height: 4,
     panel_auto_hide_delay: 1000,
@@ -51,7 +49,9 @@ Bone.config =
     modules_path: './js/main/modules/',
     resize_double_click_delay: 350,
     startpage: 'https://www.startpage.com',
-    max_global_history_items: 1000
+    max_global_history_items: 1000,
+    global_history_url_max_length: 500,
+    preset_version: 1
 }
 
 // This gets called when body loads
@@ -63,6 +63,7 @@ Bone.init = function()
     Bone.get_local_storage()
     Bone.create_windows()
     Bone.setup_menu()
+    Bone.check_presets()
     Bone.start_autostart_spaces()
     Bone.setup_panel()
     Bone.setup_create_preset()
@@ -88,6 +89,7 @@ Bone.init = function()
     Bone.setup_space_options()
     Bone.setup_handle_new_space()
     Bone.start_tooltips()
+    Bone.setup_global_history()
 
     Bone.remove_splash()
 

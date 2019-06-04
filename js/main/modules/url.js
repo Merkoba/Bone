@@ -170,7 +170,7 @@ Bone.update_url_suggest = function()
         return false
     }
 
-    let matches = Bone.find_url_matches(value, 20)
+    let matches = Bone.find_global_history_matches(value, 20)
 
     if(matches.length === 0)
     {
