@@ -116,17 +116,3 @@ app.on('activate', () =>
         create_window()
     }
 })
-
-// Listen for web contents being created
-app.on('web-contents-created', (e, contents) => 
-{
-    // Check for a webview
-    if(contents.getType() === 'webview') 
-    {
-        // Listen for any new window events
-        contents.on('new-window', (e, url) => 
-        {
-            contents.loadURL(url)
-        })
-    }
-})

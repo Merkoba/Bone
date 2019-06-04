@@ -22,12 +22,17 @@ Bone.create_webview = function(num)
 
     wv.addEventListener('will-navigate', function(e)
     {
-        if(!e.url)
-        {
-            return false
-        }
+        Bone.handle_navigation(this, e)
+    })
 
-        Bone.change_url(e.url, wv.dataset.num)
+    wv.addEventListener('will-redirect', function(e)
+    {
+        Bone.handle_navigation(this, e)
+    })
+
+    wv.addEventListener('new-window', function(e)
+    {
+        Bone.handle_navigation(this, e)
     })
 
     wv.addEventListener('did-navigate', function(e)
@@ -1500,5 +1505,23 @@ Bone.change_url = function(url, num=false)
         num = Bone.num()
     }
 
+    if(parseInt(Bone.space().focused_webview.dataset.num) === num)
+    {
+        let url_el = Bone.$('#url')
+        url_el.value = url
+        Bone.move_cursor_to_end(url_el)
+    }
+
     Bone.remake_webview(num, url, false, false)
+}
+
+// Handles navigation changes
+Bone.handle_navigation = function(wv, e)
+{
+    if(!e.url)
+    {
+        return false
+    }
+
+    Bone.change_url(e.url, wv.dataset.num)
 }

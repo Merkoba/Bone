@@ -153,7 +153,7 @@ Bone.setup_panel = function()
         Bone.show_space_options()
     })
 
-    Bone.$('#panel_toolbar').addEventListener('click', function(e)
+    Bone.$('#panel_menu_container').addEventListener('click', function(e)
     {
         if(e.target === this)
         {
@@ -161,7 +161,7 @@ Bone.setup_panel = function()
         }
     })
 
-    Bone.$('#panel_toolbar_right').addEventListener('click', function(e)
+    Bone.$('#panel_space_options_container').addEventListener('click', function(e)
     {
         if(e.target === this)
         {

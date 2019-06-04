@@ -506,21 +506,14 @@ select
     border: 0px solid grey;
 }
 
-#panel_toolbar, #panel_toolbar_right
+#panel_toolbar
 {
     display: grid;
     grid-gap: 0px;
     grid-auto-flow: column;
-    align-items: center;
-    justify-content: center;
     font-size: 0.9rem;
     justify-self: flex-start;
     height: 100%;
-}
-
-#panel_toolbar_right
-{
-    justify-self: flex-end;
 }
 
 .panel_toolbar_item
@@ -532,6 +525,11 @@ select
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#panel_menu_container, #panel_space_options_container
+{
+    height: 100%;
 }
 
 #handle_history_container
