@@ -663,6 +663,8 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
         showSaveImageAs: true,
         showInspectElement: true
     })
+
+    Bone.focus_webview(num)
 }
 
 // Decreases a webview zoom level by config.zoom_step
