@@ -246,7 +246,8 @@ Bone.start_tooltips = function()
             arrowType: 'round',
             animation: 'fade',
             delay: 1000,
-            zIndex: 999999
+            zIndex: 999999,
+            a11y: false
         })
     }
 }
