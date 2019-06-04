@@ -93,7 +93,7 @@ Bone.setup_panel = function()
 
         if(e.which === 2)
         {
-            Bone.show_handle_close_space(parseInt(e.target.dataset.num))
+            Bone.close_space(parseInt(e.target.dataset.num))
         }
     })
 
