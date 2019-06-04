@@ -1,21 +1,6 @@
 // Setups top panel
 Bone.setup_panel = function()
 {
-    let menu_icon = Bone.$('#menu_icon')
-
-    menu_icon.addEventListener('click', function(e)
-    {
-        Bone.show_menu()
-    })
-
-    menu_icon.addEventListener('auxclick', function(e)
-    {
-        if(e.which === 2)
-        {
-            Bone.new_space()
-        }
-    })
-
     let panel = Bone.$('#panel')
 
     panel.addEventListener('mouseenter', function()
@@ -148,25 +133,21 @@ Bone.setup_panel = function()
         Bone.focus_webview(num)
     })
 
-    Bone.$('#panel_space_options').addEventListener('click', function()
-    {
-        Bone.show_space_options()
-    })
+    let panel_menu_container = Bone.$('#panel_menu_container')
 
-    Bone.$('#panel_menu_container').addEventListener('click', function(e)
+    panel_menu_container.addEventListener('click', function(e)
     {
-        if(e.target === this)
-        {
-            Bone.show_menu()
-        }
+        Bone.show_menu()
     })
 
     Bone.$('#panel_space_options_container').addEventListener('click', function(e)
     {
-        if(e.target === this)
-        {
-            Bone.show_space_options()
-        }
+        Bone.show_space_options()
+    })
+
+    Bone.$('#panel_space_options_container').addEventListener('auxclick', function(e)
+    {
+        Bone.new_space()
     })
 
     Bone.$('#panel_zoom_container').addEventListener('auxclick', function(e)
