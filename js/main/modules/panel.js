@@ -177,6 +177,11 @@ Bone.setup_panel = function()
         }
     })
 
+    Bone.$('#panel_refresh').addEventListener('click', function(e)
+    {
+        Bone.refresh_webview(Bone.num())
+    })
+
     panel.style.height = `${Bone.config.panel_height}px`
 }
 

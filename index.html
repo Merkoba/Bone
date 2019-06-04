@@ -18,20 +18,21 @@
         <div id='main_container'>
             <div id='panel' class='unselectable'>
                 <div id='panel_menu_container'>
-                    <i id='menu_icon' class='fas fa-th-large panel_icon panel_toolbar_item action'></i>
+                    <i id='menu_icon' class='fas fa-th-large panel_item action'></i>
                 </div>
                 <div id='panel_toolbar'>
-                    <div id='panel_focused' class='panel_toolbar_item action'>[1]</div>
-                    <div id='panel_history' class='panel_toolbar_item action'>History</div>
+                    <div id='panel_focused' class='panel_item action'>[1]</div>
+                    <div id='panel_history' class='panel_item action'>History</div>
+                    <i id='panel_refresh' class='fas fa-redo panel_item action'></i>
                     <div id='panel_zoom_container' data-tippy-content='Middle click to reset zoom' class='nice_title'>
-                        <i id='panel_zoom_in' class='fas fa-plus panel_toolbar_item action'></i>
-                        <i id='panel_zoom_out' class='fas fa-minus panel_toolbar_item action'></i>
+                        <i id='panel_zoom_in' class='fas fa-plus panel_item action'></i>
+                        <i id='panel_zoom_out' class='fas fa-minus panel_item action'></i>
                     </div>
                 </div>
                 <input type='text' id='url'>
                 <div id='spaces' data-tippy-content='Wheel or click to switch. Shift+Wheel to move. Middle click to close.' class='nice_title'></div>
                 <div id='panel_space_options_container'>
-                    <i class='fas fa-caret-down panel_toolbar_item panel_icon action' id='panel_space_options'></i>
+                    <i class='fas fa-caret-down panel_item action' id='panel_space_options'></i>
                 </div>
             </div>
             <div id='webview_containers'></div>

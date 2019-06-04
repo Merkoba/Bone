@@ -457,6 +457,12 @@ select
     padding: 10px;
 }
 
+.spaces_item:last-child
+{
+    cursor: pointer;
+    padding-right: 5px;
+}
+
 #autostart_container
 {
     max-width: 450px;
@@ -511,12 +517,11 @@ select
     display: grid;
     grid-gap: 0px;
     grid-auto-flow: column;
-    font-size: 0.9rem;
     justify-self: flex-start;
     height: 100%;
 }
 
-.panel_toolbar_item
+.panel_item
 {
     cursor: pointer;
     margin-left: 10px;
@@ -525,6 +530,7 @@ select
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 0.9rem;
 }
 
 #panel_menu_container, #panel_space_options_container
