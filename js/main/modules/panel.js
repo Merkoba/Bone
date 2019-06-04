@@ -97,6 +97,30 @@ Bone.setup_panel = function()
         }
     })
 
+    spaces.addEventListener('wheel', function(e)
+    {
+        if(!e.target.classList.contains('spaces_item'))
+        {
+            return false
+        }
+
+        if(e.shiftKey)
+        {
+            if(e.deltaY < 0)
+            {
+                Bone.move_space_left(e.target)
+            }
+    
+            else
+            {
+                Bone.move_space_right(e.target)
+            }
+
+            e.stopPropagation()
+            return false
+        }
+    })
+
     Bone.$('#panel_history').addEventListener('click', function(e)
     {
         Bone.show_history()

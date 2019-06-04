@@ -234,3 +234,19 @@ Bone.setup_signals = function()
         Bone.new_space()
     })
 }
+
+// Starts custom tooltips
+Bone.start_tooltips = function()
+{
+    for(let el of Bone.$$('.nice_title'))
+    {
+        Tippy(el, 
+        {
+            arrow: true,
+            arrowType: 'round',
+            animation: 'fade',
+            delay: 1000,
+            zIndex: 999999
+        })
+    }
+}

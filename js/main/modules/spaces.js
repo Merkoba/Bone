@@ -101,11 +101,13 @@ Bone.update_active_space = function()
         if(parseInt(item.dataset.num) === Bone.current_space)
         {
             item.classList.add('underline')
+            item.classList.add('spaces_item_selected')
         }
         
         else
         {
             item.classList.remove('underline')
+            item.classList.remove('spaces_item_selected')
         }
     }
 }
@@ -561,4 +563,60 @@ Bone.setup_handle_new_space = function()
 Bone.show_handle_new_space = function()
 {
     Bone.msg_handle_new_space.show()
+}
+
+// Moves a space to the left in the panel
+Bone.move_space_left = function(item)
+{
+    let items = Bone.$$('.spaces_item')
+
+    if(items.length < 2)
+    {
+        return false
+    }
+
+    let index = Bone.get_element_index(item)
+    let n
+    
+    if(index === 0)
+    {
+        n = items.length - 1
+        let el = item.parentNode.children[n]
+        el.after(item)
+    }
+
+    else
+    {
+        n = index - 1
+        let el = item.parentNode.children[n]
+        el.before(item)
+    }
+}
+
+// Moves a space to the right in the panel
+Bone.move_space_right = function(item)
+{
+    let items = Bone.$$('.spaces_item')
+
+    if(items.length < 2)
+    {
+        return false
+    }
+
+    let index = Bone.get_element_index(item)
+    let n
+    
+    if(index >= items.length - 1)
+    {
+        n = 0
+        let el = item.parentNode.children[n]
+        el.before(item)
+    }
+
+    else
+    {
+        n = index + 1
+        let el = item.parentNode.children[n]
+        el.after(item)
+    }
 }

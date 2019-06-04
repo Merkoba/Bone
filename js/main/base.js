@@ -13,6 +13,7 @@ const Msg = require('msg-modal')
 const ColorLib = require('mad-colorlib')
 const Separator = require('mad-separator')
 const Handlebars = require('handlebars')
+const Tippy = require('tippy.js')
 
 // Init main object and some properties
 
@@ -86,6 +87,7 @@ Bone.init = function()
     Bone.setup_handle_close_space()
     Bone.setup_space_options()
     Bone.setup_handle_new_space()
+    Bone.start_tooltips()
 
     Bone.remove_splash()
 
