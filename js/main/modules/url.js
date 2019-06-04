@@ -57,6 +57,16 @@ Bone.setup_url_input = function()
         Bone.update_url_suggest()
     })
 
+    url.addEventListener('focus', function()
+    {
+        if(!Bone.url_suggest_on)
+        {
+            Bone.show_url_suggest()
+        }
+
+        Bone.update_url_suggest()
+    })
+
     url.addEventListener('blur', function()
     {
         if(Bone.url_suggest_on)
