@@ -1442,15 +1442,20 @@ Bone.history_item_open = function()
 // Focuses current webview
 Bone.focus_webview = function(num=false)
 {
+    let wv
+
     if(!num)
     {
-        Bone.space().focused_webview.focus()
+        wv = Bone.space().focused_webview
     }
 
     else
     {
-        Bone.wv(num).focus()
+        wv = Bone.wv(num)
     }
+
+    document.activeElement.blur()
+    wv.focus()
 }
 
 // Gets a webview by its number
