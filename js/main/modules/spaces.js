@@ -100,13 +100,11 @@ Bone.update_active_space = function()
     {
         if(parseInt(item.dataset.num) === Bone.current_space)
         {
-            item.classList.add('underline')
             item.classList.add('spaces_item_selected')
         }
         
         else
         {
-            item.classList.remove('underline')
             item.classList.remove('spaces_item_selected')
         }
     }

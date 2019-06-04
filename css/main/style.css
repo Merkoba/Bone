@@ -636,3 +636,8 @@ select
 {
     margin-top: 20px;
 }
+
+.spaces_item_selected
+{
+    text-decoration: underline;
+}
