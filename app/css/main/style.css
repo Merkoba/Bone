@@ -666,23 +666,24 @@ select
 {
     font-size: 0.9rem;
     padding: 2px;
+    width: 200px;
 }
 
 #find_num_results
 {
-    margin-left: 10px;
+    margin-left: 15px;
 }
 
 #find_prev
 {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
     cursor: pointer;
 }
 
 #find_next
 {
-    margin-right: 10px;
+    margin-right: 15px;
     cursor: pointer;
 }
 

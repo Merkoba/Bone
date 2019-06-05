@@ -5,7 +5,6 @@
 const fs = require('fs')
 const path = require('path')
 const {remote, ipcRenderer} = require('electron')
-const contextMenu = require('electron-context-menu')
 const Msg = require('msg-modal')
 const ColorLib = require('mad-colorlib')
 const Separator = require('mad-separator')

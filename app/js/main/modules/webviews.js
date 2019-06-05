@@ -37,7 +37,10 @@ Bone.create_webview = function(num)
 
     wv.addEventListener('found-in-page', function(e)
     {
-        wv.stopFindInPage('keepSelection')
+        if(e.result.finalUpdate)
+        {
+            Bone.update_find_results(e.result)
+        }
     })
 
     wv.addEventListener('page-favicon-updated', function(e)
@@ -671,14 +674,6 @@ Bone.remake_webview = function(num, space_num=false, url='', no_display=true, re
     Bone.replace_element(rep, wv)
 
     let wv2 = Bone.wv(num, space_num)
-
-    contextMenu(
-    {
-        window: wv2,
-        showCopyImageAddress: true,
-        showSaveImageAs: true,
-        showInspectElement: true
-    })
 
     if(space_num === Bone.current_space)
     {
@@ -1397,6 +1392,7 @@ Bone.focus_webview = function(num=false)
     wv.focus()
     Bone.space().focused_webview = wv
     Bone.check_ghost_webviews()
+    Bone.close_find()
 }
 
 // Gets a webview by its number
