@@ -694,7 +694,7 @@ select
 #recent_container
 {
     display: grid;
-    grid-gap: 20px;
+    grid-gap: 10px;
     grid-auto-columns: auto;
     align-items: center;
     max-width: 600px;
@@ -706,6 +706,7 @@ select
 {
     font-size: 1.2rem;
     cursor: pointer;
+    padding: 10px;
 }
 
 .recent_item_favicon
