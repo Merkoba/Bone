@@ -18,7 +18,6 @@ Bone.create_webview = function(num)
         Bone.space().focused_webview = this
         Bone.update_focused_webview()
         Bone.update_url()
-        Bone.check_ghost_webviews()
     })
 
     wv.addEventListener('will-navigate', function(e)
@@ -1391,6 +1390,7 @@ Bone.focus_webview = function(num=false)
     document.activeElement.blur()
     wv.focus()
     Bone.space().focused_webview = wv
+    Bone.check_ghost_webviews()
 }
 
 // Gets a webview by its number
@@ -1586,6 +1586,8 @@ Bone.cycle_webview = function(direction='right')
 // Makes all uncofused webviews semi opaque
 Bone.ghost_webviews = function()
 {
+    clearTimeout(Bone.ghost_webviews_shot_timeout)
+
     let focused = Bone.focused()
 
     for(let webview of Bone.wvs())
@@ -1605,6 +1607,8 @@ Bone.ghost_webviews = function()
 // Makes all webviews fully opaque
 Bone.remove_ghost_webviews = function()
 {
+    clearTimeout(Bone.ghost_webviews_shot_timeout)
+
     for(let webview of Bone.wvs())
     {
         webview.classList.remove('ghost_webview')
@@ -1623,4 +1627,15 @@ Bone.check_ghost_webviews = function()
     {
         Bone.remove_ghost_webviews()
     }
+}
+
+// Does a ghost webviews for an instant
+Bone.ghost_webviews_shot = function()
+{
+    Bone.ghost_webviews()
+
+    Bone.ghost_webviews_shot_timeout = setTimeout(function()
+    {
+        Bone.remove_ghost_webviews()
+    }, 800)
 }
