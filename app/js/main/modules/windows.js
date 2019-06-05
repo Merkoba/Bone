@@ -100,6 +100,11 @@ Bone.create_windows = function()
         id: 'about'
     }))
 
+    Bone.msg_recent = Msg.factory(Object.assign({}, common, titlebar,
+    {
+        id: 'recent'
+    }))
+
     Bone.msg_menu.set(Bone.template_menu())
     Bone.msg_create_preset.set(Bone.template_create_preset())
     Bone.msg_handle_preset.set(Bone.template_handle_preset())
@@ -113,6 +118,7 @@ Bone.create_windows = function()
     Bone.msg_handle_new_space.set(Bone.template_handle_new_space())
     Bone.msg_handle_close_space.set(Bone.template_handle_close_space())
     Bone.msg_about.set(Bone.template_about())
+    Bone.msg_recent.set(Bone.template_recent())
 
     Bone.msg_create_preset.set_title('Save Preset')
     Bone.msg_autostart.set_title('AutoStart Presets')
@@ -122,6 +128,7 @@ Bone.create_windows = function()
     Bone.msg_handle_close_space.set_title('Close Space')
     Bone.msg_swap_webviews.set_title('Swap Webviews')
     Bone.msg_open_preset.set_title('Open Preset')
+    Bone.msg_recent.set_title('Recent Websites')
 }
 
 // Closes all modal windows
@@ -221,23 +228,57 @@ Bone.setup_separator = function()
     }
 }
 
-// Setups the find functionality and widget
-Bone.setup_find = function()
-{
-    Bone.find = new FindInPage(remote.getCurrentWebContents())
-}
-
 // Setups signals between the main process and here
 Bone.setup_signals = function()
 {
     ipcRenderer.on('on-find', (e, args) => 
     {
-        Bone.find.openFindWindow()
+        Bone.show_find()
     })
     
     ipcRenderer.on('on-new-space', (e, args) => 
     {
         Bone.new_space()
+    })
+    
+    ipcRenderer.on('on-zoom-in', (e, args) => 
+    {
+        Bone.increase_zoom()
+    })
+    
+    ipcRenderer.on('on-zoom-out', (e, args) => 
+    {
+        Bone.decrease_zoom()
+    })
+    
+    ipcRenderer.on('on-zoom-reset', (e, args) => 
+    {
+        Bone.reset_zoom()
+    })
+    
+    ipcRenderer.on('on-show-recent', (e, args) => 
+    {
+        Bone.show_recent()
+    })
+    
+    ipcRenderer.on('on-webview-cycle-left', (e, args) => 
+    {
+        Bone.cycle_webview('left')
+    })
+    
+    ipcRenderer.on('on-webview-cycle-right', (e, args) => 
+    {
+        Bone.cycle_webview('right')
+    })
+    
+    ipcRenderer.on('on-space-cycle-left', (e, args) => 
+    {
+        Bone.cycle_space('left')
+    })
+    
+    ipcRenderer.on('on-space-cycle-right', (e, args) => 
+    {
+        Bone.cycle_space('right')
     })
 }
 

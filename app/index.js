@@ -61,13 +61,75 @@ exports.create_window = function()
                 win.webContents.send('on-new-space', '')
             }
         })
+
+        globalShortcut.register('CommandOrControl+=', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-zoom-in', '')
+            }
+        })
+
+        globalShortcut.register('CommandOrControl+-', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-zoom-out', '')
+            }
+        })
+
+        globalShortcut.register('CommandOrControl+0', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-zoom-reset', '')
+            }
+        })
+
+        globalShortcut.register('CommandOrControl+Enter', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-show-recent', '')
+            }
+        })
+
+        globalShortcut.register('CommandOrControl+Left', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-webview-cycle-left', '')
+            }
+        })
+
+        globalShortcut.register('CommandOrControl+Right', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-webview-cycle-right', '')
+            }
+        })
+
+        globalShortcut.register('CommandOrControl+Shift+Left', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-space-cycle-left', '')
+            }
+        })
+
+        globalShortcut.register('CommandOrControl+Shift+Right', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-space-cycle-right', '')
+            }
+        })
     })
 
     win.on('blur', () => 
     {
-        globalShortcut.unregister('CommandOrControl+F')
-        globalShortcut.unregister('CommandOrControl+T')
-        globalShortcut.unregister('CommandOrControl+N')
+        unregister_shortcuts()
     })
 }
 
@@ -82,9 +144,7 @@ app.on('ready', exports.create_window)
 // Quit when all windows are closed.
 app.on('window-all-closed', () => 
 {
-    globalShortcut.unregister('CommandOrControl+F')
-    globalShortcut.unregister('CommandOrControl+T')
-    globalShortcut.unregister('CommandOrControl+N')
+    unregister_shortcuts()
 
     // On macOS it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
@@ -116,3 +176,18 @@ app.on('activate', () =>
         create_window()
     }
 })
+
+function unregister_shortcuts()
+{
+    globalShortcut.unregister('CommandOrControl+F')
+    globalShortcut.unregister('CommandOrControl+T')
+    globalShortcut.unregister('CommandOrControl+N')
+    globalShortcut.unregister('CommandOrControl+=')
+    globalShortcut.unregister('CommandOrControl+-')
+    globalShortcut.unregister('CommandOrControl+0')
+    globalShortcut.unregister('CommandOrControl+Enter')
+    globalShortcut.unregister('CommandOrControl+Left')
+    globalShortcut.unregister('CommandOrControl+Right')
+    globalShortcut.unregister('CommandOrControl+Shift+Left')
+    globalShortcut.unregister('CommandOrControl+Shift+Right')
+}

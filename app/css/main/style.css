@@ -658,3 +658,69 @@ select
 {
     font-size: 1.2rem;
 }
+
+#find
+{
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    right: 20;
+    z-index: 999;
+    font-size: 1rem;
+    padding: 10px;
+}
+
+#find_input
+{
+    font-size: 0.9rem;
+    padding: 2px;
+}
+
+#find_num_results
+{
+    margin-left: 10px;
+}
+
+#find_prev
+{
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+#find_next
+{
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+#find_close
+{
+    cursor: pointer;
+}
+
+#recent_container
+{
+    display: grid;
+    grid-gap: 20px;
+    grid-auto-columns: auto;
+    align-items: center;
+    max-width: 800px;
+}
+
+.recent_item
+{
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.filter_input
+{
+    width: 400px;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    padding: 0.25rem;
+    text-align: center;
+}

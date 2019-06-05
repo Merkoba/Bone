@@ -162,7 +162,7 @@ Bone.create_space_from_object = function(obj, n=false)
 }
 
 // Goes to the next or previous space
-Bone.switch_space = function(direction='right')
+Bone.cycle_space = function(direction='right')
 {
     let new_space
 

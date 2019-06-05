@@ -113,6 +113,17 @@ Bone.apply_theme = function()
     {
         background-color: ${bg_color_3} !important;
     }
+
+    #find
+    {
+        background-color: ${bg_color_2} !important;
+        color: ${font_color_1} !important;
+    }
+
+    .modal_item_selected
+    {
+        background-color: ${bg_color_2} !important;
+    }
     `
 
     let styles = Bone.$$('.appended_theme_style')

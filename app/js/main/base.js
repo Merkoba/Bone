@@ -6,7 +6,6 @@ const fs = require('fs')
 const path = require('path')
 const {remote, ipcRenderer} = require('electron')
 const contextMenu = require('electron-context-menu')
-const {FindInPage} = require('electron-find')
 const Msg = require('msg-modal')
 const ColorLib = require('mad-colorlib')
 const Separator = require('mad-separator')
@@ -36,6 +35,7 @@ Bone.current_space = 0
 Bone.input_selected = false
 Bone.hash_calculated = false
 Bone.hash_calculating = false
+Bone.find_on = false
 
 Bone.config =
 {
@@ -91,6 +91,8 @@ Bone.init = function()
     Bone.setup_handle_new_space()
     Bone.start_tooltips()
     Bone.setup_global_history()
+    Bone.setup_recent()
+    Bone.setup_filter()
 
     Bone.remove_splash()
 

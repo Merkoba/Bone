@@ -30,12 +30,12 @@ Bone.setup_panel = function()
 
         if(e.deltaY < 0)
         {
-            Bone.switch_space('left')
+            Bone.cycle_space('left')
         }
 
         else
         {
-            Bone.switch_space('right')
+            Bone.cycle_space('right')
         }
     })
 
@@ -123,14 +123,7 @@ Bone.setup_panel = function()
 
     Bone.$('#panel_focused').addEventListener('click', function(e)
     {
-        let num = Bone.num() + 1
-
-        if(num > Bone.wvs().length)
-        {
-            num = 1
-        }
-
-        Bone.focus_webview(num)
+        Bone.cycle_webview('right')
     })
 
     let panel_menu_container = Bone.$('#panel_menu_container')
@@ -169,6 +162,11 @@ Bone.setup_panel = function()
     Bone.$('#panel_refresh').addEventListener('click', function(e)
     {
         Bone.refresh_webview(Bone.num())
+    })
+
+    Bone.$('#panel_recent').addEventListener('click', function(e)
+    {
+        Bone.show_recent()
     })
 
     panel.style.height = `${Bone.config.panel_height}px`

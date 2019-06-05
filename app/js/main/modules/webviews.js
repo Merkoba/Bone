@@ -35,6 +35,11 @@ Bone.create_webview = function(num)
         Bone.handle_navigation(this, e)
     })
 
+    wv.addEventListener('found-in-page', function(e)
+    {
+        wv.stopFindInPage('keepSelection')
+    })
+
     wv.addEventListener('did-navigate', function(e)
     {
         if(!e.url)
@@ -1533,4 +1538,32 @@ Bone.check_url = function(url)
 Bone.focused = function()
 {
     return Bone.space().focused_webview
+}
+
+// Cycles webview focus
+Bone.cycle_webview = function(direction='right')
+{
+    let num
+
+    if(direction === 'right')
+    {
+        num = Bone.num() + 1
+    
+        if(num > Bone.wvs().length)
+        {
+            num = 1
+        }
+    }
+    
+    else if(direction === 'left')
+    {
+        num = Bone.num() - 1
+    
+        if(num <= 0)
+        {
+            num = Bone.wvs().length
+        }
+    }
+    
+    Bone.focus_webview(num)
 }
