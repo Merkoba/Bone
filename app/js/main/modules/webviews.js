@@ -615,7 +615,7 @@ Bone.apply_url = function(num)
     {
         if(!url)
         {
-            Bone.remake_webview(num, '', false)
+            Bone.remake_webview(num, false, '', false)
             return false
         }
     }
@@ -625,15 +625,20 @@ Bone.apply_url = function(num)
         return false
     }
 
-    Bone.remake_webview(num, url, false)
+    Bone.remake_webview(num, false, url, false)
 }
 
 // Replaces a webview with a new one
 // This is to destroy its content
-Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
+Bone.remake_webview = function(num, space_num=false, url='', no_display=true, reset_history=true)
 {
+    if(!space_num)
+    {
+        space_num = Bone.current_space
+    }
+
     let wv = Bone.wv(num)
-    let rep = Bone.create_webview(num, Bone.current_space)
+    let rep = Bone.create_webview(num, Bone.space(space_num))
 
     if(no_display)
     {
@@ -655,12 +660,12 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
 
     if(reset_history)
     {
-        Bone.space().history[`webview_${num}`] = []
+        Bone.space(space_num).history[`webview_${num}`] = []
     }
 
     Bone.replace_element(rep, wv)
 
-    let wv2 = Bone.wv(num)
+    let wv2 = Bone.wv(num, space_num)
 
     contextMenu(
     {
@@ -670,7 +675,10 @@ Bone.remake_webview = function(num, url='', no_display=true, reset_history=true)
         showInspectElement: true
     })
 
-    Bone.focus_webview(num)
+    if(space_num === Bone.current_space)
+    {
+        Bone.focus_webview(num)
+    }
 }
 
 // Decreases a webview zoom level by config.zoom_step
@@ -735,7 +743,7 @@ Bone.reset_size = function(num, apply=true, mode='')
 Bone.refresh_webview = function(num)
 {
     let url = Bone.swv(num).url
-    Bone.remake_webview(num, url, false)
+    Bone.remake_webview(num, false, url, false)
 }
 
 // Opens a window to swap a webview config with another one
@@ -1382,6 +1390,7 @@ Bone.focus_webview = function(num=false)
 
     document.activeElement.blur()
     wv.focus()
+    Bone.space().focused_webview = wv
 }
 
 // Gets a webview by its number
@@ -1491,13 +1500,18 @@ Bone.find_global_history_matches = function(url, max=false)
 }
 
 // Changes the url of a specified webview
-Bone.change_url = function(url, num=false)
+Bone.change_url = function(url, num=false, space_num=false)
 {
     url = url.trim()
     
     if(!num)
     {
         num = Bone.num()
+    }
+    
+    if(!space_num)
+    {
+        space_num = Bone.current_space
     }
 
     if(parseInt(Bone.focused().dataset.num) === num)
@@ -1507,7 +1521,7 @@ Bone.change_url = function(url, num=false)
         Bone.move_cursor_to_end(url_el)
     }
 
-    Bone.remake_webview(num, url, false, false)
+    Bone.remake_webview(num, space_num, url, false, false)
 }
 
 // Handles navigation changes
@@ -1518,7 +1532,7 @@ Bone.handle_navigation = function(wv, e)
         return false
     }
 
-    Bone.change_url(e.url, wv.dataset.num)
+    Bone.change_url(e.url, parseInt(wv.dataset.num), parseInt(wv.dataset.space))
 }
 
 // Checks and prepares a url

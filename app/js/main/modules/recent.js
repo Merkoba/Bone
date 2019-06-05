@@ -21,7 +21,7 @@ Bone.setup_recent = function()
             {
                 Bone.submit_recent(Bone.recent_item_selected.dataset.url)
             }
-            
+
             e.preventDefault()
             return false
         }
