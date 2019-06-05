@@ -43,12 +43,6 @@ Bone.create_webview = function(num)
         }
     })
 
-    wv.addEventListener('page-favicon-updated', function(e)
-    {
-        let swv = Bone.swv(parseInt(wv.dataset.num), parseInt(wv.dataset.space))
-        Bone.update_favicon(swv.url, e.favicons[0])
-    })
-
     wv.addEventListener('did-navigate', function(e)
     {
         if(!e.url)
@@ -69,6 +63,23 @@ Bone.create_webview = function(num)
         Bone.save_local_storage()
         Bone.update_url()
         Bone.add_url_to_global_history(e.url)
+    })
+
+    wv.addEventListener('context-menu', function(e)
+    {
+        // console.log(e)
+    })
+
+    wv.addEventListener('page-favicon-updated', function(e)
+    {
+        let swv = Bone.swv(parseInt(wv.dataset.num), parseInt(wv.dataset.space))
+        Bone.update_favicon(swv.url, e.favicons[0])
+    })
+
+    wv.addEventListener('page-title-updated', function(e)
+    {
+        let swv = Bone.swv(parseInt(wv.dataset.num), parseInt(wv.dataset.space))
+        Bone.update_title(swv.url, e.title)
     })
 
     return wv

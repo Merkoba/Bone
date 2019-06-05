@@ -79,16 +79,16 @@ Bone.setup_url_input = function()
             Bone.hide_url_suggest()
         }
 
-        Bone.input_selected = false
+        Bone.url_input_selected = false
     })
 
     url.addEventListener('click', function()
     {
-        if(!Bone.input_selected)
+        if(!Bone.url_input_selected)
         {
             Bone.move_cursor_to_end(this)
             this.select()
-            Bone.input_selected = true
+            Bone.url_input_selected = true
         }
     })
 }
