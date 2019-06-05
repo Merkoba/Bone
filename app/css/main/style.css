@@ -706,6 +706,12 @@ select
     cursor: pointer;
 }
 
+.recent_item_favicon
+{
+    width: 40px;
+    margin-bottom: 10px;
+}
+
 .filter_input
 {
     width: 400px;

@@ -5,12 +5,12 @@ Bone.setup_recent = function()
 
     c.addEventListener('click', function(e)
     {
-        if(!e.target.classList.contains('recent_item'))
+        if(!e.target.classList.contains('recent_item_url'))
         {
             return false
         }
 
-        Bone.submit_recent(e.target.dataset.url)
+        Bone.submit_recent(e.target.closest('.recent_item').dataset.url)
     })
 
     Bone.$('#recent_filter').addEventListener('keydown', function(e)
@@ -68,7 +68,20 @@ Bone.generate_recent = function()
         el.classList.add('action')
         el.dataset.url = item.url
         el.dataset.filter_content = item.url
-        el.textContent = item.url.substring(0, 100)
+
+        if(item.favicon_url)
+        {
+            let favicon = document.createElement('img')
+            favicon.classList.add('recent_item_favicon')
+            favicon.src = item.favicon_url
+            el.append(favicon)
+        }
+
+        let url = document.createElement('div')
+        url.classList.add('recent_item_url')
+        url.textContent = item.url.substring(0, 100)
+        el.append(url)
+
         c.append(el)
     }
 
