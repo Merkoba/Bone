@@ -5,12 +5,14 @@ Bone.setup_recent = function()
 
     c.addEventListener('click', function(e)
     {
-        if(!e.target.classList.contains('recent_item_url'))
+        let item = e.target.closest('.recent_item')
+
+        if(!item)
         {
             return false
         }
 
-        Bone.submit_recent(e.target.closest('.recent_item').dataset.url)
+        Bone.submit_recent(item.dataset.url)
     })
 
     Bone.$('#recent_filter').addEventListener('keydown', function(e)
