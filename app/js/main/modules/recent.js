@@ -60,7 +60,7 @@ Bone.generate_recent = function()
     let c = Bone.$('#recent_container')
     c.innerHTML = ''
 
-    for(let item of Bone.storage.global_history)
+    for(let item of Bone.storage.global_history.slice(0, Bone.config.max_recent_items))
     {
         let el = document.createElement('div')
         el.classList.add('recent_item')

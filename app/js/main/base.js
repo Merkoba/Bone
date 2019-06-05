@@ -52,7 +52,8 @@ Bone.config =
     startpage: 'https://www.startpage.com',
     max_global_history_items: 1000,
     global_history_url_max_length: 500,
-    preset_version: 1
+    preset_version: 1,
+    max_recent_items: 100
 }
 
 // This gets called when body loads
