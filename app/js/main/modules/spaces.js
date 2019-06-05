@@ -46,6 +46,7 @@ Bone.change_space = function(n, obj=false)
     Bone.update_menu_space_widgets()
     Bone.focus_webview()
     Bone.update_focused_webview()
+    Bone.check_ghost_webviews()
 }
 
 // Returns the active webview container

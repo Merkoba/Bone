@@ -11,6 +11,9 @@ Bone.setup_panel = function()
         {
             Bone.show_panel()
         }
+
+        Bone.ghost_webviews()
+        Bone.mouse_on_panel = true
     })
 
     panel.addEventListener('mouseleave', function()
@@ -19,6 +22,9 @@ Bone.setup_panel = function()
         {
             Bone.start_panel_auto_hide()
         }
+
+        Bone.remove_ghost_webviews()
+        Bone.mouse_on_panel = false
     })
 
     panel.addEventListener('wheel', function(e)

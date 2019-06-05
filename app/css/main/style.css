@@ -714,3 +714,8 @@ select
     padding: 0.25rem;
     text-align: center;
 }
+
+.ghost_webview
+{
+    opacity: 0.2;
+}
