@@ -228,4 +228,11 @@ Bone.apply_auto_hide_panel = function()
 Bone.update_focused_webview = function()
 {
     Bone.$('#panel_focused').textContent = `Focused: ${Bone.num()}`
+
+    for(let webview of Bone.wvs())
+    {
+        webview.classList.remove('webview_focused')
+    }
+
+    Bone.focused().classList.add('webview_focused')
 }

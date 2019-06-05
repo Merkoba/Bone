@@ -17,6 +17,11 @@ Bone.setup_filter = function()
             Bone[`filter_${group}`]()
         })
     }
+
+    Bone.recent_filtered = function(args={})
+    {
+        Bone.update_recent(args)
+    }
 }
 
 // Does a filter operation on a generic filter item
@@ -26,12 +31,14 @@ Bone.do_filter = function(group)
     let filter = Bone.$(`#${group}_filter`)
     let value = filter.value.trim()
     let items = c.querySelectorAll('.filter_item')
+    let visible = []
 
     for(let item of items)
     {
         if(!filter || item.dataset.filter_content.includes(value))
         {
             item.style.display = 'block'
+            visible.push(item)
         }
 
         else
@@ -39,4 +46,6 @@ Bone.do_filter = function(group)
             item.style.display = 'none'
         }
     }
+
+    Bone[`${group}_filtered`]({visible:visible})
 }

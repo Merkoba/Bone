@@ -97,16 +97,6 @@ body, html
     width: 100%;
 }
 
-.webview_column
-{
-    flex-direction: column;
-}
-
-.webview_row
-{
-    flex-direction: row;
-}
-
 .action, .action_2
 {
     transition: text-shadow 500ms, box-shadow 500ms

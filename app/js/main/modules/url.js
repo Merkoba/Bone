@@ -123,6 +123,11 @@ Bone.change_url_suggest_selected = function(item)
         Bone.url_suggest_selected.classList.remove('url_suggest_selected')
     }
 
+    if(!item)
+    {
+        return false
+    }
+
     item.classList.add('url_suggest_selected')
     Bone.url_suggest_selected = item
 }

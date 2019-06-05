@@ -17,17 +17,27 @@ Bone.setup_recent = function()
     {
         if(e.key === 'Enter')
         {
-            Bone.submit_recent(Bone.recent_item_selected.dataset.url)
+            if(Bone.recent_item_selected)
+            {
+                Bone.submit_recent(Bone.recent_item_selected.dataset.url)
+            }
+            
+            e.preventDefault()
+            return false
         }
 
         else if(e.key === 'ArrowDown')
         {
             Bone.recent_move_down()
+            e.preventDefault()
+            return false
         }
 
         else if(e.key === 'ArrowUp')
         {
             Bone.recent_move_up()
+            e.preventDefault()
+            return false
         }
     })
 }
@@ -62,7 +72,9 @@ Bone.generate_recent = function()
         c.append(el)
     }
 
-    Bone.change_recent_item_selected(Bone.$$('.recent_item')[0])
+    Bone.visible_recent_items = Bone.$$('.recent_item')
+    Bone.recent_item_index = 0
+    Bone.change_recent_item_selected(Bone.visible_recent_items[0])
 }
 
 // Changes the selected recent window item
@@ -71,6 +83,12 @@ Bone.change_recent_item_selected = function(item)
     if(Bone.recent_item_selected)
     {
         Bone.recent_item_selected.classList.remove('modal_item_selected')
+    }
+
+    if(!item)
+    {
+        Bone.recent_item_selected = false
+        return false
     }
 
     item.classList.add('modal_item_selected')
@@ -87,7 +105,7 @@ Bone.submit_recent = function(url)
 // Goes down in the recent list
 Bone.recent_move_down = function()
 {
-    let items = Bone.$$('.recent_item')
+    let items = Bone.visible_recent_items
     
     if(items.length === 0)
     {
@@ -96,34 +114,44 @@ Bone.recent_move_down = function()
 
     let n = 0
 
-    n = Bone.get_child_index(Bone.recent_item_selected) + 1
+    n = Bone.recent_item_index + 1
 
     if(n > items.length - 1)
     {
         return false
     }
 
-    let item = Bone.get_child_at_index(Bone.$('#recent_container'), n)
+    let item = items[n]
+    Bone.recent_item_index = n
     Bone.change_recent_item_selected(item) 
 }
 
 // Goes up in the recent list
 Bone.recent_move_up = function()
 {
-    let items = Bone.$$('.recent_item')
+    let items = Bone.visible_recent_items
 
     if(items.length === 0)
     {
         return false
     }
 
-    let n = Bone.get_child_index(Bone.recent_item_selected) - 1
+    let n = Bone.recent_item_index - 1
 
     if(n < 0)
     {
         return false
     }
 
-    let item = Bone.get_child_at_index(Bone.$('#recent_container'), n)
+    let item = items[n]
+    Bone.recent_item_index = n
     Bone.change_recent_item_selected(item)
+}
+
+// Updates the recent list on filter changes
+Bone.update_recent = function(args)
+{
+    Bone.visible_recent_items = args.visible
+    Bone.recent_item_index = 0
+    Bone.change_recent_item_selected(Bone.visible_recent_items[0])
 }

@@ -124,6 +124,11 @@ Bone.apply_theme = function()
     {
         background-color: ${bg_color_2} !important;
     }
+
+    .webview_focused
+    {
+        box-shadow: inset 0 0 20px ${font_color_1} !important;
+    }
     `
 
     let styles = Bone.$$('.appended_theme_style')
