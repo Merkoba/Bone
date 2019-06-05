@@ -146,7 +146,7 @@ Bone.show_url_suggest = function()
     let url = Bone.$('#url')
 
     box.style.top = `${Bone.config.panel_height}px`
-    box.style.left = `${url.offsetLeft + 10}px`
+    box.style.left = `${url.offsetLeft + 5}px`
     box.style.display = 'grid'
     Bone.url_suggest_selected = false
     Bone.url_suggest_clicked = false
@@ -189,6 +189,7 @@ Bone.update_url_suggest = function()
         item.classList.add('action')
         item.textContent = url
         item.dataset.url = url
+        item.title = url
         box.append(item)
     }
 }

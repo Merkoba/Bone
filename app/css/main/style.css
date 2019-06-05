@@ -697,7 +697,9 @@ select
     grid-gap: 20px;
     grid-auto-columns: auto;
     align-items: center;
-    max-width: 800px;
+    max-width: 600px;
+    justify-content: center;
+    word-break: break-all;
 }
 
 .recent_item
