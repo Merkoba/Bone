@@ -11,7 +11,7 @@ Bone.$$ = function(s, container=false)
     {
         container = document
     }
-    
+
     return Array.from(container.querySelectorAll(s))
 }
 
@@ -122,7 +122,7 @@ Bone.clipboard_write = function(s)
 // Reads the content of the clipboard
 Bone.clipboard_read = function()
 {
-    return clipboard.readText()
+    return clipboard.readText().trim()
 }
 
 // Checks if all text in a text element is selected
@@ -135,4 +135,18 @@ Bone.check_if_all_text_selected = function(element)
 Bone.move_cursor_to_end = function(element)
 {
     element.selectionStart = element.selectionEnd = element.value.length
+}
+
+// Checks if any item of a given class has a display other than none
+Bone.check_any_item = function(cls)
+{
+    for(let item of Bone.$$(cls))
+    {
+        if(item.style.display !== 'none')
+        {
+            return true
+        }
+    }
+
+    return false
 }

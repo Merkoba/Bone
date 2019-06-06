@@ -61,12 +61,17 @@ Bone.handle_context_menu = function(e)
     let p = e.params
 
     Bone.$('#context_menu_copy').style.display = p.selectionText ? 'block' : 'none'
-    Bone.$('#context_menu_paste').style.display = p.isEditable ? 'block' : 'none'
+    Bone.$('#context_menu_paste').style.display = (p.isEditable && Bone.clipboard_read()) ? 'block' : 'none'
     Bone.$('#context_menu_copy_link_url').style.display = p.linkURL ? 'block' : 'none'
     Bone.$('#context_menu_copy_image_url').style.display = (p.mediaType === 'image' && p.srcURL) ? 'block' : 'none'
     Bone.$('#context_menu_download_image').style.display = (p.mediaType === 'image' && p.srcURL) ? 'block' : 'none'
     Bone.$('#context_menu_copy_video_url').style.display = (p.mediaType === 'video' && p.srcURL) ? 'block' : 'none'
     Bone.$('#context_menu_download_video').style.display = (p.mediaType === 'video' && p.srcURL) ? 'block' : 'none'
+
+    if(!Bone.check_any_item('.context_menu_item'))
+    {
+        return false
+    }
 
     Bone.context_menu_event = e
     Bone.show_context_menu()
