@@ -22,6 +22,11 @@ Bone.setup_find = function()
                 Bone.find_forwards(true)
             }
         }
+
+        if(e.key === 'Escape')
+        {
+            Bone.close_find()
+        }
     })
 
     Bone.$('#find_prev').addEventListener('click', function()

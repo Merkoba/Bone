@@ -94,15 +94,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+Left', function () 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-webview-cycle-left', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+Right', function () 
+        globalShortcut.register('CommandOrControl+Tab', function () 
         {
             if(win && win.webContents) 
             {
@@ -110,7 +102,15 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+Shift+Left', function () 
+        globalShortcut.register('CommandOrControl+Shift+Tab', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.webContents.send('on-webview-cycle-left', '')
+            }
+        })
+
+        globalShortcut.register('CommandOrControl+Left', function () 
         {
             if(win && win.webContents) 
             {
@@ -118,7 +118,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+Shift+Right', function () 
+        globalShortcut.register('CommandOrControl+Right', function () 
         {
             if(win && win.webContents) 
             {
@@ -190,4 +190,6 @@ function unregister_shortcuts()
     globalShortcut.unregister('CommandOrControl+Right')
     globalShortcut.unregister('CommandOrControl+Shift+Left')
     globalShortcut.unregister('CommandOrControl+Shift+Right')
+    globalShortcut.unregister('CommandOrControl+Tab')
+    globalShortcut.unregister('CommandOrControl+Shift+Tab')
 }
