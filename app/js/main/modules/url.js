@@ -252,3 +252,112 @@ Bone.apply_url_suggest_selected = function()
     Bone.change_url(Bone.url_suggest_selected.dataset.url)
     Bone.hide_url_suggest()
 }
+
+// Changes a webview url
+Bone.apply_url = function(num)
+{
+    let webview = Bone.wv(num)
+    let url = Bone.swv(num).url
+
+    if(webview.style.display === 'none')
+    {
+        return false
+    }
+
+    else
+    {
+        if(!url)
+        {
+            Bone.remake_webview(num, false, '', false)
+            return false
+        }
+    }
+
+    if(!url || webview.src === url)
+    {
+        return false
+    }
+
+    Bone.remake_webview(num, false, url, false)
+}
+
+// Changes the url of a specified webview
+Bone.change_url = function(url, num=false, space_num=false)
+{
+    url = url.trim()
+    
+    if(!num)
+    {
+        num = Bone.num()
+    }
+    
+    if(!space_num)
+    {
+        space_num = Bone.current_space
+    }
+
+    url = Bone.check_url(url)
+
+    if(parseInt(Bone.focused().dataset.num) === num)
+    {
+        let url_el = Bone.$('#url')
+        url_el.value = url
+        Bone.move_cursor_to_end(url_el)
+    }
+
+    Bone.remake_webview(num, space_num, url, false, false)
+}
+
+// Handles navigation changes
+Bone.handle_navigation = function(wv, e)
+{
+    if(!e.url)
+    {
+        return false
+    }
+
+    Bone.change_url(e.url, parseInt(wv.dataset.num), parseInt(wv.dataset.space))
+}
+
+// Checks and prepares a url
+Bone.check_url = function(url)
+{
+    if(!url.startsWith('http://') && !url.startsWith('https://'))
+    {
+        if(!url.startsWith('localhost') && !url.startsWith('127.0.0.1'))
+        {
+            if(url.includes('.') && url.split(' ').length === 1)
+            {
+                url = `http://${url}`
+            }
+
+            else
+            {
+                url = `https://www.startpage.com/do/search?query=${url.replace(/\s+/g, '%20')}`
+            }
+        }
+    }
+
+    return url
+}
+
+// Returns the current url based on history
+Bone.get_current_url = function()
+{
+    let url = false
+    let history = Bone.history()
+
+    if(history.length > 0)
+    {
+        url = history[history.length - 1]
+    }
+
+    return url
+}
+
+// Refreshes a webview with configured url
+Bone.refresh_webview = function(num)
+{
+    let url = Bone.swv(num).url
+    Bone.remake_webview(num, false, url, false)
+}

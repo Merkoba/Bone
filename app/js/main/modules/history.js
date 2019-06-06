@@ -169,3 +169,22 @@ Bone.show_history = function(num=false)
     Bone.msg_history.set_title(`Webview ${num} History`)
     Bone.msg_history.show()
 }
+
+// Goes back in history
+Bone.go_back = function()
+{
+    let space = Bone.space()
+
+    if(space.focused_webview)
+    {
+        let history = Bone.history()
+        let num = Bone.num()
+
+        if(history && history.length > 1)
+        {
+            history.pop()
+            Bone.change_url(history.slice(-1)[0], num)
+            Bone.close_all_windows()
+        }
+    }
+}

@@ -76,34 +76,6 @@ Bone.create_webview = function(num)
     return wv
 }
 
-// Changes a webview url
-Bone.apply_url = function(num)
-{
-    let webview = Bone.wv(num)
-    let url = Bone.swv(num).url
-
-    if(webview.style.display === 'none')
-    {
-        return false
-    }
-
-    else
-    {
-        if(!url)
-        {
-            Bone.remake_webview(num, false, '', false)
-            return false
-        }
-    }
-
-    if(!url || webview.src === url)
-    {
-        return false
-    }
-
-    Bone.remake_webview(num, false, url, false)
-}
-
 // Replaces a webview with a new one
 // This is to destroy its content
 Bone.remake_webview = function(num, space_num=false, url='', no_display=true, reset_history=true)
@@ -131,7 +103,7 @@ Bone.remake_webview = function(num, space_num=false, url='', no_display=true, re
 
     if(url)
     {
-        rep.src = Bone.check_url(url)
+        rep.src = url
     }
 
     if(reset_history)
@@ -203,13 +175,6 @@ Bone.reset_size = function(num, apply=true, mode='')
     {
         Bone.apply_layout(false)
     }  
-}
-
-// Refreshes a webview with configured url
-Bone.refresh_webview = function(num)
-{
-    let url = Bone.swv(num).url
-    Bone.remake_webview(num, false, url, false)
 }
 
 // Opens a window to swap a webview config with another one
@@ -660,39 +625,6 @@ Bone.create_webview_object = function(n, url='')
     return obj
 }
 
-// Returns the current url based on history
-Bone.get_current_url = function()
-{
-    let url = false
-    let history = Bone.history()
-
-    if(history.length > 0)
-    {
-        url = history[history.length - 1]
-    }
-
-    return url
-}
-
-// Goes back in history
-Bone.go_back = function()
-{
-    let space = Bone.space()
-
-    if(space.focused_webview)
-    {
-        let history = Bone.history()
-        let num = Bone.num()
-
-        if(history && history.length > 1)
-        {
-            history.pop()
-            Bone.change_url(history.slice(-1)[0], num)
-            Bone.close_all_windows()
-        }
-    }
-}
-
 // Returns the number of the focused webview
 Bone.num = function()
 {
@@ -723,56 +655,6 @@ Bone.wv = function(num=false, space_number=false)
     }
 
     return Bone.webview_container(space_number).querySelector(`.webview_${num}`)
-}
-
-// Changes the url of a specified webview
-Bone.change_url = function(url, num=false, space_num=false)
-{
-    url = url.trim()
-    
-    if(!num)
-    {
-        num = Bone.num()
-    }
-    
-    if(!space_num)
-    {
-        space_num = Bone.current_space
-    }
-
-    if(parseInt(Bone.focused().dataset.num) === num)
-    {
-        let url_el = Bone.$('#url')
-        url_el.value = url
-        Bone.move_cursor_to_end(url_el)
-    }
-
-    Bone.remake_webview(num, space_num, url, false, false)
-}
-
-// Handles navigation changes
-Bone.handle_navigation = function(wv, e)
-{
-    if(!e.url)
-    {
-        return false
-    }
-
-    Bone.change_url(e.url, parseInt(wv.dataset.num), parseInt(wv.dataset.space))
-}
-
-// Checks and prepares a url
-Bone.check_url = function(url)
-{
-    if(!url.startsWith('http://') && !url.startsWith('https://'))
-    {
-        if(!url.startsWith('localhost') && !url.startsWith('127.0.0.1'))
-        {
-            url = `http://${url}`
-        }
-    }
-
-    return url
 }
 
 // Returns the focused webview
