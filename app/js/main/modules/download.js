@@ -89,23 +89,31 @@ Bone.start_download = function(args={})
 // Pushes a directory path to download locations
 Bone.push_to_download_locations = function(path)
 {
+    let locations = Bone.storage.download_locations
+
     if(path.length > 1 && path.endsWith('/'))
     {
         path = path.substring(0, path.length - 1)
     }
 
-    for(let i=0; i<Bone.storage.download_locations.length; i++)
+    for(let i=0; i<locations.length; i++)
     {
-        let path_2 = Bone.storage.download_locations[i]
+        let path_2 = locations[i]
 
         if(path === path_2)
         {
-            Bone.storage.download_locations.splice(i, 1)
+            locations.splice(i, 1)
             break
         }
     }
 
-    Bone.storage.download_locations.push(path)
+    locations.push(path)
+    
+    if(locations.length > Bone.config.max_download_locations)
+    {
+        locations = locations.slice(0 - Bone.config.max_download_locations)
+    }
+
     Bone.save_local_storage()
 }
 

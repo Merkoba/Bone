@@ -765,7 +765,7 @@ select
 #handle_download_locations
 {
     display: grid;
-    grid-gap: 10px;
+    grid-gap: 15px;
     min-width: 200px;
     justify-content: center;
     grid-auto-columns: 1fr;
@@ -775,5 +775,5 @@ select
 .handle_download_locations_item
 {
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
