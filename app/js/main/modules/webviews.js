@@ -666,29 +666,31 @@ Bone.focused = function()
 // Cycles webview focus
 Bone.cycle_webview = function(direction='right')
 {
-    let num
+    let new_num
+    let num = Bone.num()
+    let wvs = Bone.wvs()
 
     if(direction === 'right')
     {
-        num = Bone.num() + 1
+        new_num = num + 1
     
-        if(num > Bone.wvs().length)
+        if(new_num > wvs.length)
         {
-            num = 1
+            new_num = 1
         }
     }
     
     else if(direction === 'left')
     {
-        num = Bone.num() - 1
+        new_num = num - 1
     
-        if(num <= 0)
+        if(new_num <= 0)
         {
-            num = Bone.wvs().length
+            new_num = wvs.length
         }
     }
     
-    Bone.focus_webview(num)
+    Bone.focus_webview(new_num)
 }
 
 // Makes all uncofused webviews semi opaque
@@ -715,12 +717,12 @@ Bone.ghost_webviews = function()
 // Makes all webviews fully opaque
 Bone.remove_ghost_webviews = function()
 {
-    clearTimeout(Bone.ghost_webviews_shot_timeout)
-
     for(let webview of Bone.wvs())
     {
         webview.classList.remove('ghost_webview')
     }
+
+    Bone.ghost_webviews_shot_on = false
 }
 
 // Checks how to apply or remove ghost webviews
@@ -733,7 +735,15 @@ Bone.check_ghost_webviews = function()
 
     else
     {
-        Bone.remove_ghost_webviews()
+        if(Bone.ghost_webviews_shot_on)
+        {
+            Bone.ghost_webviews_shot()
+        }
+        
+        else
+        {
+            Bone.remove_ghost_webviews()
+        }
     }
 }
 
@@ -741,6 +751,7 @@ Bone.check_ghost_webviews = function()
 Bone.ghost_webviews_shot = function()
 {
     Bone.ghost_webviews()
+    Bone.ghost_webviews_shot_on = true
 
     Bone.ghost_webviews_shot_timeout = setTimeout(function()
     {
