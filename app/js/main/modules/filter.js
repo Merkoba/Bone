@@ -30,7 +30,7 @@ Bone.do_filter = function(group)
     let c = Bone.$(`#${group}_container`)
     let filter = Bone.$(`#${group}_filter`)
     let value = filter.value.trim()
-    let items = c.querySelectorAll('.filter_item')
+    let items = Bone.$$('.filter_item', c)
     let visible = []
 
     for(let item of items)

@@ -5,9 +5,14 @@ Bone.$ = function(s)
 }
 
 // Fetch multiple elements
-Bone.$$ = function(s)
+Bone.$$ = function(s, container=false)
 {
-    return Array.from(document.querySelectorAll(s))
+    if(!container)
+    {
+        container = document
+    }
+    
+    return Array.from(container.querySelectorAll(s))
 }
 
 // Returns a cloned object

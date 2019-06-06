@@ -115,7 +115,7 @@ Bone.update_active_space = function()
 // Gets all the webviews from the current container
 Bone.wvs = function()
 {
-    return Bone.webview_container().querySelectorAll('.webview')
+    return Bone.$$('.webview', Bone.webview_container())
 }
 
 // Creates and prepares a space object
