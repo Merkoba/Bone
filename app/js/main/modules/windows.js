@@ -105,6 +105,11 @@ Bone.create_windows = function()
         id: 'recent'
     }))
 
+    Bone.msg_handle_download = Msg.factory(Object.assign({}, common, titlebar,
+    {
+        id: 'handle_download'
+    }))
+
     Bone.msg_menu.set(Bone.template_menu())
     Bone.msg_create_preset.set(Bone.template_create_preset())
     Bone.msg_handle_preset.set(Bone.template_handle_preset())
@@ -119,6 +124,7 @@ Bone.create_windows = function()
     Bone.msg_handle_close_space.set(Bone.template_handle_close_space())
     Bone.msg_about.set(Bone.template_about())
     Bone.msg_recent.set(Bone.template_recent())
+    Bone.msg_handle_download.set(Bone.template_handle_download())
 
     Bone.msg_create_preset.set_title('Save Preset')
     Bone.msg_autostart.set_title('AutoStart Presets')
@@ -129,6 +135,7 @@ Bone.create_windows = function()
     Bone.msg_swap_webviews.set_title('Swap Webviews')
     Bone.msg_open_preset.set_title('Open Preset')
     Bone.msg_recent.set_title('Recent Websites')
+    Bone.msg_handle_download.set_title('Download Location')
 }
 
 // Closes all modal windows

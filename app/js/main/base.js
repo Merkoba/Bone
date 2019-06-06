@@ -98,6 +98,7 @@ Bone.init = function()
     Bone.setup_recent()
     Bone.setup_filter()
     Bone.setup_context_menu()
+    Bone.setup_handle_download()
 
     Bone.remove_splash()
 

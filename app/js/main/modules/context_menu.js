@@ -36,16 +36,7 @@ Bone.setup_context_menu = function()
     Bone.$('#context_menu_download_image').addEventListener('click', function()
     {
         let url = Bone.context_menu_event.params.srcURL
-
-        dialog.showSaveDialog(remote.getCurrentWindow(),
-        {
-            title: 'Download Image File',
-            defaultPath: url.split('/').slice(-1)[0]
-        }, function(filename)
-        {
-            Bone.start_download({url:url, filename:filename, type:'image'})
-        })
-
+        Bone.show_handle_download({url:url, type:'image'})
         Bone.hide_context_menu()
     })
 
@@ -58,21 +49,7 @@ Bone.setup_context_menu = function()
     Bone.$('#context_menu_download_video').addEventListener('click', function()
     {
         let url = Bone.context_menu_event.params.srcURL
-
-        dialog.showSaveDialog(remote.getCurrentWindow(),
-        {
-            title: 'Download Video File',
-            defaultPath: url.split('/').slice(-1)[0]
-        }, function(filename)
-        {
-            Bone.download(url, filename)
-
-            .then(res =>
-            {
-                Bone.start_download({url:url, filename:filename, type:'video'})
-            })
-        })
-
+        Bone.show_handle_download({url:url, type:'video'})
         Bone.hide_context_menu()
     })
 }

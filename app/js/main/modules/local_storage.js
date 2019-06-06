@@ -47,6 +47,7 @@ Bone.check_local_storage = function(obj)
     let wrap_spaces_on_wheel_version = 1
     let special_version = 1
     let global_history_version = 1
+    let download_locations_version = 1
     
     if(obj.layout_version !== layout_version)
     {
@@ -118,6 +119,13 @@ Bone.check_local_storage = function(obj)
     {
         obj.global_history = []
         obj.global_history_version = global_history_version
+        save = true
+    }
+
+    if(obj.download_locations_version !== download_locations_version)
+    {
+        obj.download_locations = []
+        obj.download_locations_version = download_locations_version
         save = true
     }
 
