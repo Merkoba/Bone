@@ -21,18 +21,18 @@
                     <i id='menu_icon' class='fas fa-th-large panel_item action'></i>
                 </div>
                 <div id='panel_toolbar'>
-                    <div id='panel_focused' class='panel_item action'>[1]</div>
+                    <div id='panel_focused' class='panel_item action'></div>
                     <div id='panel_history' class='panel_item action'>History</div>
                     <i id='panel_refresh' class='fas fa-redo panel_item action'></i>
-                    <div id='panel_zoom_container' data-tippy-content='Middle click to reset zoom' class='nice_title'>
+                    <div id='panel_zoom_container' title='Middle click to reset zoom'>
                         <i id='panel_zoom_in' class='fas fa-plus panel_item action'></i>
                         <i id='panel_zoom_out' class='fas fa-minus panel_item action'></i>
                     </div>
                     <i id='panel_recent' class='fas fa-star panel_item action'></i>
                 </div>
                 <input type='text' id='url'>
-                <div id='spaces' data-tippy-content='Wheel or click to switch. Shift+Wheel to move. Middle click to close.' class='nice_title'></div>
-                <div id='panel_space_options_container' data-tippy-content='Middle click to open a new empty space' class='nice_title'>
+                <div id='spaces' title='Wheel or click to switch. Shift+Wheel to move. Middle click to close.'></div>
+                <div id='panel_space_options_container' title='Middle click to open a new empty space'>
                     <i class='fas fa-caret-down panel_item action' id='panel_space_options'></i>
                 </div>
             </div>
@@ -65,7 +65,7 @@
         </script>
 
         <script id='template_webview' type='text/x-handlebars-template' class='template'>
-            <webview class='webview webview_{{num}}' webpreferences='allowRunningInsecureContent' allowpopups></webview>
+            <webview class='webview webview_{{num}}' webpreferences='allowRunningInsecureContent' allowpopups tabindex='{{num}}'></webview>
         </script>
 
         <script id='template_menu' type='text/x-handlebars-template' class='template'>
@@ -184,12 +184,7 @@
         </script>
 
         <script id='template_swap_webviews' type='text/x-handlebars-template' class='template'>
-            <div id='swap_webviews_container' class='unselectable'>
-                <div id='swap_webviews_1' class='swap_webviews_item action pointer' data-num='1'></div>
-                <div id='swap_webviews_2' class='swap_webviews_item action pointer' data-num='2'></div>
-                <div id='swap_webviews_3' class='swap_webviews_item action pointer' data-num='3'></div>
-                <div id='swap_webviews_4' class='swap_webviews_item action pointer' data-num='4'></div>
-            </div>
+            <div id='swap_webviews_container' class='unselectable'></div>
         </script>
 
         <script id='template_info' type='text/x-handlebars-template' class='template'>
@@ -215,7 +210,7 @@
         </script>
 
         <script id='template_handle_history' type='text/x-handlebars-template' class='template'>
-            <div id='handle_history_container' class='unselectable' tabindex='0'>
+            <div id='handle_history_container' class='unselectable'>
                 <div id='handle_history_layout_container'>
                     <div>Open In</div>
                     <div id='handle_history_layout'></div>

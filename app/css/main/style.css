@@ -97,6 +97,11 @@ body, html
     width: 100%;
 }
 
+.webview
+{
+    outline: none;
+}
+
 .action, .action_2
 {
     transition: text-shadow 500ms, box-shadow 500ms
@@ -341,7 +346,8 @@ body, html
 
 .swap_webviews_item
 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    cursor: pointer;
 }
 
 .layout_square_item
@@ -526,12 +532,6 @@ select
 #panel_menu_container, #panel_space_options_container
 {
     height: 100%;
-}
-
-#handle_history_container
-{
-    outline: none;
-    border: 0px solid grey;
 }
 
 #panel_zoom_container

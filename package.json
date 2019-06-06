@@ -9,8 +9,7 @@
     "hash-files": "~1.1.1",
     "mad-colorlib": "~1.0.1",
     "mad-separator": "~1.0.0",
-    "msg-modal": "~11.4.3",
-    "tippy.js": "~4.3.2"
+    "msg-modal": "~11.4.3"
   },
   "devDependencies": {
     "electron": "~5.0.2",

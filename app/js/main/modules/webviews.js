@@ -675,8 +675,6 @@ Bone.remake_webview = function(num, space_num=false, url='', no_display=true, re
 
     Bone.replace_element(rep, wv)
 
-    let wv2 = Bone.wv(num, space_num)
-
     if(space_num === Bone.current_space)
     {
         Bone.focus_webview(num)
@@ -751,27 +749,36 @@ Bone.refresh_webview = function(num)
 // Opens a window to swap a webview config with another one
 Bone.swap_webview = function(num)
 {
-    let items = Bone.$$('.swap_webviews_item')
-
-    for(let item of items)
+    let wvs = Bone.wvs()
+    
+    if(wvs.length < 2)
     {
-        let num_2 = parseInt(item.dataset.num)
+        return false
+    }
+    
+    let c = Bone.$('#swap_webviews_container')
+    c.innerHTML = ''
 
-        if(num === num_2)
+    for(let i=1; i<=wvs.length; i++)
+    {
+        if(i === num)
         {
-            item.style.display = 'none'
+            continue
         }
 
-        else
-        {
-            let swv = Bone.swv(num_2)
-            item.style.display = 'block'
-            item.textContent = `Swap With: (${num_2}) ${swv.url.substring(0, Bone.config.swap_max_url_length)}`
-            item.dataset.url = swv.url
-        }
+        let swv = Bone.swv(i)
+        let item = document.createElement('div')
+        item.classList.add('swap_webviews_item')
+        item.classList.add('action')
+        item.textContent = `Swap With: (${i}) ${swv.url.substring(0, Bone.config.swap_max_url_length)}`
+        item.dataset.num = i
+        item.dataset.url = swv.url
+
+        c.append(item)
     }
 
     Bone.swapping_webview = num
+    Bone.msg_swap_webviews.set_title(`Swap Webview ${num}`)
     Bone.msg_swap_webviews.show()
 }
 
@@ -809,7 +816,9 @@ Bone.do_webview_swap = function(num_1, num_2)
 // What to do when a webview is dom ready
 Bone.on_webview_dom_ready = function(webview)
 {
-    // Do nothing for now
+    let num = parseInt(webview.dataset.num)
+    let space = parseInt(webview.dataset.space)
+    Bone.focus_webview(num ,space)
 }
 
 // Populates and shows the webview history
@@ -825,6 +834,8 @@ Bone.show_history = function(num=false)
         num = Bone.num()
     }
 
+    let wvs = Bone.wvs()
+    let num_webviews = wvs.length
     let c = Bone.$('#history_container')
     c.innerHTML = ''
 
@@ -836,6 +847,12 @@ Bone.show_history = function(num=false)
         el.textContent = item.substring(0, Bone.config.history_max_url_length)
         el.dataset.url = item
         el.dataset.num = num
+
+        if(num_webviews > 1)
+        {
+            el.title = 'Middle click to open in another webview'
+        }
+
         c.prepend(el)
     }
 
@@ -1305,60 +1322,42 @@ Bone.history = function()
     return Bone.space().history[`webview_${Bone.num()}`]
 }
 
-// Setups the handle history window
-Bone.setup_handle_history = function()
-{
-    Bone.$('#handle_history_container').addEventListener('keyup', function(e)
-    {
-        if(e.key === 'Enter')
-        {
-            Bone.history_item_open()
-        }
-    })
-}
-
 // Shows the handle history window
 Bone.show_handle_history = function()
 {
     let num = Bone.wvs().length
+
+    if(num < 2)
+    {
+        return false
+    }
+
     let container = Bone.$('#handle_history_layout_container')
     let layout = Bone.$('#handle_history_layout')
     layout.innerHTML = ''
 
-    if(num > 1)
+    let clone = Bone.$(`#layout_${Bone.space().current_layout}`).cloneNode(true)
+    clone.id = ''
+    clone.classList.add('menu_layout_item_2')
+
+    let items = clone.querySelectorAll('.layout_square_item')
+
+    for(let item of items)
     {
-        let clone = Bone.$(`#layout_${Bone.space().current_layout}`).cloneNode(true)
-        clone.id = ''
-        clone.classList.add('menu_layout_item_2')
+        item.classList.add('action')
 
-        let items = clone.querySelectorAll('.layout_square_item')
-
-        for(let item of items)
+        item.addEventListener('click', function()
         {
-            item.classList.add('action')
-
-            item.addEventListener('click', function()
-            {
-                Bone.change_url(Bone.handled_history_item.dataset.url, parseInt(this.innerHTML))
-                Bone.close_all_windows()
-            })
-        }
-
-        layout.append(clone)
-        container.style.display = 'block'
+            Bone.change_url(Bone.handled_history_item.dataset.url, parseInt(this.innerHTML))
+            Bone.close_all_windows()
+        })
     }
 
-    else
-    {
-        container.style.display = 'none'
-    }
+    layout.append(clone)
+    container.style.display = 'block'
 
     Bone.msg_handle_history.set_title(Bone.handled_history_item.dataset.url.substring(0, 50))
-
-    Bone.msg_handle_history.show(function()
-    {
-        Bone.$('#handle_history_container').focus()
-    })
+    Bone.msg_handle_history.show()
 }
 
 // Opens a history item
@@ -1381,20 +1380,18 @@ Bone.history_item_open = function()
 }
 
 // Focuses current webview
-Bone.focus_webview = function(num)
+Bone.focus_webview = function(num, space_num=false)
 {
-    let webview = Bone.wv(num)
-    
-    if(document.activeElement !== webview)
+    if(space_num)
     {
-        document.activeElement.blur()
-        webview.focus()
+        if(space_num !== Bone.current_space)
+        {
+            return false
+        }
     }
 
-    else
-    {
-        Bone.on_webview_focus(webview)
-    }
+    document.activeElement.blur()
+    Bone.wv(num).focus()
 }
 
 // Gets a webview by its number

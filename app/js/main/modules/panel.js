@@ -132,6 +132,14 @@ Bone.setup_panel = function()
         Bone.cycle_webview('right')
     })
 
+    Bone.$('#panel_focused').addEventListener('auxclick', function(e)
+    {
+        if(e.which === 2)
+        {
+            Bone.swap_webview(Bone.num())
+        }
+    })
+
     let panel_menu_container = Bone.$('#panel_menu_container')
 
     panel_menu_container.addEventListener('click', function(e)

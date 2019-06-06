@@ -291,23 +291,6 @@ Bone.setup_signals = function()
     })
 }
 
-// Starts custom tooltips
-Bone.start_tooltips = function()
-{
-    for(let el of Bone.$$('.nice_title'))
-    {
-        Tippy(el, 
-        {
-            arrow: true,
-            arrowType: 'round',
-            animation: 'fade',
-            delay: 1000,
-            zIndex: 999999,
-            a11y: false
-        })
-    }
-}
-
 // Gets the project hash if it doesn't exist already and shows the about window
 Bone.show_about = function()
 {
@@ -383,4 +366,20 @@ Bone.show_info_popup = function(message, icon=false, on_click=false)
 
     item.append(text_el)
     popup.show(item)
+}
+
+// Checks if enable or disable titles
+Bone.check_titles = function()
+{
+    let wvs = Bone.wvs()
+
+    if(wvs.length > 1)
+    {
+        Bone.$('#panel_focused').title = 'Middle click to swap'
+    }
+
+    else
+    {
+        Bone.$('#panel_focused').title = ''
+    }
 }
