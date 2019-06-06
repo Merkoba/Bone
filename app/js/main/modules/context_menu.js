@@ -52,6 +52,12 @@ Bone.setup_context_menu = function()
         Bone.show_handle_download({url:url, type:'video'})
         Bone.hide_context_menu()
     })
+
+    Bone.$('#context_menu_inspect').addEventListener('click', function()
+    {
+        let e = Bone.context_menu_event
+        e.target.getWebContents().inspectElement(e.params.x, e.params.y)
+    })
 }
 
 // Handles a context menu trigger
@@ -67,6 +73,7 @@ Bone.handle_context_menu = function(e)
     Bone.$('#context_menu_download_image').style.display = (p.mediaType === 'image' && p.srcURL) ? 'block' : 'none'
     Bone.$('#context_menu_copy_video_url').style.display = (p.mediaType === 'video' && p.srcURL) ? 'block' : 'none'
     Bone.$('#context_menu_download_video').style.display = (p.mediaType === 'video' && p.srcURL) ? 'block' : 'none'
+    Bone.$('#context_menu_inspect').style.display = 'block'
 
     if(!Bone.check_any_item('.context_menu_item'))
     {

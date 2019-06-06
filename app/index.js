@@ -125,6 +125,14 @@ exports.create_window = function()
                 win.webContents.send('on-space-cycle-right', '')
             }
         })
+
+        globalShortcut.register('F12', function () 
+        {
+            if(win && win.webContents) 
+            {
+                win.toggleDevTools()
+            }
+        })
     })
 
     win.on('blur', () => 
