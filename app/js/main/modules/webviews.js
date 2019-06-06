@@ -725,6 +725,18 @@ Bone.remove_ghost_webviews = function()
     Bone.ghost_webviews_shot_on = false
 }
 
+// Does a ghost webviews for an instant
+Bone.ghost_webviews_shot = function()
+{
+    Bone.ghost_webviews()
+    Bone.ghost_webviews_shot_on = true
+
+    Bone.ghost_webviews_shot_timeout = setTimeout(function()
+    {
+        Bone.remove_ghost_webviews()
+    }, 800)
+}
+
 // Checks how to apply or remove ghost webviews
 Bone.check_ghost_webviews = function()
 {
@@ -745,18 +757,6 @@ Bone.check_ghost_webviews = function()
             Bone.remove_ghost_webviews()
         }
     }
-}
-
-// Does a ghost webviews for an instant
-Bone.ghost_webviews_shot = function()
-{
-    Bone.ghost_webviews()
-    Bone.ghost_webviews_shot_on = true
-
-    Bone.ghost_webviews_shot_timeout = setTimeout(function()
-    {
-        Bone.remove_ghost_webviews()
-    }, 800)
 }
 
 // What to do when a webview gets focus

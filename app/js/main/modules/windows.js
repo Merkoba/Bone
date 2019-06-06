@@ -270,14 +270,15 @@ Bone.setup_signals = function()
     
     ipcRenderer.on('on-webview-cycle-left', (e, args) => 
     {
+        Bone.ghost_webviews_shot_on = true
         Bone.cycle_webview('left')
-        Bone.ghost_webviews_shot()
     })
     
     ipcRenderer.on('on-webview-cycle-right', (e, args) => 
     {
+        
+        Bone.ghost_webviews_shot_on = true
         Bone.cycle_webview('right')
-        Bone.ghost_webviews_shot()
     })
     
     ipcRenderer.on('on-space-cycle-left', (e, args) => 
