@@ -373,14 +373,25 @@ Bone.show_info_popup = function(message, icon=false, on_click=false)
 Bone.check_titles = function()
 {
     let wvs = Bone.wvs()
+    let spaces = Bone.get_spaces()
 
     if(wvs.length > 1)
     {
-        Bone.$('#panel_focused').title = 'Middle click to swap'
+        Bone.$('#panel_focused').title = 'Ctrl+Tab or Ctrl+Shift+Tab to cycle. Middle click to swap.'
     }
-
+    
     else
     {
         Bone.$('#panel_focused').title = ''
+    }
+    
+    if(spaces.length > 1)
+    {
+        Bone.$('#spaces').title = 'Wheel or Ctrl+Arrow to cycle. Shift+Wheel to move. Middle click to close.'
+    }
+    
+    else
+    {
+        Bone.$('#spaces').title = ''
     }
 }
