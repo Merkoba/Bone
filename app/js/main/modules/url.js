@@ -100,12 +100,14 @@ Bone.setup_url_suggest = function()
 
     box.addEventListener('click', function(e)
     {
-        if(!e.target.classList.contains('url_suggest_item'))
+        let item = e.target.closest('.url_suggest_item')
+
+        if(!item)
         {
             return false
         }
 
-        Bone.change_url_suggest_selected(e.target)
+        Bone.change_url_suggest_selected(item)
         Bone.apply_url_suggest_selected()
     })
 
@@ -130,6 +132,7 @@ Bone.change_url_suggest_selected = function(item)
 
     item.classList.add('url_suggest_selected')
     Bone.url_suggest_selected = item
+    Bone.url_suggest_selected.scrollIntoView({block:'center'})
 }
 
 // Sets the url in the panel
@@ -182,14 +185,33 @@ Bone.update_url_suggest = function()
         return false
     }
     
-    for(let url of matches)
+    for(let match of matches)
     {
         let item = document.createElement('div')
         item.classList.add('url_suggest_item')
         item.classList.add('action')
-        item.textContent = url
-        item.dataset.url = url
-        item.title = url
+        item.dataset.url = match.url
+        item.title = match.url
+
+        if(match.favicon_url)
+        {
+            let favicon_el = document.createElement('img')
+            favicon_el.classList.add('url_suggest_favicon')
+            favicon_el.src = match.favicon_url
+    
+            favicon_el.addEventListener('error', function()
+            {
+                this.style.display = 'none'
+            })
+
+            item.append(favicon_el)
+        }
+
+        let url_el = document.createElement('div')
+        url_el.classList.add('url_suggest_url')
+        url_el.textContent = match.url.substring(0, 100)
+
+        item.append(url_el)
         box.append(item)
     }
 }

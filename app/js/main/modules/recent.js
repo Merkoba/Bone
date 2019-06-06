@@ -74,22 +74,22 @@ Bone.generate_recent = function()
 
         if(item.favicon_url)
         {
-            let favicon = document.createElement('img')
-            favicon.classList.add('recent_item_favicon')
-            favicon.src = item.favicon_url
+            let favicon_el = document.createElement('img')
+            favicon_el.classList.add('recent_item_favicon')
+            favicon_el.src = item.favicon_url
 
-            favicon.addEventListener('error', function()
+            favicon_el.addEventListener('error', function()
             {
                 this.style.display = 'none'
             })
 
-            el.append(favicon)
+            el.append(favicon_el)
         }
 
-        let url = document.createElement('div')
-        url.classList.add('recent_item_url')
-        url.textContent = item.title || item.url.substring(0, 100)
-        el.append(url)
+        let url_el = document.createElement('div')
+        url_el.classList.add('recent_item_url')
+        url_el.textContent = item.title || item.url.substring(0, 100)
+        el.append(url_el)
 
         c.prepend(el)
     }

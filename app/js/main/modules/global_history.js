@@ -82,7 +82,7 @@ Bone.find_global_history_matches = function(url, max=false)
     {
         if(url.includes(item.url) || item.url.includes(url))
         {
-            matches.push(item.url)
+            matches.push(item)
             found += 1
 
             if(max && found >= max)

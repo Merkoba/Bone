@@ -611,10 +611,24 @@ select
 
 .url_suggest_item
 {
-    font-size: 1rem;
     box-shadow: 0 0 1px currentColor;
     padding: 5px;
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.url_suggest_favicon
+{
+    margin-right: 5px;
+    height: 0.8rem;
+}
+
+.url_suggest_url
+{
+    font-size: 1rem;
     white-space: nowrap;
 }
 
@@ -755,6 +769,8 @@ select
     display: flex;
     flex-direction: row;
     cursor: pointer;
+    align-items: center;
+    justify-content: center;
 }
 
 .info_popup_icon
