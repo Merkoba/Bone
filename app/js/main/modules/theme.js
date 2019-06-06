@@ -124,6 +124,17 @@ Bone.apply_theme = function()
     {
         background-color: ${bg_color_2} !important;
     }
+
+    #context_menu
+    {
+        background-color: ${bg_color_2} !important;
+        color: ${font_color_1} !important;
+    }
+
+    .context_menu_item
+    {
+        box-shadow: 0 0 1px ${font_color_1} !important;
+    }
     `
 
     let styles = Bone.$$('.appended_theme_style')

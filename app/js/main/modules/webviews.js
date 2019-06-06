@@ -15,9 +15,7 @@ Bone.create_webview = function(num)
 
     wv.addEventListener('focus', function()
     {
-        Bone.space().focused_webview = this
-        Bone.update_focused_webview()
-        Bone.update_url()
+        Bone.on_webview_focus(wv)
     })
 
     wv.addEventListener('will-navigate', function(e)
@@ -50,14 +48,7 @@ Bone.create_webview = function(num)
             return false
         }
 
-        let history = Bone.space(wv.dataset.space).history[`webview_${wv.dataset.num}`]
-        
-        if(history.slice(-1)[0] === e.url)
-        {
-            return false
-        }
-
-        history.push(e.url)
+        Bone.push_to_history(wv, e.url)
         Bone.swv(wv.dataset.num, wv.dataset.space).url = e.url
         Bone.space_modified()
         Bone.save_local_storage()
@@ -67,7 +58,7 @@ Bone.create_webview = function(num)
 
     wv.addEventListener('context-menu', function(e)
     {
-        // console.log(e)
+        Bone.handle_context_menu(e)
     })
 
     wv.addEventListener('page-favicon-updated', function(e)
@@ -856,15 +847,31 @@ Bone.show_history = function(num=false)
 // Setups history
 Bone.setup_history = function()
 {
-    Bone.$('#history_container').addEventListener('click', function(e)
+    let container = Bone.$('#history_container')
+    
+    container.addEventListener('click', function(e)
     {
         if(!e.target.classList.contains('history_item'))
         {
             return false
         }
 
-        Bone.handled_history_item = e.target
-        Bone.show_handle_history()
+        Bone.change_url(e.target.dataset.url)
+        Bone.close_all_windows()
+    })
+
+    container.addEventListener('auxclick', function(e)
+    {
+        if(!e.target.classList.contains('history_item'))
+        {
+            return false
+        }
+
+        if(e.which === 2)
+        {
+            Bone.handled_history_item = e.target
+            Bone.show_handle_history()
+        }
     })
 
     Bone.$('#Msg-titlebar-history').addEventListener('click', function()
@@ -1301,17 +1308,6 @@ Bone.history = function()
 // Setups the handle history window
 Bone.setup_handle_history = function()
 {
-    Bone.$('#handle_history_open').addEventListener('click', function()
-    {
-        Bone.history_item_open()
-    })
- 
-    Bone.$('#handle_history_copy').addEventListener('click', function()
-    {
-        Bone.copy_string(Bone.handled_history_item.dataset.url)
-        Bone.info('URL copied to clipboard')
-    })
-
     Bone.$('#handle_history_container').addEventListener('keyup', function(e)
     {
         if(e.key === 'Enter')
@@ -1385,25 +1381,20 @@ Bone.history_item_open = function()
 }
 
 // Focuses current webview
-Bone.focus_webview = function(num=false)
+Bone.focus_webview = function(num)
 {
-    let wv
-
-    if(!num)
+    let webview = Bone.wv(num)
+    
+    if(document.activeElement !== webview)
     {
-        wv = Bone.focused()
+        document.activeElement.blur()
+        webview.focus()
     }
 
     else
     {
-        wv = Bone.wv(num)
+        Bone.on_webview_focus(webview)
     }
-
-    document.activeElement.blur()
-    wv.focus()
-    Bone.space().focused_webview = wv
-    Bone.check_ghost_webviews()
-    Bone.close_find()
 }
 
 // Gets a webview by its number
@@ -1556,4 +1547,41 @@ Bone.ghost_webviews_shot = function()
     {
         Bone.remove_ghost_webviews()
     }, 800)
+}
+
+// What to do when a webview gets focus
+Bone.on_webview_focus = function(webview)
+{
+    Bone.space().focused_webview = webview
+    Bone.update_focused_webview()
+    Bone.update_url()
+    Bone.close_find()
+    Bone.hide_context_menu()
+    Bone.check_ghost_webviews()
+}
+
+// Pushes to a webview history
+Bone.push_to_history = function(webview, url)
+{
+    let num = parseInt(webview.dataset.num)
+    let space = parseInt(webview.dataset.space)
+    let history = Bone.space(space).history[`webview_${num}`]
+        
+    if(history.slice(-1)[0] === url)
+    {
+        return false
+    }
+
+    for(let i=0; i<history.length; i++)
+    {
+        let url_2 = history[i]
+
+        if(url === url_2)
+        {
+            history.splice(i, 1)
+            break
+        }
+    }
+
+    history.push(url)
 }

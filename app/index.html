@@ -45,6 +45,19 @@
                 <i class='fas fa-angle-right action' id='find_next'></i>
                 <i class='far fa-times-circle action' id='find_close'></i>
             </div>
+            <div id='context_menu' class='unselectable' tabindex='0'>
+                <div id='context_menu_copy' class='context_menu_item action'>Copy</div>
+                <div id='context_menu_paste' class='context_menu_item action'>Paste</div>
+                <div id='context_menu_copy_link_url' class='context_menu_item action'>Copy Link URL</div>
+                <div id='context_menu_copy_image_url' class='context_menu_item action'>Copy Image URL</div>
+                <div id='context_menu_download_image' class='context_menu_item action'>
+                        <i class='fas fa-download context_menu_icon'></i><span>Download Image</span>
+                </div>
+                <div id='context_menu_copy_video_url' class='context_menu_item action'>Copy Video URL</div>
+                <div id='context_menu_download_video' class='context_menu_item action'>
+                    <i class='fas fa-download context_menu_icon'></i><span>Download Video</span>
+                </div>
+            </div>
         </div>
 
         <script id='template_webview_container' type='text/x-handlebars-template' class='template'>
@@ -203,15 +216,9 @@
 
         <script id='template_handle_history' type='text/x-handlebars-template' class='template'>
             <div id='handle_history_container' class='unselectable' tabindex='0'>
-                <div>
-                    <div class='separate_horizontal'>
-                        <div id='handle_history_open' class='generic_button action inline'>Open Here</div>
-                        <div id='handle_history_copy' class='generic_button action inline'>Copy URL</div>
-                    </div>
-                    <div id='handle_history_layout_container'>
-                        <div>Open In</div>
-                        <div id='handle_history_layout'></div>
-                    </div>
+                <div id='handle_history_layout_container'>
+                    <div>Open In</div>
+                    <div id='handle_history_layout'></div>
                 </div>
             </div>
         </script>
@@ -259,6 +266,10 @@
         <script id='template_recent' type='text/x-handlebars-template' class='template'>
             <input type='text' id='recent_filter' class='filter_input' placeholder='Filter' data-filter-group='recent'>
             <div id='recent_container' data-filter-group='recent'></div>
+        </script>
+ 
+        <script id='template_downloads' type='text/x-handlebars-template' class='template'>
+            <div id='downloads_container'></div>
         </script>
     </body>
 

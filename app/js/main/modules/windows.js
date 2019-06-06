@@ -326,3 +326,54 @@ Bone.show_about = function()
         Bone.msg_about.show()
     })
 }
+
+// Creates and shows an info popup in the bottom right
+Bone.show_info_popup = function(message, icon=false, on_click=false)
+{
+    if(!on_click)
+    {
+        on_click = function(){}
+    }
+
+    let popup = Msg.factory(
+    {
+        preset: 'popup',
+        position: 'bottomright',
+        autoclose: true,
+        autoclose_delay: 5000,
+        window_width: 'auto',
+        window_height: 'auto',
+        on_click: on_click
+    })
+
+    let item = document.createElement('div')
+    item.classList.add('info_popup_item')
+    item.classList.add('unselectable')
+
+    if(icon)
+    {
+        let icon_el = document.createElement('i')
+        icon_el.classList.add('info_popup_icon')
+        
+        if(icon === 'download')
+        {
+            icon_el.classList.add('fas')
+            icon_el.classList.add('fa-download')
+        }
+
+        else if(icon === 'error')
+        {
+            icon_el.classList.add('fas')
+            icon_el.classList.add('fa-exclamation-circle')
+        }
+
+        item.append(icon_el)
+    }
+
+    let text_el = document.createElement('div')
+    text_el.classList.add('info_popup_text')
+    text_el.textContent = message
+
+    item.append(text_el)
+    popup.show(item)
+}

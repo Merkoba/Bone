@@ -109,14 +109,15 @@ Bone.replace_element = function(replacement, original)
 }
 
 // Copies a string to the clipboard
-Bone.copy_string = function(s)
+Bone.clipboard_write = function(s)
 {
-    let textareaEl = document.createElement('textarea')
-    document.body.appendChild(textareaEl)
-    textareaEl.value = s
-    textareaEl.select()
-    document.execCommand('copy')
-    document.body.removeChild(textareaEl)
+    clipboard.writeText(s)
+}
+
+// Reads the content of the clipboard
+Bone.clipboard_read = function()
+{
+    return clipboard.readText()
 }
 
 // Checks if all text in a text element is selected

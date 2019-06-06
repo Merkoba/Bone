@@ -3,8 +3,12 @@
 // Node imports
 
 const fs = require('fs')
+const http = require('http')
+const https = require('https')
 const path = require('path')
-const {remote, ipcRenderer} = require('electron')
+const electron = require('electron')
+const {remote, ipcRenderer, clipboard, shell} = electron
+const {dialog} = remote
 const Msg = require('msg-modal')
 const ColorLib = require('mad-colorlib')
 const Separator = require('mad-separator')
@@ -93,6 +97,7 @@ Bone.init = function()
     Bone.setup_global_history()
     Bone.setup_recent()
     Bone.setup_filter()
+    Bone.setup_context_menu()
 
     Bone.remove_splash()
 

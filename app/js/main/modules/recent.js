@@ -70,6 +70,7 @@ Bone.generate_recent = function()
         el.classList.add('action')
         el.dataset.url = item.url
         el.dataset.filter_content = item.url
+        el.title = item.url
 
         if(item.favicon_url)
         {
