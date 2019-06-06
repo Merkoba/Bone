@@ -77,6 +77,12 @@ Bone.generate_recent = function()
             let favicon = document.createElement('img')
             favicon.classList.add('recent_item_favicon')
             favicon.src = item.favicon_url
+
+            favicon.addEventListener('error', function()
+            {
+                this.style.display = 'none'
+            })
+
             el.append(favicon)
         }
 
