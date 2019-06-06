@@ -38,7 +38,7 @@ exports.create_window = function()
 
     win.on('focus', () => 
     {
-        globalShortcut.register('CommandOrControl+F', function () 
+        globalShortcut.register('CommandOrControl+F', function() 
         {
             if(win && win.webContents) 
             {
@@ -46,7 +46,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+T', function () 
+        globalShortcut.register('CommandOrControl+T', function() 
         {
             if(win && win.webContents) 
             {
@@ -54,7 +54,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+N', function () 
+        globalShortcut.register('CommandOrControl+N', function() 
         {
             if(win && win.webContents) 
             {
@@ -62,7 +62,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+=', function () 
+        globalShortcut.register('CommandOrControl+=', function() 
         {
             if(win && win.webContents) 
             {
@@ -70,7 +70,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+-', function () 
+        globalShortcut.register('CommandOrControl+-', function() 
         {
             if(win && win.webContents) 
             {
@@ -78,7 +78,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+0', function () 
+        globalShortcut.register('CommandOrControl+0', function() 
         {
             if(win && win.webContents) 
             {
@@ -86,7 +86,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+Enter', function () 
+        globalShortcut.register('CommandOrControl+Enter', function() 
         {
             if(win && win.webContents) 
             {
@@ -94,7 +94,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+Tab', function () 
+        globalShortcut.register('CommandOrControl+Tab', function() 
         {
             if(win && win.webContents) 
             {
@@ -102,7 +102,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+Shift+Tab', function () 
+        globalShortcut.register('CommandOrControl+Shift+Tab', function() 
         {
             if(win && win.webContents) 
             {
@@ -110,7 +110,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+Left', function () 
+        globalShortcut.register('CommandOrControl+Left', function() 
         {
             if(win && win.webContents) 
             {
@@ -118,7 +118,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('CommandOrControl+Right', function () 
+        globalShortcut.register('CommandOrControl+Right', function() 
         {
             if(win && win.webContents) 
             {
@@ -126,7 +126,7 @@ exports.create_window = function()
             }
         })
 
-        globalShortcut.register('F12', function () 
+        globalShortcut.register('F12', function() 
         {
             if(win && win.webContents) 
             {
@@ -172,7 +172,6 @@ app.on('window-all-closed', () =>
             app.quit()
         })
     }
-
 })
 
 app.on('activate', () => 
