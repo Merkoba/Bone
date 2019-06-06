@@ -187,17 +187,5 @@ app.on('activate', () =>
 
 function unregister_shortcuts()
 {
-    globalShortcut.unregister('CommandOrControl+F')
-    globalShortcut.unregister('CommandOrControl+T')
-    globalShortcut.unregister('CommandOrControl+N')
-    globalShortcut.unregister('CommandOrControl+=')
-    globalShortcut.unregister('CommandOrControl+-')
-    globalShortcut.unregister('CommandOrControl+0')
-    globalShortcut.unregister('CommandOrControl+Enter')
-    globalShortcut.unregister('CommandOrControl+Left')
-    globalShortcut.unregister('CommandOrControl+Right')
-    globalShortcut.unregister('CommandOrControl+Shift+Left')
-    globalShortcut.unregister('CommandOrControl+Shift+Right')
-    globalShortcut.unregister('CommandOrControl+Tab')
-    globalShortcut.unregister('CommandOrControl+Shift+Tab')
+    globalShortcut.unregisterAll()
 }
