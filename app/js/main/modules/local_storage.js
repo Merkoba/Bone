@@ -43,8 +43,8 @@ Bone.check_local_storage = function(obj)
     let webview_version = 1
     let auto_hide_panel_version = 1
     let resize_handle_size_version = 1
-    let cycle_spaces_on_wheel_version = 1
-    let wrap_spaces_on_wheel_version = 1
+    let wrap_on_webview_cycle_version = 1
+    let wrap_on_space_cycle_version = 1
     let special_version = 1
     let global_history_version = 1
     let download_locations_version = 1
@@ -94,17 +94,17 @@ Bone.check_local_storage = function(obj)
         save = true
     }
 
-    if(obj.cycle_spaces_on_wheel_version !== cycle_spaces_on_wheel_version)
+    if(obj.wrap_on_webview_cycle_version !== wrap_on_webview_cycle_version)
     {
-        obj.cycle_spaces_on_wheel = true
-        obj.cycle_spaces_on_wheel_version = cycle_spaces_on_wheel_version
+        obj.wrap_on_webview_cycle = true
+        obj.wrap_on_webview_cycle_version = wrap_on_webview_cycle_version
         save = true
     }
 
-    if(obj.wrap_spaces_on_wheel_version !== wrap_spaces_on_wheel_version)
+    if(obj.wrap_on_space_cycle_version !== wrap_on_space_cycle_version)
     {
-        obj.wrap_spaces_on_wheel = true
-        obj.wrap_spaces_on_wheel_version = wrap_spaces_on_wheel_version
+        obj.wrap_on_space_cycle = true
+        obj.wrap_on_space_cycle_version = wrap_on_space_cycle_version
         save = true
     }
 

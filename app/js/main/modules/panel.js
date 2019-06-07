@@ -27,24 +27,6 @@ Bone.setup_panel = function()
         Bone.mouse_on_panel = false
     })
 
-    panel.addEventListener('wheel', function(e)
-    {
-        if(!Bone.storage.cycle_spaces_on_wheel)
-        {
-            return false
-        }
-
-        if(e.deltaY < 0)
-        {
-            Bone.cycle_space('left')
-        }
-
-        else
-        {
-            Bone.cycle_space('right')
-        }
-    })
-
     let spaces = Bone.$('#spaces')
 
     spaces.addEventListener('click', function(e)
@@ -110,6 +92,19 @@ Bone.setup_panel = function()
             e.stopPropagation()
             return false
         }
+
+        else
+        {
+            if(e.deltaY < 0)
+            {
+                Bone.cycle_space('left')
+            }
+
+            else
+            {
+                Bone.cycle_space('right')
+            }
+        }
     })
 
     Bone.$('#panel_history').addEventListener('click', function(e)
@@ -127,16 +122,31 @@ Bone.setup_panel = function()
         Bone.decrease_zoom(Bone.num())
     })
 
-    Bone.$('#panel_focused').addEventListener('click', function(e)
+    let focused = Bone.$('#panel_focused')
+
+    focused.addEventListener('click', function(e)
     {
         Bone.cycle_webview('right')
     })
 
-    Bone.$('#panel_focused').addEventListener('auxclick', function(e)
+    focused.addEventListener('auxclick', function(e)
     {
         if(e.which === 2)
         {
             Bone.swap_webview(Bone.num())
+        }
+    })
+
+    focused.addEventListener('wheel', function(e)
+    {
+        if(e.deltaY < 0)
+        {
+            Bone.cycle_webview('left')
+        }
+
+        else
+        {
+            Bone.cycle_webview('right')
         }
     })
 

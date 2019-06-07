@@ -157,14 +157,95 @@ Bone.create_space_from_object = function(obj, n=false)
     return space
 }
 
+// Gets the space to the right of current space
+Bone.get_space_right = function(wrap=true)
+{
+    let spaces = Bone.get_spaces()
+
+    if(spaces.length === 1)
+    {
+        return false
+    }
+
+    for(let i=0; i<spaces.length; i++)
+    {
+        let space = spaces[i]
+
+        if(space.num === Bone.current_space)
+        {
+            new_space = spaces[i + 1]
+            break
+        }
+    }
+        
+    if(!new_space)
+    {
+        if(wrap)
+        {
+            new_space = spaces[0]
+        }
+
+        else
+        {
+            return false
+        }
+    }
+
+    return new_space
+}
+
+// Gets the space to the right of current space
+Bone.get_space_left = function(wrap=true)
+{
+    let spaces = Bone.get_spaces()
+
+    if(spaces.length === 1)
+    {
+        return false
+    }
+
+    for(let i=0; i<spaces.length; i++)
+    {
+        let space = spaces[i]
+
+        if(space.num === Bone.current_space)
+        {
+            new_space = spaces[i - 1]
+            break
+        }
+    }
+        
+    if(!new_space)
+    {
+        if(wrap)
+        {
+            new_space = spaces[spaces.length - 1]
+        }
+
+        else
+        {
+            return false
+        }
+    }
+
+    return new_space
+}
+
 // Goes to the next or previous space
 Bone.cycle_space = function(direction='right')
 {
+    let spaces = Bone.get_spaces()
+
+    if(spaces.length === 1)
+    {
+        return false
+    }
+
     let new_space
 
     if(direction === 'right')
     {
-        new_space = Bone.get_space_right(Bone.storage.wrap_spaces_on_wheel)
+        new_space = Bone.get_space_right(Bone.storage.wrap_on_space_cycle)
         
         if(!new_space)
         {
@@ -174,7 +255,7 @@ Bone.cycle_space = function(direction='right')
 
     else if(direction === 'left')
     {
-        new_space = Bone.get_space_left(Bone.storage.wrap_spaces_on_wheel)
+        new_space = Bone.get_space_left(Bone.storage.wrap_on_space_cycle)
         
         if(!new_space)
         {
@@ -254,80 +335,6 @@ Bone.get_spaces = function()
     }
 
     return spaces
-}
-
-// Gets the space to the right of current space
-Bone.get_space_right = function(wrap=false)
-{
-    let spaces = Bone.get_spaces()
-
-    if(spaces.length === 1)
-    {
-        return false
-    }
-
-    for(let i=0; i<spaces.length; i++)
-    {
-        let space = spaces[i]
-
-        if(space.num === Bone.current_space)
-        {
-            new_space = spaces[i + 1]
-            break
-        }
-    }
-        
-    if(!new_space)
-    {
-        if(wrap)
-        {
-            new_space = spaces[0]
-        }
-
-        else
-        {
-            return false
-        }
-    }
-
-    return new_space
-}
-
-// Gets the space to the right of current space
-Bone.get_space_left = function(wrap=false)
-{
-    let spaces = Bone.get_spaces()
-
-    if(spaces.length === 1)
-    {
-        return false
-    }
-
-    for(let i=0; i<spaces.length; i++)
-    {
-        let space = spaces[i]
-
-        if(space.num === Bone.current_space)
-        {
-            new_space = spaces[i - 1]
-            break
-        }
-    }
-        
-    if(!new_space)
-    {
-        if(wrap)
-        {
-            new_space = spaces[spaces.length - 1]
-        }
-
-        else
-        {
-            return false
-        }
-    }
-
-    return new_space
 }
 
 // Space modified signal

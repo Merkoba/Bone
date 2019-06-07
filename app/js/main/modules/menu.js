@@ -236,16 +236,15 @@ Bone.setup_menu = function()
         Bone.close_all_windows()
     })
 
-    Bone.$('#menu_cycle_spaces_on_wheel_checkbox').addEventListener('change', function()
+    Bone.$('#menu_wrap_on_webview_cycle_checkbox').addEventListener('change', function()
     {
-        Bone.storage.cycle_spaces_on_wheel = this.checked
-        Bone.update_wrap_spaces_on_wheel_container()
+        Bone.storage.wrap_on_webview_cycle = this.checked
         Bone.save_local_storage()
     })
 
-    Bone.$('#menu_wrap_spaces_on_wheel_checkbox').addEventListener('change', function()
+    Bone.$('#menu_wrap_on_space_cycle_checkbox').addEventListener('change', function()
     {
-        Bone.storage.wrap_spaces_on_wheel = this.checked
+        Bone.storage.wrap_on_space_cycle = this.checked
         Bone.save_local_storage()
     })
 
@@ -258,24 +257,8 @@ Bone.update_menu_widgets = function()
     Bone.$('#menu_theme_color_picker').value = Bone.storage.theme
     Bone.$('#menu_auto_hide_panel_checkbox').checked = Bone.storage.auto_hide_panel
     Bone.$('#menu_resize_handle_size_input').value = Bone.storage.resize_handle_size
-    Bone.$('#menu_cycle_spaces_on_wheel_checkbox').checked = Bone.storage.cycle_spaces_on_wheel
-    Bone.$('#menu_wrap_spaces_on_wheel_checkbox').checked = Bone.storage.wrap_spaces_on_wheel
-    
-    Bone.update_wrap_spaces_on_wheel_container()
-}
-
-// Updates the wheel wrapping of spaces on menu window
-Bone.update_wrap_spaces_on_wheel_container = function()
-{
-    if(Bone.storage.cycle_spaces_on_wheel)
-    {
-        Bone.$('#menu_wrap_spaces_on_wheel_container').style.display = 'block'
-    }
-    
-    else
-    {
-        Bone.$('#menu_wrap_spaces_on_wheel_container').style.display = 'none'
-    }
+    Bone.$('#menu_wrap_on_webview_cycle_checkbox').checked = Bone.storage.wrap_on_webview_cycle
+    Bone.$('#menu_wrap_on_space_cycle_checkbox').checked = Bone.storage.wrap_on_space_cycle
 }
 
 // Makes the current layout highlighted in the menu window

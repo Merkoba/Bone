@@ -249,13 +249,8 @@ Bone.do_webview_swap = function(num_1, num_2)
 // What to do when a webview is dom ready
 Bone.on_webview_dom_ready = function(webview)
 {
-    let num = parseInt(webview.dataset.num)
-    let space_num = parseInt(webview.dataset.space)
-
-    if(num === Bone.num() && space_num === Bone.current_space)
-    {
-        Bone.focus_webview(num, space_num)
-    }
+    // let num = parseInt(webview.dataset.num)
+    // let space_num = parseInt(webview.dataset.space)
 }
 
 // Creates a resize handle based on a given direction
@@ -649,7 +644,9 @@ Bone.focus_webview = function(num=false, space_num=false)
     }
 
     document.activeElement.blur()
-    Bone.wv(num).focus()
+    let wv = Bone.wv(num)
+    wv.focus()
+    Bone.on_webview_focus(wv)
 }
 
 // Gets a webview by its number
@@ -669,31 +666,81 @@ Bone.focused = function()
     return Bone.space().focused_webview
 }
 
-// Cycles webview focus
-Bone.cycle_webview = function(direction='right')
+// Gets the webview on the right
+Bone.get_webview_right = function(num, wrap=true)
 {
-    let new_num
-    let num = Bone.num()
     let wvs = Bone.wvs()
 
-    if(direction === 'right')
+    if(wvs.length === 1)
     {
-        new_num = num + 1
+        return false
+    }
+
+    let new_num = num + 1
     
-        if(new_num > wvs.length)
+    if(new_num > wvs.length)
+    {
+        if(wrap)
         {
             new_num = 1
         }
+
+        else
+        {
+            new_num = num
+        }
+    }
+
+    return new_num
+}
+
+// Gets the webview on the left
+Bone.get_webview_left = function(num, wrap=true)
+{
+    let wvs = Bone.wvs()
+
+    if(wvs.length === 1)
+    {
+        return false
+    }
+
+    let new_num = num - 1
+    
+    if(new_num <= 0)
+    {
+        if(wrap)
+        {
+            new_num = wvs.length
+        }
+
+        else
+        {
+            new_num = num
+        }
+    }
+
+    return new_num
+}
+
+// Cycles webview focus
+Bone.cycle_webview = function(direction='right')
+{
+    if(Bone.wvs().length === 1)
+    {
+        return false
+    }
+    
+    let new_num
+    let num = Bone.num()
+
+    if(direction === 'right')
+    {
+        new_num = Bone.get_webview_right(num, Bone.storage.wrap_on_webview_cycle)
     }
     
     else if(direction === 'left')
     {
-        new_num = num - 1
-    
-        if(new_num <= 0)
-        {
-            new_num = wvs.length
-        }
+        new_num = Bone.get_webview_left(num, Bone.storage.wrap_on_webview_cycle)
     }
     
     Bone.focus_webview(new_num)
