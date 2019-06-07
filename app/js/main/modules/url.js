@@ -282,34 +282,6 @@ Bone.apply_url_suggest_selected = function()
     Bone.hide_url_suggest()
 }
 
-// Changes a webview url
-Bone.apply_url = function(num)
-{
-    let webview = Bone.wv(num)
-    let url = Bone.swv(num).url
-
-    if(webview.style.display === 'none')
-    {
-        return false
-    }
-
-    else
-    {
-        if(!url)
-        {
-            Bone.remake_webview(num, false, '', false)
-            return false
-        }
-    }
-
-    if(!url || webview.src === url)
-    {
-        return false
-    }
-
-    Bone.remake_webview(num, false, url, false)
-}
-
 // Changes the url of a specified webview
 Bone.change_url = function(url, num=false, space_num=false)
 {
@@ -334,7 +306,7 @@ Bone.change_url = function(url, num=false, space_num=false)
         Bone.move_cursor_to_end(url_el)
     }
 
-    Bone.remake_webview(num, space_num, url, false, false)
+    Bone.wv(num, space_num).src = url
 }
 
 // Handles navigation changes

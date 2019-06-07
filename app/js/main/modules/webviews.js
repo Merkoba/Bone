@@ -242,8 +242,8 @@ Bone.do_webview_swap = function(num_1, num_2)
     w2.url = ourl_1
 
     Bone.save_local_storage()
-    Bone.apply_url(num_1)
-    Bone.apply_url(num_2)
+    Bone.change_url(w1.url, num_1)
+    Bone.change_url(w2.url, num_2)
 }
 
 // What to do when a webview is dom ready
@@ -790,5 +790,5 @@ Bone.refresh_webview = function(num=false)
     }
 
     let url = Bone.swv(num).url
-    Bone.remake_webview(num, false, url, false)
+    Bone.change_url(url, num)
 }

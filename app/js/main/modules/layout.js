@@ -513,23 +513,23 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
 
     document.head.appendChild(style_el)
 
-    let webviews = Bone.wvs()
-
-    for(let webview of webviews)
-    {
-        if(force_url_change || !webview.src)
-        {
-            Bone.apply_url(webview.dataset.num)
-        }
-    }
-
-    space.current_layout = layout
-
     if(create_elements)
     {
         space.focused_webview = Bone.wv(1)
         Bone.update_focused_webview()
     }
 
+    let webviews = Bone.wvs()
+
+    for(let webview of webviews)
+    {
+        if(force_url_change || !webview.src)
+        {
+            let num = parseInt(webview.dataset.num)
+            Bone.change_url(Bone.swv(num).url, num)
+        }
+    }
+
+    space.current_layout = layout
     Bone.check_titles()
 }
