@@ -25,7 +25,7 @@ exports.create_window = function()
     win.maximize()
 
     // and load the index.html of the app.
-    win.loadURL("file://" + path.join(__dirname, "index.html"))
+    win.loadURL('file://' + path.join(__dirname, 'index.html'))
 
     // Emitted when the window is closed.
     win.on('closed', () => 
@@ -38,101 +38,7 @@ exports.create_window = function()
 
     win.on('focus', () => 
     {
-        globalShortcut.register('CommandOrControl+F', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-find', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+T', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-new-space', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+N', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-new-space', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+=', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-zoom-in', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+-', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-zoom-out', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+0', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-zoom-reset', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+Enter', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-show-recent', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+Tab', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-webview-cycle-right', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+Shift+Tab', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-webview-cycle-left', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+Left', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-space-cycle-left', '')
-            }
-        })
-
-        globalShortcut.register('CommandOrControl+Right', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.webContents.send('on-space-cycle-right', '')
-            }
-        })
-
-        globalShortcut.register('F12', function() 
-        {
-            if(win && win.webContents) 
-            {
-                win.toggleDevTools()
-            }
-        })
+        register_shortcuts()
     })
 
     win.on('blur', () => 
@@ -162,7 +68,7 @@ app.on('window-all-closed', () =>
 
         .then(()=>
         {
-            console.info("Quitting normally")
+            console.info('Quitting normally')
             app.quit()
         })
         
@@ -183,6 +89,42 @@ app.on('activate', () =>
         create_window()
     }
 })
+
+function register_shortcut(keys, action)
+{
+    let f
+
+    if(typeof action === 'string')
+    {
+        f = function()
+        {
+            win.webContents.send(action, '')
+        }
+    }
+
+    else if(typeof action === 'function')
+    {
+        f = action
+    }
+
+    globalShortcut.register(keys, f)
+}
+
+function register_shortcuts()
+{
+    register_shortcut('CommandOrControl+F', 'on-find')
+    register_shortcut('CommandOrControl+T', 'on-new-space')
+    register_shortcut('CommandOrControl+N', 'on-new-space')
+    register_shortcut('CommandOrControl+=', 'on-zoom-in')
+    register_shortcut('CommandOrControl+-', 'on-zoom-out')
+    register_shortcut('CommandOrControl+0', 'on-zoom-reset')
+    register_shortcut('CommandOrControl+Enter', 'on-show-recent')
+    register_shortcut('CommandOrControl+Tab', 'on-webview-cycle-right')
+    register_shortcut('CommandOrControl+Shift+Tab', 'on-webview-cycle-left')
+    register_shortcut('CommandOrControl+Left', 'on-space-cycle-left')
+    register_shortcut('CommandOrControl+Right', 'on-space-cycle-right')
+    register_shortcut('F12', () => win.toggleDevTools())
+}
 
 function unregister_shortcuts()
 {
