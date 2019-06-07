@@ -792,3 +792,9 @@ Bone.refresh_webview = function(num=false)
     let url = Bone.swv(num).url
     Bone.change_url(url, num)
 }
+
+// Gets all the webviews from the current container
+Bone.wvs = function(space_num=false)
+{
+    return Bone.$$('.webview', Bone.webview_container(space_num))
+}
