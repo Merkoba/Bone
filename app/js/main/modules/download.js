@@ -19,6 +19,16 @@ Bone.download = function(url, dest)
             reject('Not a valid URL')
         }
 
+        const exists = fs.existsSync(dest)
+        const file_split = path.basename(dest).split('.')
+        const num = Date.now().toString().slice(-4)
+        const new_file_name = `${file_split.slice(0, -1).join('.')}_${num}.${file_split.slice(-1)[0]}`
+
+        if(exists)
+        {
+            dest = `${path.dirname(dest)}/${new_file_name}`
+        }
+
         const file = fs.createWriteStream(dest, {flags: 'w'})
 
         const request = http_module.get(url, response => 
