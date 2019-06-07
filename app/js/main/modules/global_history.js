@@ -111,10 +111,16 @@ Bone.update_favicon = function(url, favicon_url)
 // Updates a global history item with a page title
 Bone.update_title = function(url, title)
 {
+    if(!url || !title)
+    {
+        return false
+    }
+
     let urls = Bone.storage.global_history.map(obj => obj.url)
 
     if(urls.includes(url))
     {
+        title = title.substring(0, 200)
         let item = Bone.get_global_history_item(url)
         item.title = title
         Bone.save_local_storage()

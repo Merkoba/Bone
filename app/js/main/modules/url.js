@@ -312,6 +312,9 @@ Bone.change_url = function(url, num=false, space_num=false)
         Bone.move_cursor_to_end(url_el)
     }
 
+    let swv = Bone.swv(num, space_num)
+    swv.url = url
+
     Bone.remake_webview(num, space_num, url, false, false)
 }
 
@@ -335,7 +338,7 @@ Bone.check_url = function(url)
         {
             if(url.includes('.') && url.split(' ').length === 1)
             {
-                url = `http://${url}`
+                url = `https://${url}`
             }
 
             else

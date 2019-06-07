@@ -177,3 +177,38 @@ Bone.perini = new RegExp
     '(?:[/?#]\\S*)?' +
     '$', 'i'
 )
+
+Bone.get_random_int = function(min, max, exclude=undefined)
+{
+    let num = Math.floor(Math.random() * (max - min + 1) + min)
+
+    if(exclude !== undefined)
+    {
+        if(num === exclude)
+        {
+            if(num + 1 <= max)
+            {
+                num = num + 1
+            }
+
+            else if(num - 1 >= min)
+            {
+                num = num - 1
+            }
+        }
+    }
+
+    return num
+}
+
+Bone.random_sequence = function(n)
+{
+    let s = ''
+
+    for(let i=0; i<n; i++)
+    {
+        s += Bone.get_random_int(0, 9)
+    }
+
+    return s
+}

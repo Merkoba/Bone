@@ -274,22 +274,6 @@ Bone.update_selected_layout = function()
     Bone.$(`#layout_${Bone.space().layout}`).classList.add('layout_selected')
 }
 
-// Handles url changes in the interface
-Bone.do_url_change = function(url, num)
-{
-    url = url.trim()
-    let swv = Bone.swv(num)
-
-    if(swv.url !== url)
-    {
-        swv.url = url
-        Bone.space_modified()
-        Bone.spacesi
-        Bone.save_local_storage()
-        Bone.apply_url(num)
-    }
-}
-
 // Shows the menu window
 Bone.show_menu = function()
 {
