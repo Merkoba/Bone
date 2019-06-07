@@ -51,14 +51,14 @@ Bone.change_space = function(n, obj=false)
 }
 
 // Returns the active webview container
-Bone.webview_container = function(n=false)
+Bone.webview_container = function(space_num=false)
 {   
-    if(!n)
+    if(!space_num)
     {
-        n = Bone.current_space
+        space_num = Bone.current_space
     }
 
-    return Bone.$(`#webview_container_${n}`)
+    return Bone.$(`#webview_container_${space_num}`)
 }
 
 // Updates spaces in the top panel

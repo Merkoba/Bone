@@ -111,9 +111,11 @@ Bone.remake_webview = function(num, space_num=false, url='', no_display=true, re
         Bone.space(space_num).history[`webview_${num}`] = []
     }
 
+    let focused = Bone.focused() === wv
+
     Bone.replace_element(rep, wv)
 
-    if(space_num === Bone.current_space)
+    if(focused && space_num === Bone.current_space)
     {
         Bone.focus_webview(num)
     }
@@ -248,8 +250,12 @@ Bone.do_webview_swap = function(num_1, num_2)
 Bone.on_webview_dom_ready = function(webview)
 {
     let num = parseInt(webview.dataset.num)
-    let space = parseInt(webview.dataset.space)
-    Bone.focus_webview(num ,space)
+    let space_num = parseInt(webview.dataset.space)
+
+    if(num === Bone.num() && space_num === Bone.current_space)
+    {
+        Bone.focus_webview(num, space_num)
+    }
 }
 
 // Creates a resize handle based on a given direction
@@ -634,11 +640,6 @@ Bone.num = function()
 // Focuses current webview
 Bone.focus_webview = function(num=false, space_num=false)
 {
-    if(!num)
-    {
-        Bone.num()
-    }
-
     if(space_num)
     {
         if(space_num !== Bone.current_space)
@@ -726,7 +727,7 @@ Bone.remove_ghost_webviews = function()
     {
         return false
     }
-    
+
     for(let webview of Bone.wvs())
     {
         webview.classList.remove('ghost_webview')
@@ -778,4 +779,16 @@ Bone.on_webview_focus = function(webview)
     Bone.close_find()
     Bone.hide_context_menu()
     Bone.check_ghost_webviews()
+}
+
+// Refreshes a webview with configured url
+Bone.refresh_webview = function(num=false)
+{
+    if(!num)
+    {
+        num = Bone.num()
+    }
+
+    let url = Bone.swv(num).url
+    Bone.remake_webview(num, false, url, false)
 }

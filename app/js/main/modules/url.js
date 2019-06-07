@@ -384,13 +384,6 @@ Bone.get_current_url = function()
     return url
 }
 
-// Refreshes a webview with configured url
-Bone.refresh_webview = function(num)
-{
-    let url = Bone.swv(num).url
-    Bone.remake_webview(num, false, url, false)
-}
-
 // Focuses the url input
 Bone.focus_url_input = function()
 {

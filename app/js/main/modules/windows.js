@@ -295,6 +295,11 @@ Bone.setup_signals = function()
     {
         Bone.focus_url_input()
     })
+    
+    ipcRenderer.on('on-refresh', (e, args) => 
+    {
+        Bone.refresh_webview()
+    })
 }
 
 // Gets the project hash if it doesn't exist already and shows the about window

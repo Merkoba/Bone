@@ -123,6 +123,7 @@ function register_shortcuts()
     register_shortcut('CommandOrControl+Shift+Tab', 'on-webview-cycle-left')
     register_shortcut('CommandOrControl+Left', 'on-space-cycle-left')
     register_shortcut('CommandOrControl+Right', 'on-space-cycle-right')
+    register_shortcut('F5', 'on-refresh')
     register_shortcut('F6', 'on-focus-url')
     register_shortcut('F12', () => win.toggleDevTools())
 }
