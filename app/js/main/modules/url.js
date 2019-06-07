@@ -304,8 +304,7 @@ Bone.change_url = function(url, num=false, space_num=false)
         Bone.move_cursor_to_end(url_el)
     }
 
-    Bone.wv(num, space_num).src = url
-    Bone.focus(num, space_num)
+    Bone.remake_webview(num, space_num, url, false, false)
 }
 
 // Handles navigation changes
