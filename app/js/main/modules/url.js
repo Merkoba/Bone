@@ -59,6 +59,13 @@ Bone.setup_url_input = function()
 
     url.addEventListener('focus', function()
     {
+        if(!Bone.url_input_selected)
+        {
+            Bone.move_cursor_to_end(this)
+            this.select()
+            Bone.url_input_selected = true
+        }
+
         if(!Bone.url_suggest_on)
         {
             Bone.show_url_suggest()
@@ -82,16 +89,6 @@ Bone.setup_url_input = function()
 
         Bone.url_input_selected = false
         Bone.url_input_focused = false
-    })
-
-    url.addEventListener('click', function()
-    {
-        if(!Bone.url_input_selected)
-        {
-            Bone.move_cursor_to_end(this)
-            this.select()
-            Bone.url_input_selected = true
-        }
     })
 }
 
@@ -384,4 +381,10 @@ Bone.refresh_webview = function(num)
 {
     let url = Bone.swv(num).url
     Bone.remake_webview(num, false, url, false)
+}
+
+// Focuses the url input
+Bone.focus_url_input = function()
+{
+    Bone.$('#url').focus()
 }

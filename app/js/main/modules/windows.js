@@ -290,6 +290,11 @@ Bone.setup_signals = function()
     {
         Bone.cycle_space('right')
     })
+    
+    ipcRenderer.on('on-focus-url', (e, args) => 
+    {
+        Bone.focus_url_input()
+    })
 }
 
 // Gets the project hash if it doesn't exist already and shows the about window
