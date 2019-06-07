@@ -41,6 +41,11 @@ Bone.setup_url_input = function()
             return false
         }
 
+        else if(e.key === 'Escape')
+        {
+            Bone.blur_url_input()
+        }
+
         else
         {
             Bone.update_url_suggest()
@@ -88,7 +93,7 @@ Bone.setup_url_input = function()
         }
 
         Bone.url_input_selected = false
-        Bone.url_input_focused = false
+        Bone.url_input_focused = false        
     })
 }
 
@@ -387,4 +392,11 @@ Bone.refresh_webview = function(num)
 Bone.focus_url_input = function()
 {
     Bone.$('#url').focus()
+}
+
+// Blurs the url input
+Bone.blur_url_input = function()
+{
+    Bone.$('#url').blur()
+    Bone.focus_webview()
 }

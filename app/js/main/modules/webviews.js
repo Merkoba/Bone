@@ -632,8 +632,13 @@ Bone.num = function()
 }
 
 // Focuses current webview
-Bone.focus_webview = function(num, space_num=false)
+Bone.focus_webview = function(num=false, space_num=false)
 {
+    if(!num)
+    {
+        Bone.num()
+    }
+
     if(space_num)
     {
         if(space_num !== Bone.current_space)
