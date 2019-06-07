@@ -296,9 +296,14 @@ Bone.setup_signals = function()
         Bone.focus_url_input()
     })
     
-    ipcRenderer.on('on-refresh', (e, args) => 
+    ipcRenderer.on('on-reload', (e, args) => 
     {
-        Bone.refresh_webview()
+        Bone.reload()
+    })
+    
+    ipcRenderer.on('on-hard-reload', (e, args) => 
+    {
+        Bone.hard_reload()
     })
 }
 

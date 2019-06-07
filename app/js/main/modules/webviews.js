@@ -828,16 +828,16 @@ Bone.on_webview_focus = function(webview)
     Bone.check_ghost_webviews()
 }
 
-// Refreshes a webview with configured url
-Bone.refresh_webview = function(num=false)
+// Reloads a webview
+Bone.reload = function(num=false, hard=false)
 {
-    if(!num)
-    {
-        num = Bone.num()
-    }
+    Bone.wv(num).reload()
+}
 
-    let url = Bone.swv(num).url
-    Bone.change_url(url, num)
+// Reloads a webview ignoring cache
+Bone.hard_reload = function(num=false)
+{
+    Bone.wv(num).reloadIgnoringCache()
 }
 
 // Gets all the webviews from the current container

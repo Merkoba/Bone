@@ -183,9 +183,19 @@ Bone.setup_panel = function()
         }
     })
 
-    Bone.$('#panel_refresh').addEventListener('click', function(e)
+    let reload = Bone.$('#panel_reload')
+
+    reload.addEventListener('click', function(e)
     {
-        Bone.refresh_webview(Bone.num())
+        Bone.reload()
+    })
+
+    reload.addEventListener('auxclick', function(e)
+    {
+        if(e.which === 2)
+        {
+            Bone.hard_reload()
+        }
     })
 
     Bone.$('#panel_recent').addEventListener('click', function(e)
