@@ -66,9 +66,7 @@ Bone.setup_url_input = function()
     {
         if(!Bone.url_input_selected)
         {
-            Bone.move_cursor_to_end(this)
-            this.select()
-            Bone.url_input_selected = true
+            Bone.select_input()
         }
 
         if(!Bone.url_suggest_on)
@@ -208,7 +206,7 @@ Bone.update_url_suggest = function()
     
             favicon_el.addEventListener('error', function()
             {
-                this.style.display = 'none'
+                this.style.visibility = 'hidden'
             })
 
             item.append(favicon_el)
@@ -359,7 +357,17 @@ Bone.get_current_url = function()
 // Focuses the url input
 Bone.focus_url_input = function()
 {
-    Bone.$('#url').focus()
+    let input = Bone.$('#url')
+    
+    if(document.activeElement === input)
+    {
+        Bone.select_input()
+    }
+
+    else
+    {
+        input.focus()
+    }
 }
 
 // Blurs the url input
@@ -367,4 +375,13 @@ Bone.blur_url_input = function()
 {
     Bone.$('#url').blur()
     Bone.focus_webview()
+}
+
+// Selects all the text in the input
+Bone.select_input = function()
+{
+    let input = Bone.$('#url')
+    Bone.move_cursor_to_end(input)
+    input.select()
+    Bone.url_input_selected = true   
 }
