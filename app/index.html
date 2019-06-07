@@ -17,23 +17,27 @@
         
         <div id='main_container'>
             <div id='panel' class='unselectable'>
-                <div id='panel_menu_container'>
-                    <i id='menu_icon' class='fas fa-th-large panel_item action'></i>
-                </div>
-                <div id='panel_toolbar'>
-                    <div id='panel_focused' class='panel_item action'></div>
-                    <div id='panel_history' class='panel_item action' title='Middle click to go back'>History</div>
-                    <i id='panel_reload' class='fas fa-redo panel_item action' title='Middle click or Ctrl+F5 to hard reload'></i>
-                    <div id='panel_zoom_container' title='Ctrl+Plus to zoom in. Ctrl+Minus to zoom out. Middle click or Ctrl+Zero to reset zoom.'>
-                        <i id='panel_zoom_in' class='fas fa-plus panel_item action'></i>
-                        <i id='panel_zoom_out' class='fas fa-minus panel_item action'></i>
+                <div id='panel_left_side' class='panel_side'>
+                    <div id='panel_menu_container'>
+                        <i id='menu_icon' class='fas fa-th-large panel_item action'></i>
                     </div>
-                    <i id='panel_recent' class='fas fa-star panel_item action'></i>
+                    <div id='panel_toolbar'>
+                        <div id='panel_focused' class='panel_item action'></div>
+                        <div id='panel_history' class='panel_item action' title='Middle click to go back'>History</div>
+                        <i id='panel_reload' class='fas fa-redo panel_item action' title='Middle click or Ctrl+F5 to hard reload'></i>
+                        <div id='panel_zoom_container' title='Ctrl+Plus to zoom in. Ctrl+Minus to zoom out. Middle click or Ctrl+Zero to reset zoom.'>
+                            <i id='panel_zoom_in' class='fas fa-plus panel_item action'></i>
+                            <i id='panel_zoom_out' class='fas fa-minus panel_item action'></i>
+                        </div>
+                        <i id='panel_recent' class='fas fa-star panel_item action'></i>
+                    </div>
                 </div>
                 <input type='text' id='url'>
-                <div id='spaces'></div>
-                <div id='panel_space_options_container' title='Middle click to open a new empty space'>
-                    <i class='fas fa-caret-down panel_item action' id='panel_space_options'></i>
+                <div id='panel_right_side' class='panel_side'>
+                    <div id='spaces'></div>
+                    <div id='panel_space_options_container' title='Middle click to open a new empty space'>
+                        <i class='fas fa-caret-down panel_item action' id='panel_space_options'></i>
+                    </div>
                 </div>
             </div>
             <div id='webview_containers'></div>

@@ -92,19 +92,6 @@ Bone.setup_panel = function()
             e.stopPropagation()
             return false
         }
-
-        else
-        {
-            if(e.deltaY < 0)
-            {
-                Bone.cycle_space('left')
-            }
-
-            else
-            {
-                Bone.cycle_space('right')
-            }
-        }
     })
 
     let history = Bone.$('#panel_history')
@@ -144,19 +131,6 @@ Bone.setup_panel = function()
         if(e.which === 2)
         {
             Bone.swap_webview(Bone.num())
-        }
-    })
-
-    focused.addEventListener('wheel', function(e)
-    {
-        if(e.deltaY < 0)
-        {
-            Bone.cycle_webview('left')
-        }
-
-        else
-        {
-            Bone.cycle_webview('right')
         }
     })
 
@@ -211,6 +185,32 @@ Bone.setup_panel = function()
     Bone.$('#panel_recent').addEventListener('click', function(e)
     {
         Bone.show_recent()
+    })
+
+    Bone.$('#panel_left_side').addEventListener('wheel', function(e)
+    {
+        if(e.deltaY < 0)
+        {
+            Bone.cycle_webview('left')
+        }
+
+        else
+        {
+            Bone.cycle_webview('right')
+        }
+    })
+
+    Bone.$('#panel_right_side').addEventListener('wheel', function(e)
+    {
+        if(e.deltaY < 0)
+        {
+            Bone.cycle_space('left')
+        }
+
+        else
+        {
+            Bone.cycle_space('right')
+        }
     })
 
     panel.style.height = `${Bone.config.panel_height}px`
