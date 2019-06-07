@@ -117,7 +117,7 @@ Bone.remake_webview = function(num, space_num=false, url='', no_display=true, re
 
     if(focused && space_num === Bone.current_space)
     {
-        Bone.focus_webview(num)
+        Bone.focus(num)
     }
 }
 
@@ -633,7 +633,7 @@ Bone.num = function()
 }
 
 // Focuses current webview
-Bone.focus_webview = function(num=false, space_num=false)
+Bone.focus = function(num=false, space_num=false)
 {
     if(space_num)
     {
@@ -743,7 +743,7 @@ Bone.cycle_webview = function(direction='right')
         new_num = Bone.get_webview_left(num, Bone.storage.wrap_on_webview_cycle)
     }
     
-    Bone.focus_webview(new_num)
+    Bone.focus(new_num)
 }
 
 // Makes all uncofused webviews semi opaque

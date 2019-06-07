@@ -305,6 +305,7 @@ Bone.change_url = function(url, num=false, space_num=false)
     }
 
     Bone.wv(num, space_num).src = url
+    Bone.focus(num, space_num)
 }
 
 // Handles navigation changes
@@ -374,7 +375,7 @@ Bone.focus_url_input = function()
 Bone.blur_url_input = function()
 {
     Bone.$('#url').blur()
-    Bone.focus_webview()
+    Bone.focus()
 }
 
 // Selects all the text in the input
