@@ -6,7 +6,7 @@ Bone.setup_global_history = function()
 
 // Adds a url to the history
 // This is used to show url suggestions in the url bar
-Bone.add_url_to_global_history = function(url)
+Bone.add_to_global_history = function(url)
 {
     let history = Bone.storage.global_history
 
@@ -33,10 +33,10 @@ Bone.add_url_to_global_history = function(url)
 
     history.push(obj)
     Bone.sort_global_history()
-    
+
     if(history.length > Bone.config.max_global_history_items)
     {
-        history = history.slice(0 - Bone.config.max_global_history_items)
+        history = history.slice(0, Bone.config.max_global_history_items)
     }
     
     Bone.save_local_storage()
@@ -61,7 +61,7 @@ Bone.sort_global_history = function()
 {
     Bone.storage.global_history.sort(function(a, b)
     {
-        return a.last_used - b.last_used
+        return b.last_used - a.last_used
     })
 }
 

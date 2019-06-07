@@ -53,7 +53,7 @@ Bone.create_webview = function(num)
         Bone.space_modified()
         Bone.save_local_storage()
         Bone.update_url()
-        Bone.add_url_to_global_history(e.url)
+        Bone.add_to_global_history(e.url)
     })
 
     wv.addEventListener('context-menu', function(e)

@@ -618,6 +618,7 @@ select
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    font-size: 0.9rem;
 }
 
 .url_suggest_favicon
@@ -628,9 +629,14 @@ select
     object-fit: contain;
 }
 
+.url_suggest_title
+{
+    white-space: nowrap;
+    margin-right: 5px;
+}
+
 .url_suggest_url
 {
-    font-size: 1rem;
     white-space: nowrap;
 }
 

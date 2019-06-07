@@ -212,11 +212,19 @@ Bone.update_url_suggest = function()
             item.append(favicon_el)
         }
 
+        if(match.title)
+        {
+            let title_el = document.createElement('div')
+            title_el.classList.add('url_suggest_title')
+            title_el.textContent = match.title
+            item.append(title_el)
+        }
+
         let url_el = document.createElement('div')
         url_el.classList.add('url_suggest_url')
         url_el.textContent = match.url.substring(0, 100)
-
         item.append(url_el)
+
         box.append(item)
     }
 }

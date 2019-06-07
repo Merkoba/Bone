@@ -91,7 +91,7 @@ Bone.generate_recent = function()
         url_el.textContent = item.title || item.url.substring(0, 100)
         el.append(url_el)
 
-        c.prepend(el)
+        c.append(el)
     }
 
     Bone.visible_recent_items = Bone.$$('.recent_item')
