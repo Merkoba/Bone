@@ -520,8 +520,8 @@ select
 .panel_item
 {
     cursor: pointer;
-    margin-left: 10px;
-    margin-right: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     height: 100%;
     display: flex;
     align-items: center;
