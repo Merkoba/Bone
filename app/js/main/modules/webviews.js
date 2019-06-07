@@ -74,24 +74,6 @@ Bone.create_webview = function(num)
         Bone.update_title(swv.url, e.title)
     })
 
-    wv.addEventListener('did-fail-load', function(e)
-    {
-        if(!Bone.$(`#${wv.id}`))
-        {
-            return false
-        }
-
-        let num = parseInt(wv.dataset.num)
-        let space_num = parseInt(wv.dataset.space)
-        let swv = Bone.swv(num, space_num)
-        
-        if(swv.url.startsWith('https://'))
-        {
-            let new_url = swv.url.replace('https://', 'http://')
-            Bone.change_url(new_url, num, space_num)
-        }
-    })
-
     return wv
 }
 
