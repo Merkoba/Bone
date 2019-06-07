@@ -65,6 +65,7 @@ Bone.setup_url_input = function()
         }
 
         Bone.update_url_suggest()
+        Bone.url_input_focused = true
     })
 
     url.addEventListener('blur', function()
@@ -80,6 +81,7 @@ Bone.setup_url_input = function()
         }
 
         Bone.url_input_selected = false
+        Bone.url_input_focused = false
     })
 
     url.addEventListener('click', function()

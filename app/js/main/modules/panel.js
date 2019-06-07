@@ -189,7 +189,7 @@ Bone.setup_panel = function()
 // Starts a timeout to automatically hide the top panel
 Bone.start_panel_auto_hide = function()
 {
-    if(!Bone.storage.auto_hide_panel)
+    if(!Bone.storage.auto_hide_panel || Bone.url_input_focused)
     {
         return false
     }
@@ -249,4 +249,10 @@ Bone.update_focused_webview = function()
     }
 
     Bone.focused().classList.add('webview_focused')
+}
+
+// Gets the panel top based on auto hide settings
+Bone.get_panel_top = function()
+{
+    return Bone.storage.auto_hide_panel ? Bone.config.panel_hidden_height : Bone.config.panel_height
 }
