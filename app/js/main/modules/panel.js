@@ -107,9 +107,19 @@ Bone.setup_panel = function()
         }
     })
 
-    Bone.$('#panel_history').addEventListener('click', function(e)
+    let history = Bone.$('#panel_history')
+
+    history.addEventListener('click', function(e)
     {
         Bone.show_history()
+    })
+
+    history.addEventListener('auxclick', function(e)
+    {
+        if(e.which === 2)
+        {
+            Bone.go_back()
+        }
     })
 
     Bone.$('#panel_zoom_in').addEventListener('click', function(e)
