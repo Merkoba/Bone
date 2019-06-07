@@ -115,6 +115,7 @@ Bone.change_recent_item_selected = function(item)
 
     item.classList.add('modal_item_selected')
     Bone.recent_item_selected = item
+    Bone.recent_item_selected.scrollIntoView({block:'center'})
 }
 
 // Uses the selected recent item to change the url
