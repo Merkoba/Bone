@@ -722,6 +722,11 @@ Bone.ghost_webviews = function()
 // Makes all webviews fully opaque
 Bone.remove_ghost_webviews = function()
 {
+    if(Bone.url_input_focused)
+    {
+        return false
+    }
+    
     for(let webview of Bone.wvs())
     {
         webview.classList.remove('ghost_webview')

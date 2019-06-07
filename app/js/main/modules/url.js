@@ -77,6 +77,7 @@ Bone.setup_url_input = function()
         }
 
         Bone.update_url_suggest()
+        Bone.ghost_webviews()
         Bone.url_input_focused = true
     })
 
@@ -93,7 +94,9 @@ Bone.setup_url_input = function()
         }
 
         Bone.url_input_selected = false
-        Bone.url_input_focused = false        
+        Bone.url_input_focused = false
+        Bone.update_url()
+        Bone.check_ghost_webviews()
     })
 }
 
