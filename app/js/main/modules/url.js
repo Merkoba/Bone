@@ -24,6 +24,13 @@ Bone.setup_url_input = function()
             return false
         }
 
+        else if(e.key === 'ArrowRight')
+        {
+            Bone.put_url_suggest_selected()
+            e.preventDefault()
+            return false
+        }
+
         else if(e.key === 'Enter')
         {
             if(Bone.url_suggest_selected)
@@ -395,4 +402,16 @@ Bone.select_input = function()
     Bone.move_cursor_to_end(input)
     input.select()
     Bone.url_input_selected = true   
+}
+
+// Puts the select url suggest in the url bar
+Bone.put_url_suggest_selected = function()
+{
+    if(!Bone.url_suggest_selected)
+    {
+        return false
+    }
+
+    let url = Bone.url_suggest_selected.dataset.url
+    Bone.$('#url').value = url
 }
