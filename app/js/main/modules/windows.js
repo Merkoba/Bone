@@ -392,7 +392,7 @@ Bone.check_titles = function()
 
     if(wvs.length > 1)
     {
-        Bone.$('#panel_focused').title = 'Ctrl+Tab or Ctrl+Shift+Tab to cycle. Middle click to swap.'
+        Bone.$('#panel_focused').title = 'Wheel or Ctrl+Tab/Ctrl+Shift+Tab to cycle. Middle click to swap.'
     }
     
     else

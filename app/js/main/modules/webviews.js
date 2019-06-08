@@ -5,7 +5,7 @@ Bone.create_webview = function(num)
     let el = document.createElement('div')
     el.innerHTML = h
     let wv = el.querySelector('webview')
-    wv.id = `webview_${Bone.get_random_int(Bone.random_sequence(4))}`
+    wv.id = `webview_${Date.now().toString().slice(-8)}_${Bone.random_sequence(4)}`
     wv.dataset.num = num
     wv.dataset.space = Bone.current_space
 
@@ -72,6 +72,24 @@ Bone.create_webview = function(num)
     {
         let swv = Bone.swv(parseInt(wv.dataset.num), parseInt(wv.dataset.space))
         Bone.update_title(swv.url, e.title)
+    })
+
+    wv.addEventListener('did-fail-load', function(e)
+    {
+        if(e.errorCode === -3)
+        {
+            return false
+        }
+
+        let num = parseInt(wv.dataset.num)
+        let space_num = parseInt(wv.dataset.space_num)
+        let swv = Bone.swv(num, space_num)
+
+        if(swv.url.startsWith('https://'))
+        {
+            let new_url = swv.url.replace('https://', 'http://')
+            Bone.change_url(new_url, num, space_num)
+        }
     })
 
     return wv
@@ -476,7 +494,6 @@ Bone.setup_webview_container = function(num, amount)
 Bone.leave_resize_mode = function()
 {
     let c = Bone.webview_container()
-
     c.classList.remove(`cursor_resize_${Bone.active_resize_handle.dataset.direction}`)
     Bone.active_resize_handle = false
     

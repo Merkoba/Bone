@@ -380,14 +380,14 @@ Bone.new_space = function()
     Bone.create_space({})
 }
 
-Bone.swv = function(num=false, space=false)
+Bone.swv = function(num=false, space_num=false)
 {
     if(!num)
     {
         num = Bone.num()
     }
 
-    return Bone.space(space)[`webview_${num}`]
+    return Bone.space(space_num)[`webview_${num}`]
 }
 
 // Setups the handle close space window
