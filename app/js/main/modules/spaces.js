@@ -3,8 +3,11 @@ Bone.create_space = function(obj={})
 {
     let space = Bone.create_space_from_object(obj)
     Bone.spaces.push(space)
-    Bone.create_webview_container(Bone.spaces.length)
-    Bone.change_space(Bone.spaces.length)
+    let n = Bone.spaces.length
+    Bone.current_space = n
+    Bone.create_webview_container(n)
+    Bone.apply_layout(n)
+    Bone.change_space(n)
     Bone.update_spaces()
 }
 
@@ -39,10 +42,9 @@ Bone.change_space = function(n, obj=false)
     {
         Bone.spaces[n - 1] = Bone.create_space_from_object(obj, n)
     }
-    
+
     Bone.current_space = n
     Bone.update_spaces()
-    Bone.apply_layout(false, false)
     Bone.focus(1)
     Bone.update_focused_webview()
     Bone.check_ghost_webviews()

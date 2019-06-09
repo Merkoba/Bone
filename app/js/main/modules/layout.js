@@ -1,21 +1,25 @@
 // Applies webview layout setup from current layout
-Bone.apply_layout = function(reset_size=true, force_url_change=false, create='auto')
+Bone.apply_layout = function(space_num=false)
 {
-    let c = Bone.$(`#webview_container_${Bone.current_space}`)
+    if(!space_num)
+    {
+        space_num = Bone.current_space
+    }
+
+    let c = Bone.$(`#webview_container_${space_num}`)
     c.innerHTML = ''
-    let space = Bone.space()
+    let space = Bone.space(space_num)
 
     if(space.layout)
     {
-        let layout = Bone.generate_layout(space.layout, {mode:'webviews'})
+        let layout = Bone.generate_layout(space.layout, {mode:'webviews', space_num:space_num})
         c.append(layout)
 
-        let wvs = Bone.wvs()
+        let wvs = Bone.wvs(space_num)
 
         for(let wv of wvs)
         {
             let num = parseInt(wv.dataset.num)
-            let space_num = parseInt(wv.dataset.space_num)
             let swv = Bone.swv(num, space_num)
             let url
 
@@ -31,6 +35,32 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
             }
 
             wv.src = url
+        }
+
+        let horizontal = Bone.$$('.horizontal_grid', c)
+
+        for(let container of horizontal)
+        {
+            let items = Array.from(container.children)
+
+            if(items.length < 2)
+            {
+                continue
+            }
+
+            for(let i=0; i<items.length; i++)
+            {
+                if(i === items.length - 1)
+                {
+                    break
+                }
+
+                let item = items[i]
+                let num = parseInt(item.dataset.num)
+                let sibling = items[i + 1]
+                let sibling_num = parseInt(sibling.dataset.num)
+                Bone.insert_after(Bone.create_resize_handle('ew', [num], [sibling_num], items.length), item)
+            }
         }
     }
 
@@ -93,6 +123,7 @@ Bone.update_create_layout = function()
 Bone.generate_layout = function(obj, options)
 {
     Bone.generate_layout_num = 1
+    Bone.generate_layout_container_num = 1
     return Bone.do_generate_layout(obj, options)
 }
 
@@ -124,6 +155,8 @@ Bone.do_generate_layout = function(obj, options)
     
     if(obj.items && obj.items.length > 0)
     {
+        let nums = []
+
         for(let i=0; i<obj.items.length; i++)
         {
             let item = obj.items[i]
@@ -157,6 +190,7 @@ Bone.do_generate_layout = function(obj, options)
                     else if(options.mode === 'webviews')
                     {
                         layout_2 = Bone.create_webview(Bone.generate_layout_num)
+                        nums.push(Bone.generate_layout_num)
                         Bone.generate_layout_num += 1
                     }
                 }
@@ -165,6 +199,8 @@ Bone.do_generate_layout = function(obj, options)
                 {
                     layout_2 = document.createElement('div')
                     layout_2.classList.add(`${item.mode}_grid`)
+                    layout_2.classList.add(`grid_container_${Bone.generate_layout_container_num}`)
+                    Bone.generate_layout_container_num += 1
                 }
 
                 if(layout)
@@ -176,6 +212,21 @@ Bone.do_generate_layout = function(obj, options)
                 {
                     layout = layout_2
                 }
+            }
+        }
+
+        if(nums.length > 0)
+        {
+            let s = Bone.generate_grid_template(nums, options.space_num)
+
+            if(obj.mode === 'horizontal')
+            {
+                layout.style.gridTemplateColumns = s
+            }
+            
+            else if(obj.mode === 'vertical')
+            {
+                layout.style.gridTemplateRows = s
             }
         }
     }
@@ -305,4 +356,24 @@ Bone.apply_create_layout = function()
     Bone.apply_layout()
     Bone.focus(1)
     Bone.close_all_windows()
+}
+
+// Generates a template to use in grid columns or rows
+Bone.generate_grid_template = function(nums, space_num)
+{
+    let s = ''
+
+    for(let i=0; i<nums.length; i++)
+    {
+        let num = nums[i]
+
+        if(i !== 0)
+        {
+            s += `${Bone.storage.resize_handle_size}px `
+        }
+
+        s += `${Bone.swv(num, space_num).size}fr `
+    }
+
+    return s
 }

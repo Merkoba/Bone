@@ -336,19 +336,6 @@ Bone.setup_resize_handles = function(num)
                     elements = [owner]
                 }
 
-                if(mode.includes('special'))
-                {
-                    Bone.reset_size(num, true, mode)
-                }
-
-                else
-                {
-                    for(let num of elements)
-                    {
-                        Bone.reset_size(num, true)
-                    }
-                }
-
                 Bone.leave_resize_mode()
                 e.preventDefault()
                 return false
@@ -517,8 +504,8 @@ Bone.resize_mouseup_function = function(e)
 
     let c = Bone.webview_container()
     let direction = Bone.active_resize_handle.dataset.direction
-    let siblings_list = Bone.active_resize_handle.dataset.siblings.split(',')
-    let owner = Bone.active_resize_handle.dataset.owner.split(',')
+    let owner_list = Bone.active_resize_handle.dataset.owner.split(',').map(n => parseInt(n))
+    let siblings_list = Bone.active_resize_handle.dataset.siblings.split(',').map(n => parseInt(n))
     let group = Bone.active_resize_handle.dataset.group
     let mode = Bone.active_resize_handle.dataset.mode
     let diff_x = e.clientX - Bone.initial_resize_x
@@ -527,12 +514,12 @@ Bone.resize_mouseup_function = function(e)
 
     if(siblings_list.length === 1)
     {
-        elements = [...owner, ...siblings_list]
+        elements = [...owner_list, ...siblings_list]
     }
 
     else
     {
-        elements = [...owner]
+        elements = [...owner_list]
     }
 
     let diff, oname
@@ -553,7 +540,6 @@ Bone.resize_mouseup_function = function(e)
     {
         return false
     }
-
     
     for(let num of elements)
     {
@@ -561,7 +547,7 @@ Bone.resize_mouseup_function = function(e)
         let el = Bone.wv(num)
         let nsize
 
-        if(owner.includes(num) && mode.startsWith('after'))
+        if(owner_list.includes(num) && mode.startsWith('after'))
         {
             nsize = el[oname] + diff
             owned = true
@@ -573,24 +559,23 @@ Bone.resize_mouseup_function = function(e)
         }
 
         let size = Bone.round((nsize / c[oname]) * group, 3)
-        let space = Bone.space()
+        Bone.swv(num).size = size
+    }
 
-        if(mode.includes('special'))
-        {
-            if(owned)
-            {
-                space.special[mode.replace(/.*special_/, '')] = size
-            }
-        }
+    let s = Bone.generate_grid_template(elements)
+    let parent = Bone.wv(1).parentElement
 
-        else
-        {
-            space[`webview_${num}`].size = size
-        }
+    if(direction === 'ns')
+    {
+        parent.style.gridTemplateRows = s
+    }
+    
+    else if(direction === 'ew')
+    {
+        parent.style.gridTemplateColumns = s
     }
 
     Bone.space_modified()
-    Bone.apply_layout(false, false, 'no')
     Bone.leave_resize_mode()
 }
 
@@ -661,10 +646,14 @@ Bone.focus = function(num=false, space_num=false)
         }
     }
 
-    document.activeElement.blur()
     let wv = Bone.wv(num)
-    wv.focus()
-    Bone.on_webview_focus(wv)
+    
+    if(wv)
+    {
+        document.activeElement.blur()
+        wv.focus()
+        Bone.on_webview_focus(wv)
+    }
 }
 
 // Gets a webview by its number
