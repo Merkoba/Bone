@@ -55,7 +55,7 @@
                 <div id='context_menu_copy_link_url' class='context_menu_item action'>Copy Link URL</div>
                 <div id='context_menu_copy_image_url' class='context_menu_item action'>Copy Image URL</div>
                 <div id='context_menu_download_image' class='context_menu_item action'>
-                        <i class='fas fa-download context_menu_icon'></i><span>Download Image</span>
+                    <i class='fas fa-download context_menu_icon'></i><span>Download Image</span>
                 </div>
                 <div id='context_menu_copy_video_url' class='context_menu_item action'>Copy Video URL</div>
                 <div id='context_menu_download_video' class='context_menu_item action'>
@@ -97,7 +97,11 @@
                     <div id='menu_save_preset' class='action inline'>Save</div>
                 </div>
 
-                <div class='menu_item'><div id='menu_create_layout' class='generic_button action inline'>Create Layout</div></div>
+                <div class='menu_item'>
+                    <div id='menu_create_layout' class='inline action'>
+                        <i class='fas fa-th action' id='menu_create_layout_icon'></i><div class='generic_button inline'>Create Layout</div>
+                    </div>
+                </div>
                 
                 <div class='menu_item'>
                     <div class='menu_label'>Theme</div>
@@ -260,7 +264,7 @@
  
         <script id='template_create_layout' type='text/x-handlebars-template' class='template'>
             <div class='unselectable'>
-                <div id='create_layout_grid_container'></div>
+                <div id='create_layout_grid'></div>
                 <div><div id='create_layout_apply' class='generic_button inline action'>Apply</div>
             </div>
         </script>

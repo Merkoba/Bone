@@ -869,6 +869,11 @@ select
     margin-top: 20px;
 }
 
+.container_grid
+{
+    display: grid;
+}
+
 .horizontal_grid
 {
     display: grid;
@@ -879,4 +884,15 @@ select
 {
     display: grid;
     grid-auto-flow: row;
+}
+
+#menu_create_layout
+{
+    font-size: 1.2rem;
+}
+
+#menu_create_layout_icon
+{
+    margin-right: 10px;
+    cursor: pointer;
 }

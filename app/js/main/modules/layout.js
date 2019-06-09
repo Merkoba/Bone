@@ -8,12 +8,7 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
     if(space.layout)
     {
         let layout = Bone.generate_layout(space.layout, {mode:'webviews'})
-        let items = Bone.$$('.webview_layout_item', layout, true)
-
-        for(let item of items)
-        {
-            c.append(item)
-        }
+        c.append(layout)
 
         let wvs = Bone.wvs()
 
@@ -49,9 +44,9 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
 // Setups the create layout window
 Bone.setup_create_layout = function()
 {
-    Bone.$('#create_layout_grid_container').addEventListener('click', function(e)
+    Bone.$('#create_layout_grid').addEventListener('click', function(e)
     {
-        Bone.update_create_layout_grid(e)
+        Bone.change_create_layout_grid(e)
     })
 
     Bone.$('#create_layout_apply').addEventListener('click', function(e)
@@ -63,13 +58,9 @@ Bone.setup_create_layout = function()
 // Shows the create layout window
 Bone.show_create_layout = function()
 {
-    Bone.create_layout_object = 
-    {
-        mode:'container',
-        id: 'create_layout_grid', 
-        items:[{mode: 'node', element: Bone.make_create_layout_grid_item()}]
-    }
-
+    let c = Bone.$('#create_layout_grid')
+    c.innerHTML = ''
+    c.append(Bone.make_create_layout_grid_item())
     Bone.update_create_layout()
     Bone.msg_create_layout.show()
 }
@@ -84,6 +75,20 @@ Bone.make_create_layout_grid_item = function()
     return item
 }
 
+// Updates the create layout grid based on the create layout object
+Bone.update_create_layout = function()
+{
+    Bone.create_layout_object = Bone.generate_layout_object(false,
+    {
+        item_class: 'create_layout_grid_item',
+    })
+
+    let c = Bone.$('#create_layout_grid')
+    c.innerHTML = ''
+    let layout = Bone.generate_layout(Bone.create_layout_object, {mode:'create_layout'})
+    c.append(layout)
+}
+
 // Generates a layout based on arrays
 Bone.generate_layout = function(obj, options)
 {
@@ -94,21 +99,26 @@ Bone.generate_layout = function(obj, options)
 // Performs the generate layout action
 Bone.do_generate_layout = function(obj, options)
 {
-    let layout = document.createElement('div')
-    layout.classList.add(`${obj.mode}_grid`)
+    let layout = false
 
-    if(obj.id)
+    if(obj.mode)
     {
-        layout.id = obj.id
-    }
-
-    if(obj.classes)
-    {
-        let classlist = obj.classes.split(' ')
-
-        for(let cls of classlist)
+        layout = document.createElement('div')
+        layout.classList.add(`${obj.mode}_grid`)
+    
+        if(obj.id)
         {
-            layout.classList.add(cls)
+            layout.id = obj.id
+        }
+    
+        if(obj.classes)
+        {
+            let classlist = obj.classes.split(' ')
+    
+            for(let cls of classlist)
+            {
+                layout.classList.add(cls)
+            }
         }
     }
     
@@ -120,7 +130,17 @@ Bone.do_generate_layout = function(obj, options)
             
             if(item.items && item.items.length > 0)
             {
-                layout.append(Bone.do_generate_layout(item, options))
+                let layout_2 = Bone.do_generate_layout(item, options)
+
+                if(layout)
+                {
+                    layout.append(layout_2)
+                }
+
+                else
+                {
+                    layout = layout_2
+                }
             }
             
             else
@@ -147,20 +167,20 @@ Bone.do_generate_layout = function(obj, options)
                     layout_2.classList.add(`${item.mode}_grid`)
                 }
 
-                layout.append(layout_2)
+                if(layout)
+                {
+                    layout.append(layout_2)
+                }
+
+                else
+                {
+                    layout = layout_2
+                }
             }
         }
     }
 
     return layout
-}
-
-// Updates the create layout grid based on the create layout object
-Bone.update_create_layout = function()
-{
-    let c = Bone.$('#create_layout_grid_container')
-    c.innerHTML = ''
-    c.append(Bone.generate_layout(Bone.create_layout_object, {mode:'create_layout'}))
 }
 
 // Generates the create layout object based on current layout
@@ -171,8 +191,6 @@ Bone.generate_layout_object = function(parent=false, options={})
     if(!parent)
     {
         parent = Bone.$('#create_layout_grid')
-        obj.id = options.container_id
-        obj.classes = options.container_classes
     }
 
     let items = Bone.$$('.create_layout_grid_item', parent, true)
@@ -215,7 +233,7 @@ Bone.generate_layout_object = function(parent=false, options={})
 }
 
 // Updates the create layout grid based on arrow use
-Bone.update_create_layout_grid = function(e)
+Bone.change_create_layout_grid = function(e)
 {
     if
     (
@@ -268,13 +286,6 @@ Bone.update_create_layout_grid = function(e)
         item.append(Bone.make_create_layout_grid_item())
         item.append(Bone.make_create_layout_grid_item())
     }
-        
-    Bone.create_layout_object = Bone.generate_layout_object(false,
-    {
-        container_id: 'create_layout_grid',
-        container_classes: 'none',
-        item_class: 'create_layout_grid_item',
-    })
 
     Bone.update_create_layout()
 }
@@ -284,14 +295,14 @@ Bone.apply_create_layout = function()
 {
     let layout_object = Bone.generate_layout_object(false,
     {
-        container_id: `webview_shell`,
-        container_classes: 'webview_container',
-        item_class: 'webview_layout_item',
+        mode: 'container',
+        item_class: 'webview_layout_item'
     })
 
     let space = Bone.space()
     space.layout = layout_object
     Bone.space_modified()
     Bone.apply_layout()
+    Bone.focus(1)
     Bone.close_all_windows()
 }
