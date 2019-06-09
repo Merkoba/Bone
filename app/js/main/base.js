@@ -97,6 +97,7 @@ Bone.init = function()
     Bone.setup_context_menu()
     Bone.setup_handle_download()
     Bone.setup_create_layout()
+    Bone.setup_handle_history()
 
     Bone.remove_splash()
 

@@ -560,9 +560,17 @@ select
     border: 0px solid grey;
 }
 
-#handle_history_layout
+#handle_history_container
 {
-    margin-top: 8px;
+    display: grid;
+    grid-auto-flow: row;
+    grid-gap: 10px;
+}
+
+.handle_history_item
+{
+    cursor: pointer;
+    font-size: 1.1rem;
 }
 
 #url

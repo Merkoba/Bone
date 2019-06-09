@@ -4,39 +4,51 @@ Bone.history = function()
     return Bone.swv(Bone.num()).history
 }
 
+// Setups the handle history window
+Bone.setup_handle_history = function()
+{
+    Bone.$('#handle_history_container').addEventListener('click', function(e)
+    {
+        if(!e.target.classList.contains('handle_history_item'))
+        {
+            return false
+        }
+
+        Bone.change_url(Bone.handled_history_item.dataset.url, e.target.dataset.num)
+        Bone.close_all_windows()
+    })
+}
+
 // Shows the handle history window
 Bone.show_handle_history = function()
 {
-    let num = Bone.wvs().length
-
-    if(num < 2)
+    let wvs = Bone.wvs()
+    
+    if(wvs.length < 2)
     {
         return false
     }
+    
+    let c = Bone.$('#handle_history_container')
+    c.innerHTML = ''
 
-    let container = Bone.$('#handle_history_layout_container')
-    let layout = Bone.$('#handle_history_layout')
-    layout.innerHTML = ''
+    let num = parseInt(Bone.handled_history_item.dataset.num)
 
-    let clone = Bone.$(`#layout_${Bone.space().current_layout}`).cloneNode(true)
-    clone.id = ''
-    clone.classList.add('menu_layout_item_2')
-
-    let items = Bone.$$('.layout_square_item', clone)
-
-    for(let item of items)
+    for(let i=1; i<=wvs.length; i++)
     {
-        item.classList.add('action')
-
-        item.addEventListener('click', function()
+        if(i === num)
         {
-            Bone.change_url(Bone.handled_history_item.dataset.url, parseInt(this.innerHTML))
-            Bone.close_all_windows()
-        })
-    }
+            continue
+        }
 
-    layout.append(clone)
-    container.style.display = 'block'
+        let item = document.createElement('div')
+        item.classList.add('handle_history_item')
+        item.classList.add('action')
+        item.textContent = `Open In Webview ${i}`
+        item.dataset.num = i
+
+        c.append(item)
+    }
 
     Bone.msg_handle_history.set_title(Bone.handled_history_item.dataset.url.substring(0, 50))
     Bone.msg_handle_history.show()
@@ -46,7 +58,6 @@ Bone.show_handle_history = function()
 Bone.history_item_open = function()
 {
     let item = Bone.handled_history_item
-    let space = Bone.space()
     let url = item.dataset.url
     let num = item.dataset.num
     let history = Bone.swv(num).history
