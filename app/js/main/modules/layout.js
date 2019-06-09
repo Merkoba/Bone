@@ -533,3 +533,209 @@ Bone.apply_layout = function(reset_size=true, force_url_change=false, create='au
     space.current_layout = layout
     Bone.check_titles()
 }
+
+// Setups the create layout window
+Bone.setup_create_layout = function()
+{
+    Bone.$('#create_layout_grid_container').addEventListener('click', function(e)
+    {
+        if
+        (
+            !e.target.classList.contains('create_layout_grid_item_arrows_h') && 
+            !e.target.classList.contains('create_layout_grid_item_arrows_v')
+        )
+        {
+            return false
+        }
+
+        let item = e.target.closest('.create_layout_grid_item')
+        let mode = e.target.dataset.mode
+        let parent = item.parentElement
+        let add_to_parent = false
+  
+        if(mode === 'horizontal')
+        {
+            if(parent && parent.classList.contains('horizontal_grid'))
+            {
+                add_to_parent = true
+            }
+            
+            else
+            {
+                item.classList.add('horizontal_grid')
+            }
+        }
+        
+        else if(mode === 'vertical')
+        {
+            if(parent && parent.classList.contains('vertical_grid'))
+            {
+                add_to_parent = true
+            }
+            
+            else
+            {
+                item.classList.add('vertical_grid')
+            }
+        }
+        
+        if(add_to_parent)
+        {
+            Bone.insert_after(Bone.make_create_layout_grid_item(), item)
+        }
+        
+        else
+        {
+            item.innerHTML = ''
+            item.append(Bone.make_create_layout_grid_item())
+            item.append(Bone.make_create_layout_grid_item())
+        }
+        
+        Bone.create_layout_object = Bone.generate_create_layout_object(
+        {
+            container_id: 'create_layout_grid',
+            item_id: 'create_layout_grid_item'
+        })
+
+        Bone.update_create_layout()
+    })
+}
+
+// Shows the create layout window
+Bone.show_create_layout = function()
+{
+    Bone.create_layout_object = 
+    {
+        mode:'container',
+        id: 'create_layout_grid', 
+        items:[{mode: 'node', element: Bone.make_create_layout_grid_item()}]
+    }
+
+    Bone.update_create_layout()
+    Bone.msg_create_layout.show()
+}
+
+// Creates an item for the create layout grid
+Bone.make_create_layout_grid_item = function()
+{
+    let h = Bone.template_create_layout_grid_item()
+    let el = document.createElement('div')
+    el.innerHTML = h
+    let item = el.querySelector('.create_layout_grid_item')
+    return item
+}
+
+// Generates a layout based on arrays
+Bone.generate_layout = function(obj)
+{
+    let layout = document.createElement('div')
+    layout.classList.add(`${obj.mode}_grid`)
+
+    if(obj.id)
+    {
+        layout.id = obj.id
+    }
+
+    if(obj.classes)
+    {
+        let classlist = obj.classes.split(' ')
+
+        for(let cls of classlist)
+        {
+            layout.classList.add(cls)
+        }
+    }
+    
+    if(obj.items && obj.items.length > 0)
+    {
+        for(let i=0; i<obj.items.length; i++)
+        {
+            let item = obj.items[i]
+            
+            if(item.items && item.items.length > 0)
+            {
+                layout.append(Bone.generate_layout(item))
+            }
+            
+            else
+            {
+                let layout_2
+
+                if(item.mode === 'node' && item.element)
+                {
+                    layout_2 = item.element
+                }
+                
+                else
+                {
+                    layout_2 = document.createElement('div')
+                    layout_2.classList.add(`${item.mode}_grid`)
+                }
+
+                layout.append(layout_2)
+            }
+        }
+    }
+
+    return layout
+}
+
+// Updates the create layout grid based on the create layout object
+Bone.update_create_layout = function()
+{
+    let c = Bone.$('#create_layout_grid_container')
+    c.innerHTML = ''
+    c.append(Bone.generate_layout(Bone.create_layout_object))
+}
+
+// Generates the create layout object based on current layout
+Bone.generate_create_layout_object = function(parent=false, options={})
+{
+    let obj = {}
+
+    if(!parent)
+    {
+        parent = Bone.$('#create_layout_grid')
+        obj.mode = 'container'
+        obj.id = options.container_id
+    }
+
+    let items = Bone.$$(`.${options.item_id}`, parent, true)
+
+    if(items && items.length > 0)
+    {
+        obj.items = []
+    }
+
+    for(let item of items)
+    {
+        let obj_2 = {}
+
+        if(item.classList.contains('horizontal_grid'))
+        {
+            obj_2.mode = 'horizontal'
+        }
+        
+        else if(item.classList.contains('vertical_grid'))
+        {
+            obj_2.mode = 'vertical'
+        }
+        
+        else
+        {
+            obj_2.mode = 'node'
+            obj_2.element = Bone.make_create_layout_grid_item()
+        }
+        
+        obj_2.classes = options.item_id
+
+        if(obj_2.mode !== 'node')
+        {
+            obj_2.items = Bone.generate_create_layout_object(item, options).items
+        }
+
+        obj.items.push(obj_2)
+    }
+
+    return obj
+}

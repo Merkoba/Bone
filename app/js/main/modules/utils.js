@@ -5,14 +5,21 @@ Bone.$ = function(s)
 }
 
 // Fetch multiple elements
-Bone.$$ = function(s, container=false)
+Bone.$$ = function(s, parent=false, direct=false)
 {
-    if(!container)
+    if(!parent)
     {
-        container = document
+        parent = document
     }
 
-    return Array.from(container.querySelectorAll(s))
+    let items = Array.from(parent.querySelectorAll(s))
+    
+    if(direct)
+    {
+        items = items.filter(node => node.parentNode === parent)
+    }
+
+    return items
 }
 
 // Returns a cloned object

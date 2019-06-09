@@ -248,6 +248,11 @@ Bone.setup_menu = function()
         Bone.save_local_storage()
     })
 
+    Bone.$('#menu_create_layout').addEventListener('click', function()
+    {
+        Bone.show_create_layout()
+    })
+
     Bone.update_menu_widgets()
 }
 

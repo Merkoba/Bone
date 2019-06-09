@@ -135,6 +135,13 @@ Bone.apply_theme = function()
     {
         box-shadow: 0 0 1px ${font_color_1} !important;
     }
+    
+    .create_layout_grid_item
+    {
+        background-color: ${bg_color_2} !important;
+        box-shadow: 0 0 1px ${font_color_1} !important;
+        color: ${font_color_1} !important;
+    }
     `
 
     let styles = Bone.$$('.appended_theme_style')

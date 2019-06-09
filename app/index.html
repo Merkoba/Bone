@@ -126,6 +126,8 @@
                         </div>
                     </div>
                 </div>
+
+                <div class='menu_item'><div id='menu_create_layout' class='generic_button action inline'>Create Layout</div></div>
                 
                 <div class='menu_item'>
                     <div class='menu_label'>Theme</div>
@@ -272,6 +274,21 @@
             <div class='unselectable'>
                 <div><div id='handle_download_save_as' class='generic_button inline action'>Save As</div></div>
                 <div id='handle_download_locations'></div>
+            </div>
+        </script>
+
+        <script id='template_create_layout_grid_item' type='text/x-handlebars-template' class='template'>
+            <div class='create_layout_grid_item'>
+                <div class='create_layout_grid_item_arrows_container'>
+                    <i class='fas fa-arrows-alt-h create_layout_grid_item_arrows create_layout_grid_item_arrows_h action' data-mode='horizontal'></i>
+                    <i class='fas fa-arrows-alt-v create_layout_grid_item_arrows create_layout_grid_item_arrows_v action' data-mode='vertical'></i>
+                </div>
+            </div>
+        </script>
+ 
+        <script id='template_create_layout' type='text/x-handlebars-template' class='template'>
+            <div class='unselectable'>
+                <div id='create_layout_grid_container'></div>
             </div>
         </script>
     </body>
