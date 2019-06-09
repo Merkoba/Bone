@@ -611,6 +611,16 @@ select
     margin-bottom: 5px;
 }
 
+#create_preset_autoupdate_container
+{
+    margin-top: 20px;
+}
+
+#create_preset_autoupdate_label
+{
+    margin-bottom: 5px;
+}
+
 #url_suggest
 {
     display: none;
@@ -844,6 +854,11 @@ select
     display: flex;
     flex-direction: column;
     align-self: center;
+}
+
+#create_layout_apply
+{
+    margin-top: 20px;
 }
 
 .horizontal_grid

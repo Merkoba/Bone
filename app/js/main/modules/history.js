@@ -1,7 +1,7 @@
 // Returns the history of the focused webview
 Bone.history = function()
 {
-    return Bone.space().history[`webview_${Bone.num()}`]
+    return Bone.swv(Bone.num()).history
 }
 
 // Shows the handle history window
@@ -49,12 +49,12 @@ Bone.history_item_open = function()
     let space = Bone.space()
     let url = item.dataset.url
     let num = item.dataset.num
-    let history = space.history[`webview_${num}`]
+    let history = Bone.swv(num).history
     let index = 0 - Bone.get_child_index(item)
 
     if(index < 0)
     {
-        space.history[`webview_${num}`] = history.slice(0, index)
+        history = history.slice(0, index)
     }
 
     Bone.change_url(url, num)
@@ -66,7 +66,7 @@ Bone.push_to_history = function(webview, url)
 {
     let num = parseInt(webview.dataset.num)
     let space = parseInt(webview.dataset.space)
-    let history = Bone.space(space).history[`webview_${num}`]
+    let history = Bone.swv(num).history
         
     if(history.slice(-1)[0] === url)
     {
@@ -148,7 +148,7 @@ Bone.show_history = function(num=false)
     let c = Bone.$('#history_container')
     c.innerHTML = ''
 
-    for(let item of Bone.space().history[`webview_${num}`])
+    for(let item of Bone.swv(num).history)
     {
         let el = document.createElement('div')
         el.classList.add('history_item')

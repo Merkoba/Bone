@@ -1,5 +1,5 @@
 // Creates a space and adds it to the spaces array
-Bone.create_space = function(obj)
+Bone.create_space = function(obj={})
 {
     let space = Bone.create_space_from_object(obj)
     Bone.spaces.push(space)
@@ -43,7 +43,6 @@ Bone.change_space = function(n, obj=false)
     Bone.current_space = n
     Bone.update_spaces()
     Bone.apply_layout(false, false)
-    Bone.update_menu_space_widgets()
     Bone.focus(1)
     Bone.update_focused_webview()
     Bone.check_ghost_webviews()
@@ -124,10 +123,7 @@ Bone.create_space_from_object = function(obj, n=false)
 
     if(Object.keys(obj).length > 0)
     {
-        space.webview_1 = Bone.clone_object(obj.webview_1)
-        space.webview_2 = Bone.clone_object(obj.webview_2)
-        space.webview_3 = Bone.clone_object(obj.webview_3)
-        space.webview_4 = Bone.clone_object(obj.webview_4)
+        space.webviews = Bone.clone_object(obj.webviews)
         space.special = Bone.clone_object(obj.special)
         space.layout = obj.layout
         space.name = obj.name || ''
@@ -135,25 +131,13 @@ Bone.create_space_from_object = function(obj, n=false)
 
     else
     {
-        space.webview_1 = Bone.create_webview_object(1, Bone.config.startpage)
-        space.webview_2 = Bone.create_webview_object(2, Bone.config.startpage)
-        space.webview_3 = Bone.create_webview_object(3, Bone.config.startpage)
-        space.webview_4 = Bone.create_webview_object(4, Bone.config.startpage)
+        space.webviews = [Bone.create_webview_object(1, Bone.config.startpage)]
         space.special = Bone.create_special_object()
-        space.layout = 'single'
+        space.layout = ''
         space.name = ''
     }
 
     space.num = n
-    
-    space.history =
-    {
-        webview_1: [],
-        webview_2: [],
-        webview_3: [],
-        webview_4: []
-    }
-
     return space
 }
 
@@ -289,7 +273,7 @@ Bone.start_autostart_spaces = function()
 
     else
     {
-        Bone.create_space(Bone.storage)
+        Bone.create_space()
     }
 }
 
@@ -338,9 +322,22 @@ Bone.get_spaces = function()
 }
 
 // Space modified signal
-Bone.space_modified = function()
+Bone.space_modified = function(space_num=false)
 {
-    // Do nothing for now
+    if(!space_num)
+    {
+        space_num = Bone.current_space
+    }
+    
+    let space = Bone.space(space_num)
+
+    if(space.name)
+    {
+        if(Bone.get_preset(space.name).autoupdate)
+        {
+            Bone.save_preset(space, false)
+        }
+    }
 }
 
 // Destroys all spaces
@@ -370,14 +367,14 @@ Bone.duplicate_space = function()
 
     else
     {
-        Bone.create_space(Bone.storage)
+        Bone.create_space()
     }
 }
 
 // Creates a new empty space
 Bone.new_space = function()
 {
-    Bone.create_space({})
+    Bone.create_space()
 }
 
 Bone.swv = function(num=false, space_num=false)
@@ -387,7 +384,7 @@ Bone.swv = function(num=false, space_num=false)
         num = Bone.num()
     }
 
-    return Bone.space(space_num)[`webview_${num}`]
+    return Bone.space(space_num).webviews[num - 1]
 }
 
 // Setups the handle close space window
@@ -618,4 +615,12 @@ Bone.move_space_right = function(item)
         let el = item.parentNode.children[n]
         el.after(item)
     }
+}
+
+// Creates a default special object
+Bone.create_special_object = function()
+{
+    let obj = {}
+    obj.row_1 = 1
+    return obj
 }

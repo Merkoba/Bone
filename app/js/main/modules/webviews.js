@@ -49,10 +49,11 @@ Bone.create_webview = function(num)
             return false
         }
 
+        let num = parseInt(wv.dataset.num)
+        let space_num = parseInt(wv.dataset.space)
         Bone.push_to_history(wv, e.url)
-        Bone.swv(wv.dataset.num, wv.dataset.space).url = e.url
-        Bone.space_modified()
-        Bone.save_local_storage()
+        Bone.swv(num, space_num).url = e.url
+        Bone.space_modified(space_num)
         Bone.update_url()
         Bone.add_to_global_history(e.url)
     })
@@ -190,7 +191,6 @@ Bone.reset_size = function(num, apply=true, mode='')
     }
 
     Bone.space_modified()
-    Bone.save_local_storage()
 
     if(apply)
     {
@@ -590,7 +590,6 @@ Bone.resize_mouseup_function = function(e)
     }
 
     Bone.space_modified()
-    Bone.save_local_storage()
     Bone.apply_layout(false, false, 'no')
     Bone.leave_resize_mode()
 }
@@ -641,6 +640,7 @@ Bone.create_webview_object = function(n, url='')
     let obj = {}
     obj.url = url
     obj.size = 1
+    obj.history = []
     return obj
 }
 

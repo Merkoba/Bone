@@ -37,24 +37,14 @@ Bone.check_local_storage = function(obj)
 {
     let save = false
 
-    let layout_version = 1
     let theme_version = 1
     let presets_version = 1
-    let webview_version = 1
     let auto_hide_panel_version = 1
     let resize_handle_size_version = 1
     let wrap_on_webview_cycle_version = 1
     let wrap_on_space_cycle_version = 1
-    let special_version = 1
     let global_history_version = 1
     let download_locations_version = 1
-    
-    if(obj.layout_version !== layout_version)
-    {
-        obj.layout = '2_column'
-        obj.layout_version = layout_version
-        save = true
-    }
 
     if(obj.theme_version !== theme_version)
     {
@@ -67,16 +57,6 @@ Bone.check_local_storage = function(obj)
     {
         obj.presets = []
         obj.presets_version = presets_version
-        save = true
-    }
-
-    if(obj.webview_version !== webview_version)
-    {
-        obj.webview_1 = Bone.create_webview_object(1, 'https://mastodon.social')
-        obj.webview_2 = Bone.create_webview_object(2, 'https://www.dubtrack.fm/join/the-underground')
-        obj.webview_3 = Bone.create_webview_object(3, 'http://lab.serotoninphobia.info/')
-        obj.webview_4 = Bone.create_webview_object(4, 'https://arisuchan.jp/')
-        obj.webview_version = webview_version
         save = true
     }
 
@@ -108,13 +88,6 @@ Bone.check_local_storage = function(obj)
         save = true
     }
 
-    if(obj.special_version !== special_version)
-    {
-        obj.special = Bone.create_special_object()
-        obj.special_version = special_version
-        save = true
-    }
-
     if(obj.global_history_version !== global_history_version)
     {
         obj.global_history = []
@@ -135,18 +108,6 @@ Bone.check_local_storage = function(obj)
 // Save the local storage data
 Bone.save_local_storage = function()
 {
-    let space = Bone.space()
-
-    if(space)
-    {
-        Bone.storage.webview_1 = Bone.clone_object(space.webview_1)
-        Bone.storage.webview_2 = Bone.clone_object(space.webview_2)
-        Bone.storage.webview_3 = Bone.clone_object(space.webview_3)
-        Bone.storage.webview_4 = Bone.clone_object(space.webview_4)
-        Bone.storage.layout = space.layout
-        Bone.storage.special = space.special
-    }
-
     localStorage.setItem(Bone.ls_name, JSON.stringify(Bone.storage))
 }
 
@@ -161,13 +122,5 @@ Bone.reset_storage = function()
     Bone.update_menu_widgets()
     Bone.apply_theme()
     Bone.destroy_spaces()
-    Bone.create_space(Bone.storage)
-}
-
-// Creates a default special object
-Bone.create_special_object = function()
-{
-    let obj = {}
-    obj.row_1 = 1
-    return obj
+    Bone.create_space()
 }

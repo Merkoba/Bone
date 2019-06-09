@@ -21,6 +21,7 @@ Bone.do_create_preset = function(name)
     let obj = {}
     obj.name = Bone.$('#create_preset_name').value
     obj.autostart = Bone.$('#create_preset_autostart').checked
+    obj.autoupdate = Bone.$('#create_preset_autoupdate').checked
 
     if(!Bone.save_preset(obj))
     {
@@ -107,6 +108,14 @@ Bone.setup_handle_preset = function()
         Bone.update_handle_preset_autostart(Bone.handled_preset)
         Bone.update_autostart_order()
     })
+    
+    Bone.$('#handle_preset_autoupdate').addEventListener('click', function(e)
+    {
+        let preset = Bone.get_preset(Bone.handled_preset)
+        preset.autoupdate = !preset.autoupdate
+        Bone.save_local_storage()
+        Bone.update_handle_preset_autoupdate(Bone.handled_preset)
+    })
 }
 
 // Does the edit preset action
@@ -181,13 +190,15 @@ Bone.save_preset = function(obj, warn_replace=true)
     }
     
     let preset = Bone.get_preset(obj.name)
-    let space = Bone.space()
-    let autostart = false
+    let space = obj.space || Bone.space()
+    let autostart = true
+    let autoupdate = true
     let replace = false
 
     if(preset)
     {
         autostart = preset.autostart
+        autoupdate = preset.autoupdate
 
         if(warn_replace)
         {
@@ -203,6 +214,7 @@ Bone.save_preset = function(obj, warn_replace=true)
     else
     {
         autostart = obj.autostart || false
+        autoupdate = obj.autoupdate || false
     }
 
     let prst = {}
@@ -214,10 +226,8 @@ Bone.save_preset = function(obj, warn_replace=true)
 
     prst.name = obj.name
     prst.autostart = autostart
-    prst.webview_1 = Bone.clone_object(space.webview_1)
-    prst.webview_2 = Bone.clone_object(space.webview_2)
-    prst.webview_3 = Bone.clone_object(space.webview_3)
-    prst.webview_4 = Bone.clone_object(space.webview_4)
+    prst.autoupdate = autoupdate
+    prst.webviews = Bone.clone_object(space.webviews)
     prst.special = Bone.clone_object(space.special)
     prst.layout = space.layout
     prst.last_used = Date.now()
@@ -301,6 +311,7 @@ Bone.show_handle_preset = function(name)
     Bone.handled_preset = name
     Bone.$('#handle_preset_name').value = name
     Bone.update_handle_preset_autostart(name)
+    Bone.update_handle_preset_autoupdate(name)
     
     Bone.msg_handle_preset.show(function()
     {
@@ -366,6 +377,22 @@ Bone.update_handle_preset_autostart = function(name)
     else
     {
         Bone.$('#handle_preset_autostart').textContent = 'Enable AutoStart'
+    }
+}
+
+// Changes the autoupdate label depending on state
+Bone.update_handle_preset_autoupdate = function(name)
+{
+    let preset = Bone.get_preset(name)
+
+    if(preset.autoupdate)
+    {
+        Bone.$('#handle_preset_autoupdate').textContent = 'Disable AutoUpdate'
+    }
+        
+    else
+    {
+        Bone.$('#handle_preset_autoupdate').textContent = 'Enable AutoUpdate'
     }
 }
 
@@ -525,6 +552,9 @@ Bone.show_open_preset = function()
 // Shows the create preset window
 Bone.show_create_preset = function()
 {
+    Bone.$('#create_preset_autostart').checked = true
+    Bone.$('#create_preset_autoupdate').checked = true
+
     Bone.msg_create_preset.show(function()
     {
         Bone.$('#create_preset_name').focus()
