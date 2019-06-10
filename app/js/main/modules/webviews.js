@@ -222,7 +222,7 @@ Bone.swap_webview = function(num)
         let item = document.createElement('div')
         item.classList.add('swap_webviews_item')
         item.classList.add('action')
-        item.textContent = `Swap With: (${i}) ${swv.url.substring(0, Bone.config.swap_max_url_length)}`
+        item.textContent = `Swap With: (${i}) ${swv.url.substring(0, Bone.config.small_url_length)}`
         item.dataset.num = i
         item.dataset.url = swv.url
 

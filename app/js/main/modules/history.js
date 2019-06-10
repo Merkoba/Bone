@@ -44,7 +44,7 @@ Bone.show_handle_history = function()
         let item = document.createElement('div')
         item.classList.add('handle_history_item')
         item.classList.add('action')
-        item.textContent = `Open In Webview ${i}`
+        item.textContent = `Open In: (${i}) ${Bone.swv(i).url.substring(0, Bone.config.small_url_length)}`
         item.dataset.num = i
 
         c.append(item)
