@@ -12,7 +12,7 @@ Bone.download = function(url, destination)
 // React to a download start message from the main process
 Bone.on_download_start = function(args)
 {
-    let popup = Bone.show_info_popup('File Downloading', 'download', false, false, args.id)
+    let popup = Bone.show_info_popup('File Downloading', false, false, false, args.id)
     popup.last_set_update = 0
     Bone.info_popups[args.id] = popup
 }
@@ -33,20 +33,14 @@ Bone.on_download_update = function(args)
         {
             return false
         }
-
-        let percentage = Math.round(((args.received_bytes / args.total_bytes) * 100), 1)
-        let el = document.createElement('div')
-                
-        el.addEventListener('click', function()
+        
+        let onclick = function()
         {
-            args.item.cancel()
-        })
-
-        el.classList.add('action')
-        el.classList.add('pointer')
-        el.title = 'Click to cancel download'
-        el.textContent = `File Downloading: ${percentage}%`
-        popup.set(el)
+            ipcRenderer.send('cancel-download', {id:args.id})
+        }
+        
+        let percentage = Math.round(((args.received_bytes / args.total_bytes) * 100), 1)
+        popup.set(Bone.create_info_popup_item(`File Downloading: ${percentage}%`, 'download', onclick, 'Click to cancel download'))
         popup.last_set_update = Date.now()
     }
 
@@ -64,23 +58,13 @@ Bone.on_download_done = function(args)
     }
 
     if(args.state === 'completed') 
-    {
-        let el = document.createElement('div')
-        el.classList.add('action')
-        el.classList.add('pointer')
-        
-        el.addEventListener('click', function(e)
+    { 
+        let onclick = function()
         {
             shell.showItemInFolder(args.destination)
-        })
+        }
 
-        el.textContent = 'Download Successful'
-        popup.set(el)
-
-        setTimeout(function()
-        {
-            popup.close()
-        }, 5000)
+        popup.set(Bone.create_info_popup_item('Download Successful', false, onclick))
     }
             
     else if(args.state === 'cancelled')
@@ -92,6 +76,11 @@ Bone.on_download_done = function(args)
     {
         popup.set(`Download Failed`)
     }
+
+    setTimeout(function()
+    {
+        popup.close()
+    }, 5000)
 }
 
 // Pushes a directory path to download locations

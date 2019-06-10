@@ -388,7 +388,13 @@ Bone.show_info_popup = function(message, icon=false, on_click=false, autoclose=f
     }
 
     let popup = Msg.factory(obj)
+    popup.show(Bone.create_info_popup_item(message, icon))
+    return popup
+}
 
+// Creates the content of an info popup
+Bone.create_info_popup_item = function(message, icon=false, onclick=false, title=false)
+{
     let item = document.createElement('div')
     item.classList.add('info_popup_item')
     item.classList.add('unselectable')
@@ -418,8 +424,20 @@ Bone.show_info_popup = function(message, icon=false, on_click=false, autoclose=f
     text_el.textContent = message
 
     item.append(text_el)
-    popup.show(item)
-    return popup
+
+    if(onclick)
+    {
+        item.addEventListener('click', onclick)
+        item.classList.add('action')
+        item.classList.add('pointer')
+    }
+
+    if(title)
+    {
+        item.title = title
+    }
+
+    return item
 }
 
 // Checks if enable or disable titles

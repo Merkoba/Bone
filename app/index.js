@@ -8,6 +8,7 @@ let win
 let bypass_save_dialog_url = false
 let bypass_save_dialog_destination = false
 let bypass_save_dialog_date = 0
+let download_items = {}
 
 exports.create_window = function() 
 {
@@ -72,6 +73,7 @@ exports.create_window = function()
         
         item.setSavePath(dpath)
         let id = `${Date.now().toString().slice(-5)}_${random_sequence(5)}`
+        download_items[id] = item
         win.webContents.send('download-start', {id:id, item:item})
 
         item.on('updated', (event, state) => 
@@ -82,6 +84,7 @@ exports.create_window = function()
         item.once('done', (event, state) => 
         {
             win.webContents.send('download-done', {id:id, destination:dpath, state:state})
+            download_items[id] = undefined
         })
     })
 }
@@ -179,6 +182,11 @@ ipcMain.on('download-options-update', function(event, arg)
     bypass_save_dialog_destination = arg.bypass_save_dialog_destination
     bypass_save_dialog_date = arg.bypass_save_dialog_date
     event.returnValue = 'ok'
+})
+
+ipcMain.on('cancel-download', function(event, arg) 
+{
+    download_items[arg.id].cancel()
 })
 
 function get_random_int(min, max, exclude=undefined)
