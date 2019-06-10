@@ -194,7 +194,7 @@ Bone.reset_size = function(num, apply=true, mode='')
 
     if(apply)
     {
-        Bone.apply_layout(false)
+        Bone.apply_layout()
     }  
 }
 

@@ -75,7 +75,7 @@ Bone.setup_menu = function()
         Bone.storage.resize_handle_size = this.value
         Bone.save_local_storage()
         Bone.update_resize_handle_style()
-        Bone.apply_layout(false)
+        Bone.apply_layout()
     })
 
     Bone.$('#menu_reset').addEventListener('click', function()
