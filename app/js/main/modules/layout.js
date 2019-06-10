@@ -6,7 +6,7 @@ Bone.apply_layout = function(space_num=false, reset_size=false)
         space_num = Bone.current_space
     }
 
-    let c = Bone.$(`#webview_container_${space_num}`)
+    let c = Bone.webview_container(space_num)
     c.innerHTML = ''
     let space = Bone.space(space_num)
     

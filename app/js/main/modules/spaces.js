@@ -4,9 +4,7 @@ Bone.create_space = function(obj={})
     let space = Bone.create_space_from_object(obj)
     Bone.spaces.push(space)
     let n = Bone.spaces.length
-    Bone.current_space = n
     Bone.create_webview_container(n)
-    Bone.apply_layout(n)
     Bone.change_space(n)
     Bone.update_spaces()
 }
@@ -31,9 +29,11 @@ Bone.change_space = function(n, obj=false)
         return false
     }
 
-    if(Bone.current_space >= 1)
+    let c = Bone.webview_container()
+
+    if(c)
     {
-        Bone.$(`#webview_container_${Bone.current_space}`).style.display = 'none'
+        c.style.display = 'none'
     }
 
     Bone.$(`#webview_container_${n}`).style.display = 'grid'
@@ -44,6 +44,14 @@ Bone.change_space = function(n, obj=false)
     }
 
     Bone.current_space = n
+
+    let wvs = Bone.wvs()
+
+    if(wvs.length === 0)
+    {
+        Bone.apply_layout(n)
+    }
+
     Bone.update_spaces()
     Bone.focus(1)
     Bone.update_focused_webview()
