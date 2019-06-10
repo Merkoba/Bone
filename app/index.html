@@ -259,13 +259,19 @@
                     <i class='fas fa-arrows-alt-h create_layout_grid_item_arrows create_layout_grid_item_arrows_h action' data-mode='horizontal'></i>
                     <i class='fas fa-arrows-alt-v create_layout_grid_item_arrows create_layout_grid_item_arrows_v action' data-mode='vertical'></i>
                 </div>
+                <div class='create_layout_grid_item_bottom'>
+                    <i class='far fa-trash-alt create_layout_grid_item_delete action' data-mode='delete'></i>
+                </div>
             </div>
         </script>
  
         <script id='template_create_layout' type='text/x-handlebars-template' class='template'>
             <div class='unselectable'>
                 <div id='create_layout_grid'></div>
-                <div><div id='create_layout_apply' class='generic_button inline action'>Apply</div>
+                <div id='create_layout_buttons' class='separate_horizontal'>
+                    <div id='create_layout_clear' class='generic_button inline action'>Clear</div>
+                    <div id='create_layout_apply' class='generic_button inline action'>Apply</div>
+                </div>
             </div>
         </script>
     </body>

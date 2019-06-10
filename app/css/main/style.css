@@ -847,25 +847,38 @@ select
 
 .create_layout_grid_item
 {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.create_layout_grid_item_arrows_container, .create_layout_grid_item_bottom
+{
+    display: flex;
+    flex-direction: row;
+    align-self: center;
 }
 
 .create_layout_grid_item_arrows
 {
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    padding: 5px;
     cursor: pointer;
 }
 
-.create_layout_grid_item_arrows_container
+.create_layout_grid_item_delete
 {
-    display: flex;
-    flex-direction: column;
-    align-self: center;
+    padding: 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
 }
 
-#create_layout_apply
+#create_layout_buttons
 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     margin-top: 20px;
 }
 

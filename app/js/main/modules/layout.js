@@ -21,6 +21,7 @@ Bone.apply_layout = function(space_num=false, reset_size=false)
                 swv.size = 1
             }
             
+            space.container_sizes = {}
             Bone.space_modified(space_num)
         }
         
@@ -68,6 +69,11 @@ Bone.setup_create_layout = function()
         Bone.change_create_layout_grid(e)
     })
 
+    Bone.$('#create_layout_clear').addEventListener('click', function(e)
+    {
+        Bone.clear_create_layout(e)
+    })
+
     Bone.$('#create_layout_apply').addEventListener('click', function(e)
     {
         Bone.apply_create_layout(e)
@@ -77,10 +83,7 @@ Bone.setup_create_layout = function()
 // Shows the create layout window
 Bone.show_create_layout = function()
 {
-    let c = Bone.$('#create_layout_grid')
-    c.innerHTML = ''
-    c.append(Bone.make_create_layout_grid_item())
-    Bone.update_create_layout()
+    Bone.start_create_layout()
     Bone.msg_create_layout.show()
 }
 
@@ -192,6 +195,7 @@ Bone.generate_layout_object = function(parent=false)
     if(!parent)
     {
         parent = Bone.$('#create_layout_grid')
+        Bone.clean_layout_object(parent)
     }
 
     let items = Bone.$$('.grid_item', parent, true)
@@ -237,7 +241,8 @@ Bone.change_create_layout_grid = function(e)
     if
     (
         !e.target.classList.contains('create_layout_grid_item_arrows_h') && 
-        !e.target.classList.contains('create_layout_grid_item_arrows_v')
+        !e.target.classList.contains('create_layout_grid_item_arrows_v') &&
+        !e.target.classList.contains('create_layout_grid_item_delete')
     )
     {
         return false
@@ -247,8 +252,15 @@ Bone.change_create_layout_grid = function(e)
     let mode = e.target.dataset.mode
     let parent = item.parentElement
     let add_to_parent = false
+
+    if(mode === 'delete')
+    {
+        Bone.remove_element(item)
+        Bone.update_create_layout()
+        return false
+    }
   
-    if(mode === 'horizontal')
+    else if(mode === 'horizontal')
     {
         if(parent && parent.classList.contains('horizontal_grid'))
         {
@@ -372,4 +384,68 @@ Bone.do_generate_grid_templates = function(container, space_num)
 Bone.layout_container = function(n, c)
 {
     return Bone.$(`.grid_container_${n}`, c)
+}
+
+// Clears the create grid layout
+Bone.clear_create_layout = function()
+{
+    Bone.start_create_layout(true)
+}
+
+// Starts the create layout window
+Bone.start_create_layout = function(clear=false)
+{
+    let c = Bone.$('#create_layout_grid')
+    c.innerHTML = ''
+    let layout = Bone.space().layout
+
+    if(layout && !clear)
+    {
+        c.append(Bone.generate_layout(layout, {mode:'create_layout'}))
+    }
+
+    else
+    {
+        c.append(Bone.make_create_layout_grid_item())
+        Bone.update_create_layout()
+    }
+}
+
+// Removes empty containers from the create layout grid object
+Bone.clean_layout_object = function(parent)
+{
+    let go = true
+    
+    while(go)
+    {
+        let horizontal = Bone.$$('.horizontal_grid', parent)
+        go = Bone.do_clean_layout_object(horizontal)
+    }
+    
+    go = true
+    
+    while(go)
+    {
+        let vertical = Bone.$$('.vertical_grid', parent)
+        go = Bone.do_clean_layout_object(vertical)
+    }
+}
+
+// Does the clean layout object operation
+Bone.do_clean_layout_object = function(containers)
+{
+    let removed = false
+
+    for(let container of containers)
+    {
+        let children = Array.from(container.children)
+
+        if(children.length === 0)
+        {
+            Bone.remove_element(container)
+            removed = true
+        }
+    }
+
+    return removed
 }
