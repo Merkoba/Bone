@@ -322,20 +322,24 @@ Bone.setup_resize_handles = function(num)
             if(Date.now() - Bone.resize_mousedown_date < Bone.config.resize_double_click_delay)
             {
                 let owner = Bone.active_resize_handle.dataset.owner
-                let siblings = Bone.active_resize_handle.dataset.siblings
-                let mode = Bone.active_resize_handle.dataset.mode
-                let elements
+                let sibling = Bone.active_resize_handle.dataset.sibling
+                let elements = [owner, sibling]
 
-                if(siblings.length === 1)
+                for(let num of elements)
                 {
-                    elements = [owner, ...siblings]
+                    if(num.startsWith('c_'))
+                    {
+                        Bone.set_container_size(num, 1)
+                    }
+
+                    else
+                    {
+                        Bone.swv(num).size = 1
+                    }
                 }
 
-                else
-                {
-                    elements = [owner]
-                }
-
+                Bone.generate_grid_templates(Bone.webview_container())
+                Bone.space_modified()
                 Bone.leave_resize_mode()
                 e.preventDefault()
                 return false

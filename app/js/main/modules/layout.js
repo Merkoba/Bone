@@ -315,7 +315,7 @@ Bone.apply_create_layout = function()
 }
 
 // Generates a template to use in grid columns or rows
-Bone.generate_grid_templates = function(layout, space_num)
+Bone.generate_grid_templates = function(layout, space_num=false)
 {
     if(!space_num)
     {
