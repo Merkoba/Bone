@@ -266,10 +266,9 @@ Bone.do_webview_swap = function(num_1, num_2)
 }
 
 // What to do when a webview is dom ready
-Bone.on_webview_dom_ready = function(webview)
+Bone.on_webview_dom_ready = function(wv)
 {
-    // let num = parseInt(webview.dataset.num)
-    // let space_num = parseInt(webview.dataset.space)
+    // Do nothing for now
 }
 
 // Creates a resize handle based on a given direction

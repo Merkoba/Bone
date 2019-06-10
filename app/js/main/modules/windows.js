@@ -312,6 +312,21 @@ Bone.setup_signals = function()
     {
         Bone.hard_reload()
     })
+    
+    ipcRenderer.on('download-start', (e, args) => 
+    {
+        Bone.on_download_start(args)
+    })
+    
+    ipcRenderer.on('download-update', (e, args) => 
+    {
+        Bone.on_download_update(args)
+    })
+    
+    ipcRenderer.on('download-done', (e, args) => 
+    {
+        Bone.on_download_done(args)
+    })
 }
 
 // Gets the project hash if it doesn't exist already and shows the about window
@@ -341,23 +356,38 @@ Bone.show_about = function()
 }
 
 // Creates and shows an info popup in the bottom right
-Bone.show_info_popup = function(message, icon=false, on_click=false)
+Bone.show_info_popup = function(message, icon=false, on_click=false, autoclose=false, id=false)
 {
     if(!on_click)
     {
         on_click = function(){}
     }
 
-    let popup = Msg.factory(
+    let obj =
     {
         preset: 'popup',
         position: 'bottomright',
-        autoclose: true,
+        autoclose: autoclose,
         autoclose_delay: 5000,
         window_width: 'auto',
         window_height: 'auto',
-        on_click: on_click
-    })
+        on_click: on_click,
+        window_class: '!unselectable',
+        after_close: function()
+        {
+            if(id)
+            {
+                Bone.info_popups[id] = undefined
+            }
+        }
+    }
+
+    if(id)
+    {
+        obj.id = id
+    }
+
+    let popup = Msg.factory(obj)
 
     let item = document.createElement('div')
     item.classList.add('info_popup_item')
@@ -389,6 +419,7 @@ Bone.show_info_popup = function(message, icon=false, on_click=false)
 
     item.append(text_el)
     popup.show(item)
+    return popup
 }
 
 // Checks if enable or disable titles

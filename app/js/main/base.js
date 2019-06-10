@@ -38,6 +38,7 @@ Bone.url_input_selected = false
 Bone.hash_calculated = false
 Bone.hash_calculating = false
 Bone.find_on = false
+Bone.info_popups = {}
 
 Bone.config =
 {

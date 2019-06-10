@@ -1,99 +1,97 @@
-Bone.download = function(url, dest) 
+// Downloads a file manually
+Bone.download = function(url, destination) 
 {
-    return new Promise((resolve, reject) => 
-    {
-        let http_module
-
-        if(url.startsWith('http:'))
-        {
-            http_module = http
-        }
-
-        else if(url.startsWith('https:'))
-        {
-            http_module = https
-        }
-
-        else
-        {
-            reject('Not a valid URL')
-        }
-
-        const exists = fs.existsSync(dest)
-        const file_split = path.basename(dest).split('.')
-        const num = Date.now().toString().slice(-4)
-        const new_file_name = `${file_split.slice(0, -1).join('.')}_${num}.${file_split.slice(-1)[0]}`
-
-        if(exists)
-        {
-            dest = `${path.dirname(dest)}/${new_file_name}`
-        }
-
-        const file = fs.createWriteStream(dest, {flags: 'w'})
-
-        const request = http_module.get(url, response => 
-        {
-            if(response.statusCode === 200) 
-            {
-                response.pipe(file)
-            } 
-            
-            else 
-            {
-                file.close()
-                reject(`Server responded with ${response.statusCode}: ${response.statusMessage}`)
-            }
-        })
-
-        request.on('error', err => 
-        {
-            file.close()
-            reject(err.message)
-        })
-
-        file.on('finish', () => 
-        {
-            resolve()
-        })
-
-        file.on('error', err => 
-        {
-            file.close()
-            reject(err.message)
-        })
-    })
+    let obj = {}
+    obj.bypass_save_dialog_url = url
+    obj.bypass_save_dialog_destination = destination
+    obj.bypass_save_dialog_date = Date.now()
+    ipcRenderer.sendSync('download-options-update', obj)
+    remote.getCurrentWindow().webContents.downloadURL(url)
 }
 
-// Starts a download
-Bone.start_download = function(args={})
+// React to a download start message from the main process
+Bone.on_download_start = function(args)
 {
-    let location = path.dirname(args.filename)
-    Bone.push_to_download_locations(location)
+    let popup = Bone.show_info_popup('File Downloading', 'download', false, false, args.id)
+    popup.last_set_update = 0
+    Bone.info_popups[args.id] = popup
+}
 
-    let open_function = function()
+// React to a download update message from the main process
+Bone.on_download_update = function(args)
+{
+    try
     {
-        shell.showItemInFolder(args.filename)
+        let popup = Bone.info_popups[args.id]
+
+        if(!popup)
+        {
+            return false
+        }
+
+        if(Date.now() - popup.last_set_update < 1000)
+        {
+            return false
+        }
+
+        let percentage = Math.round(((args.received_bytes / args.total_bytes) * 100), 1)
+        let el = document.createElement('div')
+                
+        el.addEventListener('click', function()
+        {
+            args.item.cancel()
+        })
+
+        el.classList.add('action')
+        el.classList.add('pointer')
+        el.title = 'Click to cancel download'
+        el.textContent = `File Downloading: ${percentage}%`
+        popup.set(el)
+        popup.last_set_update = Date.now()
     }
 
-    Bone.download(args.url, args.filename)
+    catch(err){}
+}
 
-    .then(res =>
+// React to a download done message from the main process
+Bone.on_download_done = function(args)
+{
+    let popup = Bone.info_popups[args.id]
+
+    if(!popup)
     {
-        if(args.type === 'image')
-        {
-            Bone.show_info_popup('Image Downloaded', 'download', open_function)
-        }
+        return false
+    }
+
+    if(args.state === 'completed') 
+    {
+        let el = document.createElement('div')
+        el.classList.add('action')
+        el.classList.add('pointer')
         
-        else if(args.type === 'video')
+        el.addEventListener('click', function(e)
         {
-            Bone.show_info_popup('Video Downloaded', 'download', open_function)
-        }
-    })
+            shell.showItemInFolder(args.destination)
+        })
 
-    .catch(err =>
+        el.textContent = 'Download Successful'
+        popup.set(el)
+
+        setTimeout(function()
+        {
+            popup.close()
+        }, 5000)
+    }
+            
+    else if(args.state === 'cancelled')
     {
-        Bone.show_info_popup('Error downloading file', 'error')
-    })
+        popup.set(`Download Cancelled`)
+    }
+            
+    else 
+    {
+        popup.set(`Download Failed`)
+    }
 }
 
 // Pushes a directory path to download locations
@@ -151,7 +149,7 @@ Bone.show_save_as_dialog = function()
     }, 
     function(filename)
     {
-        Bone.start_download({url:url, filename:filename, type:type})
+        Bone.download(url, filename)
     })
 }
 
@@ -170,13 +168,11 @@ Bone.setup_handle_download = function()
         {
             return false
         }
-
         
         let url = Bone.handle_download_args.url
-        let type = Bone.handle_download_args.type
         let path = e.target.dataset.path
         let filename = `${path}/${url.split('/').slice(-1)[0]}`
-        Bone.start_download({url:url, filename:filename, type:type})
+        Bone.download(url, filename)
         Bone.msg_handle_download.close()
     })
 }

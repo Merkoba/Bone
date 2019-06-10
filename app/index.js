@@ -1,9 +1,13 @@
-const {session, app, BrowserWindow, globalShortcut} = require('electron')
+const fs = require('fs')
+const {session, app, BrowserWindow, globalShortcut, ipcMain} = require('electron')
 const path = require('path')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
+let bypass_save_dialog_url = false
+let bypass_save_dialog_destination = false
+let bypass_save_dialog_date = 0
 
 exports.create_window = function() 
 {
@@ -44,6 +48,41 @@ exports.create_window = function()
     win.on('blur', () => 
     {
         unregister_shortcuts()
+    })
+
+    win.webContents.session.on('will-download', (event, item, webContents) => 
+    {
+        let dpath = app.getPath('downloads')
+
+        if(bypass_save_dialog_url === item.getURL())
+        {
+            if(Date.now() - bypass_save_dialog_date < 10000)
+            {
+                dpath = bypass_save_dialog_destination
+            }
+        }
+        
+        if(fs.existsSync(dpath))
+        {
+            let file_split = path.basename(dpath).split('.')
+            let num = Date.now().toString().slice(-4)
+            let new_file_name = `${file_split.slice(0, -1).join('.')}_${num}.${file_split.slice(-1)[0]}`
+            dpath = `${path.dirname(dpath)}/${new_file_name}`
+        }
+        
+        item.setSavePath(dpath)
+        let id = `${Date.now().toString().slice(-5)}_${random_sequence(5)}`
+        win.webContents.send('download-start', {id:id, item:item})
+
+        item.on('updated', (event, state) => 
+        {
+            win.webContents.send('download-update', {id:id, received_bytes:item.getReceivedBytes(), total_bytes:item.getTotalBytes()})
+        })
+        
+        item.once('done', (event, state) => 
+        {
+            win.webContents.send('download-done', {id:id, destination:dpath, state:state})
+        })
     })
 }
 
@@ -132,4 +171,47 @@ function register_shortcuts()
 function unregister_shortcuts()
 {
     globalShortcut.unregisterAll()
+}
+
+ipcMain.on('download-options-update', function(event, arg) 
+{
+    bypass_save_dialog_url = arg.bypass_save_dialog_url
+    bypass_save_dialog_destination = arg.bypass_save_dialog_destination
+    bypass_save_dialog_date = arg.bypass_save_dialog_date
+    event.returnValue = 'ok'
+})
+
+function get_random_int(min, max, exclude=undefined)
+{
+    let num = Math.floor(Math.random() * (max - min + 1) + min)
+
+    if(exclude !== undefined)
+    {
+        if(num === exclude)
+        {
+            if(num + 1 <= max)
+            {
+                num = num + 1
+            }
+
+            else if(num - 1 >= min)
+            {
+                num = num - 1
+            }
+        }
+    }
+
+    return num
+}
+
+function random_sequence(n)
+{
+    let s = ''
+
+    for(let i=0; i<n; i++)
+    {
+        s += get_random_int(0, 9)
+    }
+
+    return s
 }
