@@ -48,7 +48,8 @@ Bone.setup_handle_preset = function()
 {
     Bone.$('#handle_preset_open').addEventListener('click', function()
     {
-        Bone.show_open_preset()
+        Bone.open_preset(Bone.handled_preset, true)
+        Bone.close_all_windows()
     })
 
     Bone.$('#handle_preset_submit').addEventListener('click', function()
