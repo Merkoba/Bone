@@ -19,7 +19,7 @@ const root_path = require('electron-root-path').rootPath
 
 let Bone = {}
 
-Bone.ls_name = 'bone_v1'
+Bone.ls_name = 'bone_v2'
 
 Bone.layouts =
 [
