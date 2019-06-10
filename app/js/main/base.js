@@ -47,7 +47,6 @@ Bone.config =
     panel_height: 36,
     panel_hidden_height: 4,
     panel_auto_hide_delay: 1000,
-    history_max_url_length: 50,
     small_url_length: 50,
     modules_path: './js/main/modules/',
     resize_double_click_delay: 350,

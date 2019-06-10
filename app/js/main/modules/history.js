@@ -50,7 +50,7 @@ Bone.show_handle_history = function()
         c.append(item)
     }
 
-    Bone.msg_handle_history.set_title(Bone.handled_history_item.dataset.url.substring(0, 50))
+    Bone.msg_handle_history.set_title(Bone.handled_history_item.dataset.url.substring(0, Bone.config.small_url_length))
     Bone.msg_handle_history.show()
 }
 
@@ -164,7 +164,7 @@ Bone.show_history = function(num=false)
         let el = document.createElement('div')
         el.classList.add('history_item')
         el.classList.add('action')
-        el.textContent = item.substring(0, Bone.config.history_max_url_length)
+        el.textContent = item.substring(0, Bone.config.small_url_length)
         el.dataset.url = item
         el.dataset.num = num
 
