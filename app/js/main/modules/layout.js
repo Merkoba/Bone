@@ -1,5 +1,5 @@
 // Applies webview layout setup from current layout
-Bone.apply_layout = function(space_num=false)
+Bone.apply_layout = function(space_num=false, reset_size=false)
 {
     if(!space_num)
     {
@@ -9,61 +9,50 @@ Bone.apply_layout = function(space_num=false)
     let c = Bone.$(`#webview_container_${space_num}`)
     c.innerHTML = ''
     let space = Bone.space(space_num)
-
+    
     if(space.layout)
     {
+        if(reset_size)
+        {
+            let swvs = Bone.swvs(space_num)
+            
+            for(let swv of swvs)
+            {
+                swv.size = 1
+            }
+            
+            Bone.space_modified(space_num)
+        }
+        
         let layout = Bone.generate_layout(space.layout, {mode:'webviews', space_num:space_num})
         c.append(layout)
-
+        
         let wvs = Bone.wvs(space_num)
-
+        
         for(let wv of wvs)
         {
             let num = parseInt(wv.dataset.num)
             let swv = Bone.swv(num, space_num)
             let url
-
+            
             if(!swv)
             {
                 url = Bone.config.startpage
                 space.webviews.push(Bone.create_webview_object(num, url))
             }
-
+            
             else
             {
                 url = swv.url
             }
-
+            
             wv.src = url
         }
-
-        let horizontal = Bone.$$('.horizontal_grid', c)
-
-        for(let container of horizontal)
-        {
-            let items = Array.from(container.children)
-
-            if(items.length < 2)
-            {
-                continue
-            }
-
-            for(let i=0; i<items.length; i++)
-            {
-                if(i === items.length - 1)
-                {
-                    break
-                }
-
-                let item = items[i]
-                let num = parseInt(item.dataset.num)
-                let sibling = items[i + 1]
-                let sibling_num = parseInt(sibling.dataset.num)
-                Bone.insert_after(Bone.create_resize_handle('ew', [num], [sibling_num], items.length), item)
-            }
-        }
+        
+        Bone.generate_grid_templates(c)
+        Bone.create_resizers(c)
     }
-
+    
     else
     {
         c.append(Bone.create_webview(1))
@@ -108,10 +97,7 @@ Bone.make_create_layout_grid_item = function()
 // Updates the create layout grid based on the create layout object
 Bone.update_create_layout = function()
 {
-    Bone.create_layout_object = Bone.generate_layout_object(false,
-    {
-        item_class: 'create_layout_grid_item',
-    })
+    Bone.create_layout_object = Bone.generate_layout_object()
 
     let c = Bone.$('#create_layout_grid')
     c.innerHTML = ''
@@ -136,27 +122,15 @@ Bone.do_generate_layout = function(obj, options)
     {
         layout = document.createElement('div')
         layout.classList.add(`${obj.mode}_grid`)
-    
-        if(obj.id)
-        {
-            layout.id = obj.id
-        }
-    
-        if(obj.classes)
-        {
-            let classlist = obj.classes.split(' ')
-    
-            for(let cls of classlist)
-            {
-                layout.classList.add(cls)
-            }
-        }
+        layout.classList.add('grid_item')
+        layout.classList.add('grid_container')
+        layout.classList.add(`grid_container_c_${Bone.generate_layout_container_num}`)
+        layout.dataset.num = `c_${Bone.generate_layout_container_num}`
+        Bone.generate_layout_container_num += 1
     }
     
     if(obj.items && obj.items.length > 0)
     {
-        let nums = []
-
         for(let i=0; i<obj.items.length; i++)
         {
             let item = obj.items[i]
@@ -190,17 +164,8 @@ Bone.do_generate_layout = function(obj, options)
                     else if(options.mode === 'webviews')
                     {
                         layout_2 = Bone.create_webview(Bone.generate_layout_num)
-                        nums.push(Bone.generate_layout_num)
                         Bone.generate_layout_num += 1
                     }
-                }
-                
-                else
-                {
-                    layout_2 = document.createElement('div')
-                    layout_2.classList.add(`${item.mode}_grid`)
-                    layout_2.classList.add(`grid_container_${Bone.generate_layout_container_num}`)
-                    Bone.generate_layout_container_num += 1
                 }
 
                 if(layout)
@@ -214,28 +179,13 @@ Bone.do_generate_layout = function(obj, options)
                 }
             }
         }
-
-        if(nums.length > 0)
-        {
-            let s = Bone.generate_grid_template(nums, options.space_num)
-
-            if(obj.mode === 'horizontal')
-            {
-                layout.style.gridTemplateColumns = s
-            }
-            
-            else if(obj.mode === 'vertical')
-            {
-                layout.style.gridTemplateRows = s
-            }
-        }
     }
 
     return layout
 }
 
 // Generates the create layout object based on current layout
-Bone.generate_layout_object = function(parent=false, options={})
+Bone.generate_layout_object = function(parent=false)
 {
     let obj = {}
     
@@ -244,7 +194,7 @@ Bone.generate_layout_object = function(parent=false, options={})
         parent = Bone.$('#create_layout_grid')
     }
 
-    let items = Bone.$$('.create_layout_grid_item', parent, true)
+    let items = Bone.$$('.grid_item', parent, true)
 
     if(items && items.length > 0)
     {
@@ -269,12 +219,10 @@ Bone.generate_layout_object = function(parent=false, options={})
         {
             obj_2.mode = 'node'
         }
-        
-        obj_2.classes = options.item_class
 
         if(obj_2.mode !== 'node')
         {
-            obj_2.items = Bone.generate_layout_object(item, options).items
+            obj_2.items = Bone.generate_layout_object(item).items
         }
 
         obj.items.push(obj_2)
@@ -344,36 +292,84 @@ Bone.change_create_layout_grid = function(e)
 // Applies the created layout
 Bone.apply_create_layout = function()
 {
-    let layout_object = Bone.generate_layout_object(false,
-    {
-        mode: 'container',
-        item_class: 'webview_layout_item'
-    })
+    let layout_object = Bone.generate_layout_object()
 
     let space = Bone.space()
     space.layout = layout_object
     Bone.space_modified()
-    Bone.apply_layout()
+    Bone.apply_layout(false, true)
     Bone.focus(1)
     Bone.close_all_windows()
 }
 
 // Generates a template to use in grid columns or rows
-Bone.generate_grid_template = function(nums, space_num)
+Bone.generate_grid_templates = function(layout, space_num)
+{
+    if(!space_num)
+    {
+        space_num = Bone.current_space
+    }
+
+    let horizontal = Bone.$$('.horizontal_grid', layout)
+    let vertical = Bone.$$('.vertical_grid', layout)
+
+    for(let container of horizontal)
+    {
+        Bone.do_generate_grid_templates(container, space_num)
+    }
+
+    for(let container of vertical)
+    {
+        Bone.do_generate_grid_templates(container, space_num)
+    }
+}
+
+// Does generate grid templates for container items
+Bone.do_generate_grid_templates = function(container, space_num)
 {
     let s = ''
+    let items = Array.from(container.children)
 
-    for(let i=0; i<nums.length; i++)
+    for(let i=0; i<items.length; i++)
     {
-        let num = nums[i]
+        let item = items[i]
+
+        if(item.classList.contains('resize_handle'))
+        {
+            continue
+        }
 
         if(i !== 0)
         {
             s += `${Bone.storage.resize_handle_size}px `
         }
 
-        s += `${Bone.swv(num, space_num).size}fr `
+        if(item.classList.contains('webview'))
+        {
+            let num = parseInt(item.dataset.num)
+            s += `${Bone.swv(num, space_num).size}fr `
+        }
+        
+        else
+        {
+            let num = item.dataset.num
+            s += `${Bone.get_container_size(num, space_num) || 1}fr `
+        }
     }
 
-    return s
+    if(container.classList.contains('horizontal_grid'))
+    {
+        container.style.gridTemplateColumns = s
+    }
+    
+    else if(container.classList.contains('vertical_grid'))
+    {
+        container.style.gridTemplateRows = s
+    }
+}
+
+// Gets a layout webview container
+Bone.layout_container = function(n, c)
+{
+    return Bone.$(`.grid_container_${n}`, c)
 }

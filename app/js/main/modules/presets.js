@@ -228,7 +228,7 @@ Bone.save_preset = function(obj, warn_replace=true)
     prst.autostart = autostart
     prst.autoupdate = autoupdate
     prst.webviews = Bone.clone_object(space.webviews)
-    prst.special = Bone.clone_object(space.special)
+    prst.container_sizes = Bone.clone_object(space.container_sizes)
     prst.layout = space.layout
     prst.last_used = Date.now()
     prst.version = Bone.config.preset_version

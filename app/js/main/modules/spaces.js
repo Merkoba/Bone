@@ -12,14 +12,14 @@ Bone.create_space = function(obj={})
 }
 
 // Gets the current space or a specified space
-Bone.space = function(n=false)
+Bone.space = function(space_num=false)
 {
-    if(!n)
+    if(!space_num)
     {
-        n = Bone.current_space
+        space_num = Bone.current_space
     }
 
-    return Bone.spaces[n - 1]
+    return Bone.spaces[space_num - 1]
 }
 
 // Changes a specified space
@@ -49,17 +49,6 @@ Bone.change_space = function(n, obj=false)
     Bone.update_focused_webview()
     Bone.check_ghost_webviews()
     Bone.check_titles()
-}
-
-// Returns the active webview container
-Bone.webview_container = function(space_num=false)
-{   
-    if(!space_num)
-    {
-        space_num = Bone.current_space
-    }
-
-    return Bone.$(`#webview_container_${space_num}`)
 }
 
 // Updates spaces in the top panel
@@ -126,7 +115,7 @@ Bone.create_space_from_object = function(obj, n=false)
     if(Object.keys(obj).length > 0)
     {
         space.webviews = Bone.clone_object(obj.webviews)
-        space.special = Bone.clone_object(obj.special)
+        space.container_sizes = Bone.clone_object(obj.container_sizes)
         space.layout = obj.layout
         space.name = obj.name || ''
     }
@@ -134,7 +123,7 @@ Bone.create_space_from_object = function(obj, n=false)
     else
     {
         space.webviews = [Bone.create_webview_object(1, Bone.config.startpage)]
-        space.special = Bone.create_special_object()
+        space.container_sizes = {}
         space.layout = ''
         space.name = ''
     }
@@ -389,6 +378,11 @@ Bone.swv = function(num=false, space_num=false)
     return Bone.space(space_num).webviews[num - 1]
 }
 
+Bone.swvs = function(space_num=false)
+{
+    return Bone.space(space_num).webviews
+}
+
 // Setups the handle close space window
 Bone.setup_handle_close_space = function()
 {
@@ -619,10 +613,34 @@ Bone.move_space_right = function(item)
     }
 }
 
-// Creates a default special object
-Bone.create_special_object = function()
+// Sets the size of a container
+Bone.set_container_size = function(n, value, space_num=false)
 {
-    let obj = {}
-    obj.row_1 = 1
-    return obj
+    if(!space_num)
+    {
+        space_num = Bone.current_space
+    }
+
+    if(isNaN(n) && n.startsWith('c_'))
+    {
+        n = parseInt(n.replace('c_', ''))
+    }
+
+    Bone.space(space_num).container_sizes[n] = value
+}
+
+// Gests the size of a container
+Bone.get_container_size = function(n, space_num=false)
+{
+    if(!space_num)
+    {
+        space_num = Bone.current_space
+    }
+
+    if(isNaN(n) && n.startsWith('c_'))
+    {
+        n = parseInt(n.replace('c_', ''))
+    }
+
+    return Bone.space(space_num).container_sizes[n]
 }

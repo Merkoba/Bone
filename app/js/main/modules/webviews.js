@@ -273,16 +273,16 @@ Bone.on_webview_dom_ready = function(webview)
 }
 
 // Creates a resize handle based on a given direction
-Bone.create_resize_handle = function(direction, owner, siblings, group, mode='after')
+Bone.create_resize_handle = function(args={})
 {
     let handle = document.createElement('div')
     handle.classList.add(`resize_handle`)
-    handle.classList.add(`resize_handle_${direction}`)
-    handle.dataset.direction = direction
-    handle.dataset.owner = owner
-    handle.dataset.siblings = siblings.join(',')
-    handle.dataset.group = group
-    handle.dataset.mode = mode
+    handle.classList.add(`resize_handle_${args.direction}`)
+    handle.dataset.direction = args.direction
+    handle.dataset.owner = args.owner
+    handle.dataset.sibling = args.sibling
+    handle.dataset.group = args.group
+    handle.dataset.affected = args.affected
 
     return handle
 }
@@ -504,23 +504,12 @@ Bone.resize_mouseup_function = function(e)
 
     let c = Bone.webview_container()
     let direction = Bone.active_resize_handle.dataset.direction
-    let owner_list = Bone.active_resize_handle.dataset.owner.split(',').map(n => parseInt(n))
-    let siblings_list = Bone.active_resize_handle.dataset.siblings.split(',').map(n => parseInt(n))
+    let owner = Bone.active_resize_handle.dataset.owner
+    let sibling = Bone.active_resize_handle.dataset.sibling
+    let affected = Bone.active_resize_handle.dataset.affected.split(',')
     let group = Bone.active_resize_handle.dataset.group
-    let mode = Bone.active_resize_handle.dataset.mode
     let diff_x = e.clientX - Bone.initial_resize_x
     let diff_y = e.clientY - Bone.initial_resize_y
-    let elements
-
-    if(siblings_list.length === 1)
-    {
-        elements = [...owner_list, ...siblings_list]
-    }
-
-    else
-    {
-        elements = [...owner_list]
-    }
 
     let diff, oname
 
@@ -540,41 +529,64 @@ Bone.resize_mouseup_function = function(e)
     {
         return false
     }
-    
-    for(let num of elements)
-    {
-        let owned = false
-        let el = Bone.wv(num)
-        let nsize
 
-        if(owner_list.includes(num) && mode.startsWith('after'))
+    let nsizes = []
+
+    for(let num of affected)
+    {
+        let el
+
+        if(num.startsWith('c_'))
         {
-            nsize = el[oname] + diff
-            owned = true
+            el = Bone.layout_container(num, c)
         }
         
         else
         {
+            el = Bone.wv(num)
+        }
+        
+        let nsize
+        
+        if(owner === num)
+        {
+            nsize = el[oname] + diff
+        }
+        
+        else if(num === sibling)
+        {
             nsize = el[oname] - diff
         }
 
-        let size = Bone.round((nsize / c[oname]) * group, 3)
-        Bone.swv(num).size = size
+        else
+        {
+            nsize = el[oname]
+        }
+
+        nsizes.push(nsize)
     }
 
-    let s = Bone.generate_grid_template(elements)
-    let parent = Bone.wv(1).parentElement
+    let dimsum = nsizes.reduce((a, b) => a + b)
 
-    if(direction === 'ns')
+    for(let i=0; i<affected.length; i++)
     {
-        parent.style.gridTemplateRows = s
-    }
-    
-    else if(direction === 'ew')
-    {
-        parent.style.gridTemplateColumns = s
+        let num = affected[i]
+        let nsize = nsizes[i]
+
+        let size = Bone.round((nsize / dimsum) * group, 3)
+
+        if(num.startsWith('c_'))
+        {
+            Bone.set_container_size(num, size)
+        }
+        
+        else
+        {
+            Bone.swv(num).size = size
+        }
     }
 
+    Bone.generate_grid_templates(Bone.webview_container())
     Bone.space_modified()
     Bone.leave_resize_mode()
 }
@@ -851,4 +863,95 @@ Bone.hard_reload = function(num=false)
 Bone.wvs = function(space_num=false)
 {
     return Bone.$$('.webview', Bone.webview_container(space_num))
+}
+
+// Creates resizers to items on a layout
+Bone.create_resizers = function(c)
+{
+    let horizontal = Bone.$$('.horizontal_grid', c)
+
+    for(let container of horizontal)
+    {
+        Bone.container_create_resizers(container, 'ew')
+    }
+
+    let vertical = Bone.$$('.vertical_grid', c)
+
+    for(let container of vertical)
+    {
+        Bone.container_create_resizers(container, 'ns')
+    }
+}
+
+// Does a create resize on horizontal or vertical containers
+Bone.container_create_resizers = function(container, direction)
+{
+    let items = Array.from(container.children)
+
+    if(items.length < 2)
+    {
+        return false
+    }
+
+    for(let i=0; i<items.length; i++)
+    {
+        if(i === items.length - 1)
+        {
+            break
+        }
+
+        let item = items[i]
+
+        let owner_type
+        let sibling_type
+        let owner = item.dataset.num
+        let next = items[i + 1]
+        let sibling = next.dataset.num
+        let affected
+        let group
+
+        if(item.classList.contains('webview'))
+        {
+            owner_type = 'webview'
+        }
+        
+        else
+        {
+            owner_type = 'container'
+        }
+
+        if(next.classList.contains('webview'))
+        {
+            group = items.length
+            sibling_type = 'webview'
+            affected = items.map(o => o.dataset.num)
+        }
+        
+        else
+        {
+            group = 2
+            affected = [owner, sibling]
+        }
+
+        Bone.insert_after(Bone.create_resize_handle(
+        {
+            direction: direction,
+            owner: owner,
+            sibling: sibling,
+            group: group,
+            owner_type: owner_type,
+            affected: affected
+        }), item)
+    }
+}
+
+// Returns the active webview container
+Bone.webview_container = function(space_num=false)
+{   
+    if(!space_num)
+    {
+        space_num = Bone.current_space
+    }
+
+    return Bone.$(`#webview_container_${space_num}`)
 }
