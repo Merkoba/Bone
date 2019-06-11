@@ -75,7 +75,6 @@ Bone.setup_menu = function()
         Bone.storage.resize_handle_size = this.value
         Bone.save_local_storage()
         Bone.update_resize_handle_style()
-        Bone.apply_layout()
     })
 
     Bone.$('#menu_reset').addEventListener('click', function()
@@ -127,6 +126,12 @@ Bone.setup_menu = function()
         Bone.show_create_layout()
     })
 
+    Bone.$('#menu_startpage').addEventListener('blur', function()
+    {
+        Bone.storage.startpage = this.value.trim()
+        Bone.save_local_storage()
+    })
+
     Bone.update_menu_widgets()
 }
 
@@ -138,6 +143,7 @@ Bone.update_menu_widgets = function()
     Bone.$('#menu_resize_handle_size_input').value = Bone.storage.resize_handle_size
     Bone.$('#menu_wrap_on_webview_cycle_checkbox').checked = Bone.storage.wrap_on_webview_cycle
     Bone.$('#menu_wrap_on_space_cycle_checkbox').checked = Bone.storage.wrap_on_space_cycle
+    Bone.$('#menu_startpage').value = Bone.storage.startpage
 }
 
 // Shows the menu window

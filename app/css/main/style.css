@@ -152,6 +152,7 @@ body, html
 .webview
 {
     outline: none;
+    transition: opacity 250ms linear;
 }
 
 .action, .action_2
@@ -245,7 +246,7 @@ body, html
 
 .menu_input_text
 {
-    width: 100%;
+    width: 80%;
     font-size: 1.1rem;
     padding: 0.25rem;
     text-align: center;

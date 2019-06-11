@@ -45,6 +45,7 @@ Bone.check_local_storage = function(obj)
     let wrap_on_space_cycle_version = 1
     let global_history_version = 1
     let download_locations_version = 1
+    let startpage_version = 1
 
     if(obj.theme_version !== theme_version)
     {
@@ -99,6 +100,13 @@ Bone.check_local_storage = function(obj)
     {
         obj.download_locations = []
         obj.download_locations_version = download_locations_version
+        save = true
+    }
+
+    if(obj.startpage_version !== startpage_version)
+    {
+        obj.startpage = 'https://www.startpage.com'
+        obj.startpage_version = startpage_version
         save = true
     }
 

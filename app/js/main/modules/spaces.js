@@ -130,7 +130,7 @@ Bone.create_space_from_object = function(obj, n=false)
 
     else
     {
-        space.webviews = [Bone.create_webview_object(1, Bone.config.startpage)]
+        space.webviews = [Bone.create_webview_object(1, Bone.storage.startpage)]
         space.container_sizes = {}
         space.layout = ''
         space.name = ''

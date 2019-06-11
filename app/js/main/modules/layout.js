@@ -38,7 +38,7 @@ Bone.apply_layout = function(space_num=false, reset_size=false)
             
             if(!swv)
             {
-                url = Bone.config.startpage
+                url = Bone.storage.startpage
                 space.webviews.push(Bone.create_webview_object(num, url))
             }
             
@@ -353,7 +353,7 @@ Bone.do_generate_grid_templates = function(container, space_num)
 
         if(i !== 0)
         {
-            s += `${Bone.storage.resize_handle_size}px `
+            s += `auto `
         }
 
         if(item.classList.contains('webview'))

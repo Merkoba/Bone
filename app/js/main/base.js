@@ -51,7 +51,6 @@ Bone.config =
     small_url_length: 50,
     modules_path: './js/main/modules/',
     resize_double_click_delay: 350,
-    startpage: 'https://www.startpage.com',
     max_global_history_items: 1000,
     global_history_url_max_length: 500,
     preset_version: 1,
