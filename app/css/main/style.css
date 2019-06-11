@@ -903,7 +903,7 @@ select
 #menu_create_layout
 {
     font-size: 1.4rem;
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
