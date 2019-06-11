@@ -129,6 +129,7 @@ Bone.do_generate_layout = function(obj, options)
         layout.classList.add('grid_container')
         layout.classList.add(`grid_container_c_${Bone.generate_layout_container_num}`)
         layout.dataset.num = `c_${Bone.generate_layout_container_num}`
+        layout.dataset.mode = obj.mode
         Bone.generate_layout_container_num += 1
     }
     
@@ -260,29 +261,18 @@ Bone.change_create_layout_grid = function(e)
         return false
     }
   
-    else if(mode === 'horizontal')
+    else if(mode === 'horizontal' || mode === 'vertical')
     {
-        if(parent && parent.classList.contains('horizontal_grid'))
+        if(parent && parent.classList.contains(`${mode}_grid`))
         {
             add_to_parent = true
         }
             
         else
         {
-            item.classList.add('horizontal_grid')
-        }
-    }
-        
-    else if(mode === 'vertical')
-    {
-        if(parent && parent.classList.contains('vertical_grid'))
-        {
-            add_to_parent = true
-        }
-            
-        else
-        {
-            item.classList.add('vertical_grid')
+            item.classList.add(`${mode}_grid`)
+            item.classList.add('grid_container')
+            item.dataset.mode = mode
         }
     }
         
@@ -419,15 +409,12 @@ Bone.clean_layout_object = function(parent)
     while(go)
     {
         let horizontal = Bone.$$('.horizontal_grid', parent)
-        go = Bone.do_clean_layout_object(horizontal)
-    }
-    
-    go = true
-    
-    while(go)
-    {
+        let res_1 = Bone.do_clean_layout_object(horizontal)
+
         let vertical = Bone.$$('.vertical_grid', parent)
-        go = Bone.do_clean_layout_object(vertical)
+        let res_2 = Bone.do_clean_layout_object(vertical)
+
+        go = res_1 || res_2
     }
 }
 
@@ -435,13 +422,32 @@ Bone.clean_layout_object = function(parent)
 Bone.do_clean_layout_object = function(containers)
 {
     let removed = false
-
+    
     for(let container of containers)
     {
         let children = Array.from(container.children)
+        let parent = container.parentElement
 
         if(children.length === 0)
         {
+            Bone.remove_element(container)
+            removed = true
+        }
+
+        else if(container.children.length === 1 && container.children[0].classList.contains('grid_container'))
+        {
+            container.before(container.children[0])
+            Bone.remove_element(container)
+            removed = true
+        }
+
+        else if(container.dataset.mode && container.dataset.mode === parent.dataset.mode)
+        {
+            for(let child of children)
+            {
+                container.before(child)
+            }
+
             Bone.remove_element(container)
             removed = true
         }
