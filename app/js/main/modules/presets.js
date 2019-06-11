@@ -122,20 +122,17 @@ Bone.setup_handle_preset = function()
 // Does the edit preset action
 Bone.do_handle_preset_update = function(name)
 {
-    if(confirm('Are you sure you want to update this preset with the current settings?'))
+    let oname = Bone.handled_preset
+
+    if(name !== oname)
     {
-        let oname = Bone.handled_preset
-
-        if(name !== oname)
-        {
-            Bone.replace_preset(oname, name)
-        }
-
-        Bone.save_preset({name:name}, false)
-        Bone.update_presets()
-        Bone.msg_handle_preset.close()
-        Bone.info(`Preset '${name}' updated`)
+        Bone.replace_preset(oname, name)
     }
+
+    Bone.save_preset({name:name}, false)
+    Bone.update_presets()
+    Bone.msg_handle_preset.close()
+    Bone.info(`Preset '${name}' updated`)
 }
 
 // Updates the presets container
@@ -181,7 +178,7 @@ Bone.update_presets = function()
 }
 
 // Saves a preset based on current state
-Bone.save_preset = function(obj, warn_replace=true)
+Bone.save_preset = function(obj, warn_replace=true, space_num=false)
 {
     obj.name = obj.name.trim()
     
@@ -211,12 +208,6 @@ Bone.save_preset = function(obj, warn_replace=true)
         replace = true
     }
 
-    else
-    {
-        autostart = obj.autostart || false
-        autoupdate = obj.autoupdate || false
-    }
-
     let prst = {}
 
     if(replace)
@@ -224,12 +215,19 @@ Bone.save_preset = function(obj, warn_replace=true)
         prst = preset
     }
 
+    if(!space_num)
+    {
+        space_num = Bone.current_space
+    }
+
+    let space = obj.is_space ? obj : Bone.space(space_num)
+
     prst.name = obj.name
     prst.autostart = autostart
     prst.autoupdate = autoupdate
-    prst.webviews = Bone.clone_object(obj.webviews)
-    prst.container_sizes = Bone.clone_object(obj.container_sizes)
-    prst.layout = obj.layout
+    prst.webviews = Bone.clone_object(space.webviews)
+    prst.container_sizes = Bone.clone_object(space.container_sizes)
+    prst.layout = space.layout
     prst.last_used = Date.now()
     prst.version = Bone.config.preset_version
 

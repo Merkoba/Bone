@@ -136,6 +136,7 @@ Bone.create_space_from_object = function(obj, n=false)
     }
 
     space.num = n
+    space.is_space = true
     return space
 }
 
