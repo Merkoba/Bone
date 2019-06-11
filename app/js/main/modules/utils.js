@@ -1,7 +1,12 @@
 // Fetch a single element
-Bone.$ = function(s)
+Bone.$ = function(s, parent=false)
 {
-    return document.querySelector(s)
+    if(!parent)
+    {
+        parent = document
+    }
+
+    return parent.querySelector(s)
 }
 
 // Fetch multiple elements

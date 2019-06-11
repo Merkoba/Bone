@@ -1,0 +1,99 @@
+@font-face
+{
+    font-family: imported_font;
+    src: url(Gruppo-Regular.ttf);
+}
+
+body, html
+{
+    font-family: imported_font;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+#main_container
+{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.screenshot
+{
+    margin-top: 20px;
+    width: 900px;
+    cursor: pointer;
+}
+
+.modal_screenshot
+{
+    height: 89vh;
+    width: auto;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.Msg-window
+{
+    background-color: transparent !important;
+}
+
+.Msg-content
+{
+    padding: 0 !important;
+}
+
+.slide_container
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide_controls
+{
+    display: flex;
+    flex-direction: row;
+    font-size: 2.2rem;
+    cursor: pointer;
+}
+
+.slide_text
+{
+    margin-left: 25px;
+    margin-right: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.action
+{
+    transition: text-shadow 500ms, box-shadow 500ms
+}
+
+.action:hover
+{
+    text-shadow: 0 0 10px currentColor;
+}
+
+.unselectable
+{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+a:link, a:visited, a:hover
+{
+    color: black;
+}
