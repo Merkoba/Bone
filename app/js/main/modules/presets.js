@@ -236,7 +236,6 @@ Bone.save_preset = function(obj, warn_replace=true, space_num=false)
         Bone.storage.presets.push(prst)
     }
 
-
     Bone.save_local_storage()
     return true
 }
