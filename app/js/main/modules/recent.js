@@ -88,7 +88,13 @@ Bone.generate_recent = function()
 
         let url_el = document.createElement('div')
         url_el.classList.add('recent_item_url')
-        url_el.textContent = item.title || item.url.substring(0, 100)
+        
+        let content = 
+            item.title ? 
+            item.title.substring(0, Bone.config.small_title_length) : 
+            item.url.substring(0, Bone.config.small_url_length)
+
+        url_el.textContent = content
         el.append(url_el)
 
         c.append(el)
