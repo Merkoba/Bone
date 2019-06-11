@@ -191,7 +191,6 @@ Bone.save_preset = function(obj, warn_replace=true)
     }
     
     let preset = Bone.get_preset(obj.name)
-    let space = obj.space || Bone.space()
     let autostart = true
     let autoupdate = true
     let replace = false
@@ -228,9 +227,9 @@ Bone.save_preset = function(obj, warn_replace=true)
     prst.name = obj.name
     prst.autostart = autostart
     prst.autoupdate = autoupdate
-    prst.webviews = Bone.clone_object(space.webviews)
-    prst.container_sizes = Bone.clone_object(space.container_sizes)
-    prst.layout = space.layout
+    prst.webviews = Bone.clone_object(obj.webviews)
+    prst.container_sizes = Bone.clone_object(obj.container_sizes)
+    prst.layout = obj.layout
     prst.last_used = Date.now()
     prst.version = Bone.config.preset_version
 
@@ -238,6 +237,7 @@ Bone.save_preset = function(obj, warn_replace=true)
     {
         Bone.storage.presets.push(prst)
     }
+
 
     Bone.save_local_storage()
     return true

@@ -148,8 +148,16 @@ Bone.change_url_suggest_selected = function(item)
 }
 
 // Sets the url in the panel
-Bone.update_url = function()
+Bone.update_url = function(space_num=false)
 {
+    if(space_num)
+    {
+        if(space_num !== Bone.current_space)
+        {
+            return false
+        }
+    }
+
     let input = Bone.$('#url')
     input.value = Bone.swv().url
 }

@@ -1,5 +1,5 @@
 // Create a webview from a template
-Bone.create_webview = function(num)
+Bone.create_webview = function(num, space_num)
 {
     let h = Bone.template_webview({num:num})
     let el = document.createElement('div')
@@ -7,7 +7,7 @@ Bone.create_webview = function(num)
     let wv = el.querySelector('webview')
     wv.id = `webview_${Date.now().toString().slice(-8)}_${Bone.random_sequence(4)}`
     wv.dataset.num = num
-    wv.dataset.space = Bone.current_space
+    wv.dataset.space = space_num
 
     wv.addEventListener('dom-ready', function()
     {
@@ -54,7 +54,7 @@ Bone.create_webview = function(num)
         Bone.push_to_history(wv, e.url)
         Bone.swv(num, space_num).url = e.url
         Bone.space_modified(space_num)
-        Bone.update_url()
+        Bone.update_url(space_num)
         Bone.add_to_global_history(e.url)
     })
 
@@ -106,7 +106,7 @@ Bone.remake_webview = function(num, space_num=false, url='', no_display=true, re
     }
 
     let wv = Bone.wv(num)
-    let rep = Bone.create_webview(num, Bone.space(space_num))
+    let rep = Bone.create_webview(num, space_num)
 
     if(no_display)
     {
@@ -360,124 +360,6 @@ Bone.setup_resize_handles = function(num)
     })
 
     Bone.update_resize_handle_style()
-}
-
-// Creates a webview container from a given template
-Bone.setup_webview_container = function(num, amount)
-{
-    let c = Bone.webview_container()
-    c.innerHTML = ''
-
-    if(num === 1)
-    {
-        c.appendChild(Bone.create_webview(1, Bone.current_space))
-    }
-
-    else if(num === 2)
-    {
-        for(let i=1; i<=amount; i++)
-        {
-            c.appendChild(Bone.create_webview(i, Bone.current_space))
-        }
-    }
-
-    else if(num === 3)
-    {
-        let top = document.createElement('div')
-        top.classList.add('webview_top')
-        top.appendChild(Bone.create_webview(1, Bone.current_space))
-
-        let bottom = document.createElement('div')
-        bottom.classList.add('webview_bottom')
-        
-        for(let i=2; i<=amount; i++)
-        {
-            bottom.appendChild(Bone.create_webview(i, Bone.current_space)) 
-        }
-
-        c.prepend(bottom)
-        c.prepend(top)
-    }
-
-    else if(num === 4)
-    {
-        let top = document.createElement('div')
-        top.classList.add('webview_top')
-
-        for(let i=1; i<=amount-1; i++)
-        {
-            top.appendChild(Bone.create_webview(i, Bone.current_space)) 
-        }
-
-        let bottom = document.createElement('div')
-        bottom.classList.add('webview_bottom')
-        bottom.appendChild(Bone.create_webview(amount, Bone.current_space))
-        
-        c.prepend(bottom)
-        c.prepend(top)
-    }
-
-    else if(num === 5)
-    {
-        let top = document.createElement('div')
-        top.classList.add('webview_top')
-
-        for(let i=1; i<=amount/2; i++)
-        {
-            top.appendChild(Bone.create_webview(i, Bone.current_space)) 
-        }
-
-        let resize = document.createElement('div')
-        resize.classList.add('webview_resize')
-
-        let bottom = document.createElement('div')
-        bottom.classList.add('webview_bottom')
-
-        for(let i=amount/2+1; i<=amount; i++)
-        {
-            bottom.appendChild(Bone.create_webview(i, Bone.current_space)) 
-        }
-        
-        c.prepend(bottom)
-        c.prepend(resize)
-        c.prepend(top)
-    }
-
-    else if(num === 6)
-    {
-        let left = document.createElement('div')
-        left.classList.add('webview_left')
-        left.appendChild(Bone.create_webview(1, Bone.current_space))
-
-        let right = document.createElement('div')
-        right.classList.add('webview_right')
-        
-        for(let i=2; i<=amount; i++)
-        {
-            right.appendChild(Bone.create_webview(i, Bone.current_space)) 
-        }
-
-        c.prepend(right)
-        c.prepend(left)
-    }
-
-    else if(num === 7)
-    {
-        let left = document.createElement('div')
-        left.classList.add('webview_left')
-
-        for(let i=1; i<=amount-1; i++)
-        {
-            left.appendChild(Bone.create_webview(i, Bone.current_space)) 
-        }
-
-        let right = document.createElement('div')
-        right.classList.add('webview_right')
-        right.appendChild(Bone.create_webview(amount, Bone.current_space))
-        
-        c.prepend(right)
-        c.prepend(left)
-    }
 }
 
 // What happens after a resizing is done or cancelled

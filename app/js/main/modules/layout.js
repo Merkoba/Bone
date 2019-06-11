@@ -56,8 +56,8 @@ Bone.apply_layout = function(space_num=false, reset_size=false)
     
     else
     {
-        c.append(Bone.create_webview(1))
-        Bone.wv(1).src = Bone.swv(1).url
+        c.append(Bone.create_webview(1, space_num))
+        Bone.wv(1, space_num).src = Bone.swv(1, space_num).url
     }
 }
 
@@ -167,7 +167,7 @@ Bone.do_generate_layout = function(obj, options)
             
                     else if(options.mode === 'webviews')
                     {
-                        layout_2 = Bone.create_webview(Bone.generate_layout_num)
+                        layout_2 = Bone.create_webview(Bone.generate_layout_num, options.space_num)
                         Bone.generate_layout_num += 1
                     }
                 }
@@ -405,7 +405,7 @@ Bone.start_create_layout = function(clear=false)
 Bone.clean_layout_object = function(parent)
 {
     let go = true
-    
+
     while(go)
     {
         let horizontal = Bone.$$('.horizontal_grid', parent)

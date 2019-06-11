@@ -3,9 +3,8 @@ Bone.create_space = function(obj={})
 {
     let space = Bone.create_space_from_object(obj)
     Bone.spaces.push(space)
-    let n = Bone.spaces.length
-    Bone.create_webview_container(n)
-    Bone.change_space(n)
+    Bone.create_webview_container(space.num)
+    Bone.change_space(space.num)
     Bone.update_spaces()
 }
 
