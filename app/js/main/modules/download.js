@@ -136,9 +136,10 @@ Bone.show_save_as_dialog = function()
         title: title,
         defaultPath: url.split('/').slice(-1)[0]
     }, 
-    function(filename)
+    function(destination)
     {
-        Bone.download(url, filename)
+        Bone.push_to_download_locations(path.dirname(destination))
+        Bone.download(url, destination)
     })
 }
 

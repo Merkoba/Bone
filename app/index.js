@@ -70,6 +70,12 @@ exports.create_window = function()
             let new_file_name = `${file_split.slice(0, -1).join('.')}_${num}.${file_split.slice(-1)[0]}`
             dpath = `${path.dirname(dpath)}/${new_file_name}`
         }
+
+        if(!dpath)
+        {
+            item.cancel()
+            return false
+        }
         
         item.setSavePath(dpath)
         let id = `${Date.now().toString().slice(-5)}_${random_sequence(5)}`
