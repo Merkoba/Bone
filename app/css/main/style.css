@@ -173,11 +173,16 @@ body, html
 
 #menu_container
 {
+    width: 450px;
+}
+
+.menu_section
+{
     display: grid;
     grid-gap: 40px;
     grid-auto-columns: auto;
     align-items: center;
-    width: 450px;
+    width: 100%;
 }
 
 .menu_item
@@ -190,6 +195,12 @@ body, html
 {
     font-size: 1.2rem;
     margin-bottom: 15px;
+}
+
+.menu_label_2
+{
+    font-size: 1.2rem;
+    margin-bottom: 5px;
 }
 
 #menu_layout_container

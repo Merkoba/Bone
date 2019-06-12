@@ -268,7 +268,27 @@ Bone.do_webview_swap = function(num_1, num_2)
 // What to do when a webview is dom ready
 Bone.on_webview_dom_ready = function(wv)
 {
-    // Do nothing for now
+    if(Bone.storage.custom_scrollbars)
+    {
+        let style = `
+        ::-webkit-scrollbar
+        {
+            width: ${Bone.storage.custom_scrollbars_width}px !important;
+        }
+    
+        ::-webkit-scrollbar-track-piece
+        {
+            background-color: ${Bone.storage.custom_scrollbars_track_piece_color} !important;
+        }
+    
+        ::-webkit-scrollbar-thumb
+        {
+            background-color: ${Bone.storage.custom_scrollbars_thumb_color} !important;
+        }
+        `
+    
+        wv.insertCSS(style,1)
+    }
 }
 
 // Creates a resize handle based on a given direction

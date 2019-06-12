@@ -74,7 +74,7 @@
         </script>
 
         <script id='template_menu' type='text/x-handlebars-template' class='template'>
-            <div id='menu_container' class='unselectable'>
+            <div id='menu_container' class='unselectable menu_section'>
                 <div class='menu_item'>
                     <div class='separate_horizontal_2'>
                         <span id='menu_back' class='action pointer underline'>Back</span>
@@ -128,6 +128,31 @@
                 <div class='menu_item'>
                     <div class='menu_label'>Wrap On Space Cycle</div>
                     <input type='checkbox' id='menu_wrap_on_space_cycle_checkbox'>
+                </div>
+
+                <div class='menu_item'>
+                    <div class='menu_label'>Custom Scrollbars</div>
+                    <input type='checkbox' id='menu_custom_scrollbars'>
+                </div>
+
+                <div id='menu_custom_scrollbars_section' class='menu_section'>
+                    <div class='menu_item'>
+                        <div class='menu_label_2'>Custom Scrollbars</div>
+                        <div class='menu_label'>Width (px)</div>
+                        <input type='number' min=1 max=100 id='menu_custom_scrollbars_width' class='menu_input_text_small'>
+                    </div>
+    
+                    <div class='menu_item'>
+                        <div class='menu_label_2'>Custom Scrollbars</div>
+                        <div class='menu_label'>Track Piece Color</div>
+                        <input type='color' id='menu_custom_scrollbars_track_piece_color'>
+                    </div>
+    
+                    <div class='menu_item'>
+                        <div class='menu_label_2'>Custom Scrollbars</div>
+                        <div class='menu_label'> Thumb Color</div>
+                        <input type='color' id='menu_custom_scrollbars_thumb_color'>
+                    </div>
                 </div>
 
                 <div class='menu_item'>
