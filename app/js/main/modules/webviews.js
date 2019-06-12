@@ -287,7 +287,7 @@ Bone.on_webview_dom_ready = function(wv)
         }
         `
     
-        wv.insertCSS(style,1)
+        wv.insertCSS(style, 1)
     }
 }
 
