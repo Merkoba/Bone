@@ -69,7 +69,7 @@ Bone.generate_recent = function()
         el.classList.add('filter_item')
         el.classList.add('action')
         el.dataset.url = item.url
-        el.dataset.filter_content = item.url
+        el.dataset.filter_content = item.title ? `${item.title} ${item.url}` : item.url
         el.title = item.url
 
         if(item.favicon_url)
@@ -88,7 +88,7 @@ Bone.generate_recent = function()
 
         let url_el = document.createElement('div')
         url_el.classList.add('recent_item_url')
-        
+
         let content = 
             item.title ? 
             item.title.substring(0, Bone.config.small_title_length) : 

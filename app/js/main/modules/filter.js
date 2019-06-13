@@ -29,13 +29,13 @@ Bone.do_filter = function(group)
 {
     let c = Bone.$(`#${group}_container`)
     let filter = Bone.$(`#${group}_filter`)
-    let value = filter.value.trim()
+    let value = filter.value.trim().toLowerCase()
     let items = Bone.$$('.filter_item', c)
     let visible = []
 
     for(let item of items)
     {
-        if(!filter || item.dataset.filter_content.includes(value))
+        if(!filter || item.dataset.filter_content.toLowerCase().includes(value))
         {
             item.style.display = 'block'
             visible.push(item)
