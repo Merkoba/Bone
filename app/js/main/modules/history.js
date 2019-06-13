@@ -60,12 +60,11 @@ Bone.history_item_open = function()
     let item = Bone.handled_history_item
     let url = item.dataset.url
     let num = item.dataset.num
-    let history = Bone.swv(num).history
     let index = 0 - Bone.get_child_index(item)
 
     if(index < 0)
     {
-        history = history.slice(0, index)
+        Bone.swv(num).history = Bone.swv(num).history.slice(0, index)
     }
 
     Bone.change_url(url, num)
@@ -76,7 +75,7 @@ Bone.history_item_open = function()
 Bone.push_to_history = function(webview, url)
 {
     let num = parseInt(webview.dataset.num)
-    let space = parseInt(webview.dataset.space)
+    let space_num = parseInt(webview.dataset.space_num)
     let history = Bone.swv(num).history
         
     if(history.slice(-1)[0] === url)
@@ -96,6 +95,13 @@ Bone.push_to_history = function(webview, url)
     }
 
     history.push(url)
+
+    if(history.length > Bone.config.max_history_items)
+    {
+        Bone.swv(num).history = history.slice(0 - Bone.config.max_history_items)
+    }
+
+    Bone.space_modified(space_num)
 }
 
 // Setups history

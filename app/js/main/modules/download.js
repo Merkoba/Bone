@@ -108,7 +108,7 @@ Bone.push_to_download_locations = function(path)
     
     if(locations.length > Bone.config.max_download_locations)
     {
-        locations = locations.slice(0 - Bone.config.max_download_locations)
+        Bone.storage.download_locations = locations.slice(0 - Bone.config.max_download_locations)
     }
 
     Bone.save_local_storage()

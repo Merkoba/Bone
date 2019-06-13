@@ -56,7 +56,8 @@ Bone.config =
     global_history_url_max_length: 500,
     preset_version: 1,
     max_recent_items: 100,
-    max_download_locations: 20
+    max_download_locations: 20,
+    max_history_items: 20
 }
 
 // This gets called when body loads
