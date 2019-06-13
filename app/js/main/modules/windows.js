@@ -15,7 +15,8 @@ Bone.create_windows = function()
     let common =
     {
         show_effect: 'none',
-        close_effect: 'none'
+        close_effect: 'none',
+        clear_editables: true
     }
 
     let titlebar =
