@@ -86,11 +86,6 @@ Bone.apply_theme = function()
         background-color: ${bg_color_3} !important;
     }
 
-    ::-webkit-scrollbar-thumb
-    {
-        background-color: ${bg_color_3} !important;
-    }
-
     .resize_handle
     {
         background-color: ${bg_color_1} !important;
