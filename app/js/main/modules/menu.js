@@ -138,33 +138,7 @@ Bone.setup_menu = function()
         Bone.save_local_storage()
     })
 
-    Bone.$('#menu_custom_scrollbars').addEventListener('change', function()
-    {
-        Bone.storage.custom_scrollbars = this.checked
-        Bone.check_custom_scrollbar_widgets()
-        Bone.save_local_storage()
-    })
-
-    Bone.$('#menu_custom_scrollbars_width').addEventListener('blur', function()
-    {
-        Bone.storage.custom_scrollbars_width = this.value
-        Bone.save_local_storage()
-    })
-
-    Bone.$('#menu_custom_scrollbars_track_piece_color').addEventListener('change', function()
-    {
-        Bone.storage.custom_scrollbars_track_piece_color = this.value
-        Bone.save_local_storage()
-    })
-
-    Bone.$('#menu_custom_scrollbars_thumb_color').addEventListener('change', function()
-    {
-        Bone.storage.custom_scrollbars_thumb_color = this.value
-        Bone.save_local_storage()
-    })
-
     Bone.update_menu_widgets()
-    Bone.check_custom_scrollbar_widgets()
 }
 
 // Updates widgest in the menu window
@@ -177,28 +151,6 @@ Bone.update_menu_widgets = function()
     Bone.$('#menu_wrap_on_space_cycle_checkbox').checked = Bone.storage.wrap_on_space_cycle
     Bone.$('#menu_startpage').value = Bone.storage.startpage
     Bone.$('#menu_searchpage').value = Bone.storage.searchpage
-    Bone.$('#menu_custom_scrollbars').checked = Bone.storage.custom_scrollbars
-    
-    if(Bone.storage.custom_scrollbars)
-    {
-        Bone.$('#menu_custom_scrollbars_width').value = Bone.storage.custom_scrollbars_width
-        Bone.$('#menu_custom_scrollbars_track_piece_color').value = Bone.storage.custom_scrollbars_track_piece_color
-        Bone.$('#menu_custom_scrollbars_thumb_color').value = Bone.storage.custom_scrollbars_thumb_color
-    }
-}
-
-// Checks if custom scrollbar control widget should be shown
-Bone.check_custom_scrollbar_widgets = function()
-{
-    if(Bone.storage.custom_scrollbars)
-    {
-        Bone.$('#menu_custom_scrollbars_section').style.display = 'grid'
-    }
-
-    else
-    {
-        Bone.$('#menu_custom_scrollbars_section').style.display = 'none'
-    }
 }
 
 // Shows the menu window

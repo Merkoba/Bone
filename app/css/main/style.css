@@ -915,25 +915,5 @@ select
 #menu_create_layout
 {
     font-size: 1.4rem;
-    display: inline-flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-#menu_create_layout_text
-{
-    cursor: pointer;
-}
-
-#menu_create_layout_icon
-{
-    margin-right: 15px;
-    cursor: pointer;
-}
-
-#menu_create_layout_icon_2
-{
-    margin-left: 15px;
     cursor: pointer;
 }

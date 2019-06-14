@@ -47,14 +47,10 @@ Bone.check_local_storage = function(obj)
     let download_locations_version = 1
     let startpage_version = 1
     let searchpage_version = 1
-    let custom_scrollbars_version = 1
-    let custom_scrollbars_width_version = 1
-    let custom_scrollbars_track_piece_color_version = 1
-    let custom_scrollbars_thumb_color_version = 1
 
     if(obj.theme_version !== theme_version)
     {
-        obj.theme = '#464f6c'
+        obj.theme = '#31343e'
         obj.theme_version = theme_version
         save = true
     }
@@ -119,34 +115,6 @@ Bone.check_local_storage = function(obj)
     {
         obj.searchpage = 'https://www.startpage.com/do/search?query='
         obj.searchpage_version = searchpage_version
-        save = true
-    }
-
-    if(obj.custom_scrollbars_version !== custom_scrollbars_version)
-    {
-        obj.custom_scrollbars = true
-        obj.custom_scrollbars_version = custom_scrollbars_version
-        save = true
-    }
-
-    if(obj.custom_scrollbars_width_version !== custom_scrollbars_width_version)
-    {
-        obj.custom_scrollbars_width = 8
-        obj.custom_scrollbars_width_version = custom_scrollbars_width_version
-        save = true
-    }
-
-    if(obj.custom_scrollbars_track_piece_color_version !== custom_scrollbars_track_piece_color_version)
-    {
-        obj.custom_scrollbars_track_piece_color = '#36383e'
-        obj.custom_scrollbars_track_piece_color_version = custom_scrollbars_track_piece_color_version
-        save = true
-    }
-
-    if(obj.custom_scrollbars_thumb_color_version !== custom_scrollbars_thumb_color_version)
-    {
-        obj.custom_scrollbars_thumb_color = '#282a2e'
-        obj.custom_scrollbars_thumb_color_version = custom_scrollbars_thumb_color_version
         save = true
     }
 

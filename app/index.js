@@ -97,6 +97,7 @@ exports.create_window = function()
 
 app.commandLine.appendSwitch('--autoplay-policy', 'no-user-gesture-required')
 app.commandLine.appendSwitch('disable-smooth-scrolling')
+app.commandLine.appendSwitch('--enable-features', 'OverlayScrollbar')
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
