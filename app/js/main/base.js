@@ -57,7 +57,9 @@ Bone.config =
     preset_version: 1,
     max_recent_items: 100,
     max_download_locations: 20,
-    max_history_items: 20
+    max_history_items: 20,
+    ghost_webviews_shot_delay: 800,
+    ghost_webviews_shot_quick_delay: 250
 }
 
 // This gets called when body loads

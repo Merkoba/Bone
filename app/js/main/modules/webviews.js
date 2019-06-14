@@ -705,18 +705,21 @@ Bone.remove_ghost_webviews = function()
     }
 
     Bone.ghost_webviews_shot_on = false
+    Bone.ghost_webviews_shot_quick_on = false
 }
 
 // Does a ghost webviews for an instant
-Bone.ghost_webviews_shot = function()
+Bone.ghost_webviews_shot = function(quick=false)
 {
     Bone.ghost_webviews()
     Bone.ghost_webviews_shot_on = true
 
+    let delay = quick ? Bone.config.ghost_webviews_shot_quick_delay : Bone.config.ghost_webviews_shot_delay
+
     Bone.ghost_webviews_shot_timeout = setTimeout(function()
     {
         Bone.remove_ghost_webviews()
-    }, 800)
+    }, delay)
 }
 
 // Checks how to apply or remove ghost webviews
@@ -727,17 +730,19 @@ Bone.check_ghost_webviews = function()
         Bone.ghost_webviews()
     }
 
+    else if(Bone.ghost_webviews_shot_on)
+    {
+        Bone.ghost_webviews_shot()
+    }
+
+    else if(Bone.ghost_webviews_shot_quick_on)
+    {
+        Bone.ghost_webviews_shot(true)
+    }
+        
     else
     {
-        if(Bone.ghost_webviews_shot_on)
-        {
-            Bone.ghost_webviews_shot()
-        }
-        
-        else
-        {
-            Bone.remove_ghost_webviews()
-        }
+        Bone.remove_ghost_webviews()
     }
 }
 
@@ -749,6 +754,7 @@ Bone.on_webview_focus = function(webview)
     Bone.update_url()
     Bone.close_find()
     Bone.hide_context_menu()
+    Bone.ghost_webviews_shot_quick_on = true
     Bone.check_ghost_webviews()
 }
 
