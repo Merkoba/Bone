@@ -256,13 +256,16 @@ Bone.do_webview_swap = function(num_1, num_2)
     let w1 = Bone.swv(num_1)
     let w2 = Bone.swv(num_2)
     let ourl_1 = w1.url
+    let ohistory_1 = w1.history
 
     w1.url = w2.url
+    w1.history = w2.history
     w2.url = ourl_1
+    w2.history = ohistory_1
 
-    Bone.save_local_storage()
     Bone.change_url(w1.url, num_1)
     Bone.change_url(w2.url, num_2)
+    Bone.space_modified()
 }
 
 // What to do when a webview is dom ready
