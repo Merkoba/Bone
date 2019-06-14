@@ -4,61 +4,86 @@ Bone.menu_options =
     'theme':
     {
         type: 'color',
+        process: (value) => 
+        {
+            return value
+        },
         action: (value) =>
         {
-            Bone.storage.theme = value
             Bone.apply_theme()
         }
     },
     'auto_hide_panel':
     {
         type: 'checkbox',
+        process: (value) => 
+        {
+            return value
+        },
         action: (value) =>
         {
-            Bone.storage.auto_hide_panel = value
             Bone.apply_auto_hide_panel()
         }
     },
     'resize_handle_size':
     {
         type: 'number',
+        process: (value) =>
+        {
+            let num = parseInt(value)
+
+            if(num < 0)
+            {
+                num = 1
+            }
+
+            else if(num > 100)
+            {
+                num = 100
+            }
+            
+            return num
+        },
         action: (value) =>
         {
-            Bone.storage.resize_handle_size = value
             Bone.update_resize_handle_style()
         }
     },
     'wrap_on_webview_cycle':
     {
         type: 'checkbox',
-        action: (value) =>
+        process: (value) => 
         {
-            Bone.storage.wrap_on_webview_cycle = value
-        }
+            return value
+        },
+        action: (value) => {}
     },
     'wrap_on_space_cycle':
     {
         type: 'checkbox',
-        action: (value) =>
+        process: (value) => 
         {
-            Bone.storage.wrap_on_space_cycle = value
-        }
+            return value
+        },
+        action: (value) => {}
     },
     'startpage':
     {
         type: 'text',
-        action: (value) =>
+        process: (value) =>
         {
-            Bone.storage.startpage = value
-        }
+            return value.trim()
+        },
+        action: (value) => {}
     },
     'searchpage':
     {
         type: 'text',
-        action: (value) =>
+        process: (value) =>
         {
-            Bone.storage.searchpage = value
-        }
+            return value.trim()
+        },
+        action: (value) => {}
     }
 }
 
@@ -166,7 +191,9 @@ Bone.setup_menu = function()
         {
             el.addEventListener('blur', function(e)
             {
-                obj.action(this.value)
+                let value = obj.process(this.value)
+                Bone.storage[option] = value
+                obj.action(value)
                 Bone.save_local_storage()
             })
         }
@@ -175,7 +202,9 @@ Bone.setup_menu = function()
         {
             el.addEventListener('change', function(e)
             {
-                obj.action(this.value)
+                let value = obj.process(this.value)
+                Bone.storage[option] = value
+                obj.action(value)
                 Bone.save_local_storage()
             })        
         }
@@ -184,7 +213,9 @@ Bone.setup_menu = function()
         {
             el.addEventListener('change', function(e)
             {
-                obj.action(this.checked)
+                let value = obj.process(this.checked)
+                Bone.storage[option] = value
+                obj.action(value)
                 Bone.save_local_storage()
             })
         }
