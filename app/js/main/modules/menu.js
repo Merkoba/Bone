@@ -132,6 +132,12 @@ Bone.setup_menu = function()
         Bone.save_local_storage()
     })
 
+    Bone.$('#menu_searchpage').addEventListener('blur', function()
+    {
+        Bone.storage.searchpage = this.value.trim()
+        Bone.save_local_storage()
+    })
+
     Bone.$('#menu_custom_scrollbars').addEventListener('change', function()
     {
         Bone.storage.custom_scrollbars = this.checked
@@ -170,6 +176,7 @@ Bone.update_menu_widgets = function()
     Bone.$('#menu_wrap_on_webview_cycle_checkbox').checked = Bone.storage.wrap_on_webview_cycle
     Bone.$('#menu_wrap_on_space_cycle_checkbox').checked = Bone.storage.wrap_on_space_cycle
     Bone.$('#menu_startpage').value = Bone.storage.startpage
+    Bone.$('#menu_searchpage').value = Bone.storage.searchpage
     Bone.$('#menu_custom_scrollbars').checked = Bone.storage.custom_scrollbars
     
     if(Bone.storage.custom_scrollbars)

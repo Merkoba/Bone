@@ -46,6 +46,7 @@ Bone.check_local_storage = function(obj)
     let global_history_version = 1
     let download_locations_version = 1
     let startpage_version = 1
+    let searchpage_version = 1
     let custom_scrollbars_version = 1
     let custom_scrollbars_width_version = 1
     let custom_scrollbars_track_piece_color_version = 1
@@ -111,6 +112,13 @@ Bone.check_local_storage = function(obj)
     {
         obj.startpage = 'https://www.startpage.com'
         obj.startpage_version = startpage_version
+        save = true
+    }
+
+    if(obj.searchpage_version !== searchpage_version)
+    {
+        obj.searchpage = 'https://www.startpage.com/do/search?query='
+        obj.searchpage_version = searchpage_version
         save = true
     }
 

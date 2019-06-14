@@ -358,7 +358,7 @@ Bone.check_url = function(url)
 
             else
             {
-                url = `https://www.startpage.com/do/search?query=${url.replace(/\s+/g, '%20')}`
+                url = Bone.storage.searchpage + url.replace(/\s+/g, '%20')
             }
         }
     }
