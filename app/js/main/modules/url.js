@@ -199,13 +199,17 @@ Bone.update_url_suggest = function()
     let box = Bone.$('#url_suggest')
     Bone.url_suggest_selected = false
     box.innerHTML = ''
+    let matches
 
     if(!value)
     {
-        return false
+        matches = Bone.storage.global_history.slice(0, 20)
     }
 
-    let matches = Bone.find_global_history_matches(value, 20)
+    else
+    {
+        matches = Bone.find_global_history_matches(value, 20)
+    }
 
     if(matches.length === 0)
     {
