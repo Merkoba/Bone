@@ -52,12 +52,12 @@ Bone.config =
     small_title_length: 100,
     modules_path: './js/main/modules/',
     resize_double_click_delay: 350,
-    max_global_history_items: 1000,
+    max_global_history_items: 2500,
     global_history_url_max_length: 500,
     preset_version: 1,
-    max_recent_items: 100,
+    max_recent_items: 250,
     max_download_locations: 20,
-    max_history_items: 20,
+    max_history_items: 25,
     ghost_webviews_shot_delay: 800,
     ghost_webviews_shot_quick_delay: 250
 }
