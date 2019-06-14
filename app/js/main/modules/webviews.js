@@ -732,13 +732,7 @@ Bone.on_webview_focus = function(wv)
 {
     let space_num = parseInt(wv.dataset.space_num)
     let space = Bone.space(space_num)
-
-    if(space.focused_webview !== wv)
-    {
-        space.focused_webview = wv
-        Bone.ghost_webviews_shot_quick_on = true
-    }
-
+    space.focused_webview = wv
     Bone.update_focused_webview()
     Bone.update_url()
     Bone.close_find()

@@ -207,8 +207,7 @@ Bone.remove_splash = function()
         setTimeout(function()
         {
             splash.style.display = 'none'
-            container.style.backgroundColor = 'white'
-        }, 1500)
+        }, 1000)
     }, 500)
 }
 

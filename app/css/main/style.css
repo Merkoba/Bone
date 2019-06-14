@@ -21,7 +21,7 @@ body, html
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
-    transition: opacity 1.5s linear;
+    transition: opacity 1s linear;
     z-index: 999;
     background-color: black;
 }
@@ -34,8 +34,6 @@ body, html
     padding: 0;
     overflow: hidden;
     display: none;
-    background-color: black;
-    color: black;
 }
 
 #panel
@@ -134,6 +132,7 @@ body, html
 {
     outline: none;
     transition: opacity 250ms linear;
+    background-color: white;
 }
 
 .action, .action_2
@@ -773,7 +772,7 @@ select
 
 .ghost_webview
 {
-    opacity: 0.2;
+    opacity: 0.1;
 }
 
 #context_menu

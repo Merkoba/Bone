@@ -137,6 +137,11 @@ Bone.apply_theme = function()
         box-shadow: 0 0 1px ${font_color_1} !important;
         color: ${font_color_1} !important;
     }
+    
+    #main_container
+    {
+        background-color: ${bg_color_3} !important;
+    }
     `
 
     let styles = Bone.$$('.appended_theme_style')
