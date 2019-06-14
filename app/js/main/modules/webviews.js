@@ -684,7 +684,16 @@ Bone.remove_ghost_webviews = function()
 Bone.ghost_webviews_shot = function(quick=false)
 {
     Bone.ghost_webviews()
-    Bone.ghost_webviews_shot_on = true
+
+    if(quick)
+    {
+        Bone.ghost_webviews_shot_quick_on = true
+    }
+    
+    else
+    {
+        Bone.ghost_webviews_shot_on = true
+    }
 
     let delay = quick ? Bone.config.ghost_webviews_shot_quick_delay : Bone.config.ghost_webviews_shot_delay
 

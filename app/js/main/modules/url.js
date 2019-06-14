@@ -98,11 +98,17 @@ Bone.setup_url_input = function()
             Bone.hide_url_suggest()
         }
 
-        Bone.url_input_selected = false
-        Bone.url_input_focused = false
-        Bone.update_url()
-        Bone.check_ghost_webviews()
+        Bone.on_url_input_blur()
     })
+}
+
+// Actions on url input blur
+Bone.on_url_input_blur = function()
+{
+    Bone.url_input_selected = false
+    Bone.url_input_focused = false
+    Bone.update_url()
+    Bone.check_ghost_webviews()
 }
 
 // Setups the url suggest box
@@ -121,6 +127,7 @@ Bone.setup_url_suggest = function()
 
         Bone.change_url_suggest_selected(item)
         Bone.apply_url_suggest_selected()
+        Bone.on_url_input_blur()
     })
 
     box.addEventListener('mousedown', function()
