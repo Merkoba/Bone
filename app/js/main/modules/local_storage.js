@@ -135,7 +135,7 @@ Bone.reset_storage = function()
     Bone.get_local_storage()
     Bone.storage.presets = presets
     Bone.save_local_storage()
-    Bone.update_menu_widgets()
-    Bone.apply_theme()
+    Bone.call_menu_options_actions()
+    Bone.update_menu_options_widgets()
     Bone.info('Settings resetted to defaults')
 }

@@ -1,13 +1,70 @@
+// Menu options object
+Bone.menu_options = 
+{
+    'theme':
+    {
+        type: 'color',
+        action: (value) =>
+        {
+            Bone.storage.theme = value
+            Bone.apply_theme()
+        }
+    },
+    'auto_hide_panel':
+    {
+        type: 'checkbox',
+        action: (value) =>
+        {
+            Bone.storage.auto_hide_panel = value
+            Bone.apply_auto_hide_panel()
+        }
+    },
+    'resize_handle_size':
+    {
+        type: 'number',
+        action: (value) =>
+        {
+            Bone.storage.resize_handle_size = value
+            Bone.update_resize_handle_style()
+        }
+    },
+    'wrap_on_webview_cycle':
+    {
+        type: 'checkbox',
+        action: (value) =>
+        {
+            Bone.storage.wrap_on_webview_cycle = value
+        }
+    },
+    'wrap_on_space_cycle':
+    {
+        type: 'checkbox',
+        action: (value) =>
+        {
+            Bone.storage.wrap_on_space_cycle = value
+        }
+    },
+    'startpage':
+    {
+        type: 'text',
+        action: (value) =>
+        {
+            Bone.storage.startpage = value
+        }
+    },
+    'searchpage':
+    {
+        type: 'text',
+        action: (value) =>
+        {
+            Bone.storage.searchpage = value
+        }
+    }
+}
+
 // Setup the menu window
 Bone.setup_menu = function()
 {
-    Bone.$('#menu_theme_color_picker').addEventListener('change', function()
-    {
-        Bone.storage.theme = this.value
-        Bone.save_local_storage()
-        Bone.apply_theme()
-    })
-
     Bone.$('#menu_back').addEventListener('click', function()
     {
         Bone.go_back()
@@ -63,20 +120,6 @@ Bone.setup_menu = function()
         this.selectedIndex = 0
     })
 
-    Bone.$('#menu_auto_hide_panel_checkbox').addEventListener('change', function()
-    {
-        Bone.storage.auto_hide_panel = this.checked
-        Bone.save_local_storage()
-        Bone.apply_auto_hide_panel()
-    })
-
-    Bone.$('#menu_resize_handle_size_input').addEventListener('blur', function()
-    {
-        Bone.storage.resize_handle_size = this.value
-        Bone.save_local_storage()
-        Bone.update_resize_handle_style()
-    })
-
     Bone.$('#menu_reset').addEventListener('click', function()
     {
         if(confirm('Are you sure you want to reset the settings? This will not delete saved presets.'))
@@ -109,48 +152,75 @@ Bone.setup_menu = function()
         Bone.close_all_windows()
     })
 
-    Bone.$('#menu_wrap_on_webview_cycle_checkbox').addEventListener('change', function()
-    {
-        Bone.storage.wrap_on_webview_cycle = this.checked
-        Bone.save_local_storage()
-    })
-
-    Bone.$('#menu_wrap_on_space_cycle_checkbox').addEventListener('change', function()
-    {
-        Bone.storage.wrap_on_space_cycle = this.checked
-        Bone.save_local_storage()
-    })
-
     Bone.$('#menu_create_layout').addEventListener('click', function()
     {
         Bone.show_create_layout()
     })
 
-    Bone.$('#menu_startpage').addEventListener('blur', function()
+    for(let option in Bone.menu_options)
     {
-        Bone.storage.startpage = this.value.trim()
-        Bone.save_local_storage()
-    })
+        let obj = Bone.menu_options[option]
+        let el = Bone.$(`#menu_option_${option}`)
 
-    Bone.$('#menu_searchpage').addEventListener('blur', function()
-    {
-        Bone.storage.searchpage = this.value.trim()
-        Bone.save_local_storage()
-    })
+        if(obj.type === 'text' || obj.type === 'number')
+        {
+            el.addEventListener('blur', function(e)
+            {
+                obj.action(this.value)
+                Bone.save_local_storage()
+            })
+        }
 
-    Bone.update_menu_widgets()
+        else if(obj.type === 'color')
+        {
+            el.addEventListener('change', function(e)
+            {
+                obj.action(this.value)
+                Bone.save_local_storage()
+            })        
+        }
+
+        else if(obj.type === 'checkbox')
+        {
+            el.addEventListener('change', function(e)
+            {
+                obj.action(this.checked)
+                Bone.save_local_storage()
+            })
+        }
+    }
+
+    Bone.update_menu_options_widgets()
 }
 
 // Updates widgest in the menu window
-Bone.update_menu_widgets = function()
+Bone.update_menu_options_widgets = function()
 {
-    Bone.$('#menu_theme_color_picker').value = Bone.storage.theme
-    Bone.$('#menu_auto_hide_panel_checkbox').checked = Bone.storage.auto_hide_panel
-    Bone.$('#menu_resize_handle_size_input').value = Bone.storage.resize_handle_size
-    Bone.$('#menu_wrap_on_webview_cycle_checkbox').checked = Bone.storage.wrap_on_webview_cycle
-    Bone.$('#menu_wrap_on_space_cycle_checkbox').checked = Bone.storage.wrap_on_space_cycle
-    Bone.$('#menu_startpage').value = Bone.storage.startpage
-    Bone.$('#menu_searchpage').value = Bone.storage.searchpage
+    for(let option in Bone.menu_options)
+    {
+        let obj = Bone.menu_options[option]
+        let el = Bone.$(`#menu_option_${option}`)
+
+        if(obj.type === 'text' || obj.type === 'number' || obj.type === 'color')
+        {
+            el.value = Bone.storage[option]
+        }
+
+        else if(obj.type === 'checkbox')
+        {
+            el.checked = Bone.storage[option]
+        }
+    }
+}
+
+// Calls the action function of every menu option
+Bone.call_menu_options_actions = function()
+{
+    for(let option in Bone.menu_options)
+    {
+        let obj = Bone.menu_options[option]
+        obj.action(Bone.storage[option])
+    }  
 }
 
 // Shows the menu window
