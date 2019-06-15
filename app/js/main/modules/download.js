@@ -138,8 +138,11 @@ Bone.show_save_as_dialog = function()
     }, 
     function(destination)
     {
-        Bone.push_to_download_locations(path.dirname(destination))
-        Bone.download(url, destination)
+        if(destination)
+        {
+            Bone.push_to_download_locations(path.dirname(destination))
+            Bone.download(url, destination)
+        }
     })
 }
 
@@ -164,6 +167,15 @@ Bone.setup_handle_download = function()
         let filename = `${path}/${url.split('/').slice(-1)[0]}`
         Bone.download(url, filename)
         Bone.msg_handle_download.close()
+    })
+
+    Bone.$('#handle_download_clear').addEventListener('click', function(e)
+    {
+        if(confirm('Are you sure you want to clear the download locations?'))
+        {
+            Bone.storage.download_locations = []
+            Bone.msg_handle_download.close()
+        }
     })
 }
 

@@ -831,6 +831,13 @@ select
     font-size: 1.1rem;
 }
 
+#handle_download_clear
+{
+    font-size: 0.8rem;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
 #create_layout_grid
 {
     display: grid;
