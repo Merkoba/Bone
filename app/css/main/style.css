@@ -354,6 +354,11 @@ body, html
     margin-right: 0.8rem;
 }
 
+#menu_autostart
+{
+    margin-top: 0.8rem;
+}
+
 #menu_preset_container > div
 {
     margin-top: 10px;
@@ -536,11 +541,6 @@ select
     font-style: italic;
 }
 
-#menu_space_options
-{
-    margin-top: 20px;
-}
-
 #handle_preset_open
 {
     margin-top: 20px;
@@ -670,7 +670,7 @@ select
 
 #autostart_buttons
 {
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 0.8rem;
 }
 

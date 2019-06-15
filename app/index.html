@@ -75,26 +75,17 @@
 
         <script id='template_menu' type='text/x-handlebars-template' class='template'>
             <div id='menu_container' class='unselectable menu_section'>
-                <div class='menu_item'>
-                    <div class='separate_horizontal_2'>
-                        <span id='menu_back' class='action pointer underline'>Back</span>
-                        <span id='menu_history' class='action pointer underline'>History</span>
-                        <span id='menu_copy_url' class='action pointer underline'>Copy URL</span>
-                        <span id='menu_autostart' class='action pointer underline'>AutoStart</span>
-                        <span id='menu_exit' class='action pointer underline'>Exit</span>
-                    </div>
-
-                    <div id='menu_space_options' class='separate_horizontal_2'>
-                        <span id='menu_new_space' class='action pointer underline'>New Space</span>
-                        <span id='menu_duplicate_space' class='action pointer underline'>Duplicate Space</span>
-                        <span id='menu_close_space' class='action pointer underline'>Close Space</span>
-                    </div>
+                <div>
+                    <div id='menu_exit' class='action pointer inline'>Exit</div>
                 </div>
-
+                
                 <div class='menu_item'>
                     <div id='menu_clear_presets' class='action inline'>Clear</div>
                     <select id='menu_presets_select'></select>
                     <div id='menu_save_preset' class='action inline'>Save</div>
+                    <div>
+                        <div id='menu_autostart' class='action pointer inline'>AutoStart</div>
+                    </div>
                 </div>
 
                 <div class='menu_item'>

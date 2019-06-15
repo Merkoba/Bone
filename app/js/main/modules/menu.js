@@ -90,32 +90,6 @@ Bone.menu_options =
 // Setup the menu window
 Bone.setup_menu = function()
 {
-    Bone.$('#menu_back').addEventListener('click', function()
-    {
-        Bone.go_back()
-    })
-
-    Bone.$('#menu_history').addEventListener('click', function()
-    {
-        let space = Bone.space()
-
-        if(space.focused_webview)
-        {
-            Bone.show_history()
-        }
-    })
-
-    Bone.$('#menu_copy_url').addEventListener('click', function()
-    {
-        let url = Bone.get_current_url()
-
-        if(url)
-        {
-            Bone.copy_string(url)
-            Bone.info('URL copied to clipboard')
-        }
-    })
-
     Bone.$('#menu_autostart').addEventListener('click', function()
     {
         Bone.show_autostart_presets()
@@ -145,14 +119,6 @@ Bone.setup_menu = function()
         this.selectedIndex = 0
     })
 
-    Bone.$('#menu_reset').addEventListener('click', function()
-    {
-        if(confirm('Are you sure you want to reset the settings? This will not delete saved presets.'))
-        {
-            Bone.reset_storage()
-        }
-    })
-
     Bone.$('#menu_exit').addEventListener('click', function()
     {
         if(confirm('Are you sure you want to exit?'))
@@ -161,25 +127,17 @@ Bone.setup_menu = function()
         }
     })
 
-    Bone.$('#menu_close_space').addEventListener('click', function()
-    {
-        Bone.show_handle_close_space()
-    })
-
-    Bone.$('#menu_duplicate_space').addEventListener('click', function()
-    {
-        Bone.duplicate_space()
-    })
-
-    Bone.$('#menu_new_space').addEventListener('click', function()
-    {
-        Bone.new_space()
-        Bone.close_all_windows()
-    })
-
     Bone.$('#menu_create_layout').addEventListener('click', function()
     {
         Bone.show_create_layout()
+    })
+
+    Bone.$('#menu_reset').addEventListener('click', function()
+    {
+        if(confirm('Are you sure you want to reset the settings? This will not delete saved presets.'))
+        {
+            Bone.reset_storage()
+        }
     })
 
     for(let option in Bone.menu_options)
@@ -257,24 +215,5 @@ Bone.call_menu_options_actions = function()
 // Shows the menu window
 Bone.show_menu = function()
 {
-    Bone.msg_menu.show(function()
-    {
-        let disable_back = true
-
-        if(Bone.focused())
-        {
-            let history = Bone.history()
-
-            if(history && history.length > 1)
-            {
-                Bone.$('#menu_back').classList.remove('disabled')
-                disable_back = false
-            }
-        }
-
-        if(disable_back)
-        {
-            Bone.$('#menu_back').classList.add('disabled')
-        }
-    })
+    Bone.msg_menu.show()
 }
