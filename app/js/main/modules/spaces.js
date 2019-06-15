@@ -456,7 +456,19 @@ Bone.show_handle_close_space = function(n=false)
         n = Bone.current_space
     }
 
+    let space = Bone.space(n)
     Bone.handled_close_space = n
+
+    if(space.name)
+    {
+        Bone.msg_handle_close_space.set_title(`Close ${space.name}`)
+    }
+    
+    else
+    {
+        Bone.msg_handle_close_space.set_title('Close Space')
+    }
+
     Bone.msg_handle_close_space.show()
 }
 
