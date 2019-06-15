@@ -437,8 +437,6 @@ select
 
 #info_container
 {
-    outline: none;
-    border: 0px solid grey;
     max-width: 450px;
 }
 
@@ -546,7 +544,7 @@ select
     margin-top: 20px;
 }
 
-#open_preset_container
+.noline
 {
     outline: none;
     border: 0px solid grey;

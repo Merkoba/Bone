@@ -133,6 +133,24 @@ Bone.setup_check_handle_preset = function()
         Bone.do_handle_preset_update(Bone.check_handle_preset_name, true)
         Bone.msg_check_handle_preset.close()
     })
+
+    Bone.$('#check_handle_preset_container').addEventListener('keyup', function(e)
+    {
+        if(e.key === 'Enter')
+        {
+            Bone.do_handle_preset_update(Bone.check_handle_preset_name, true)
+            Bone.msg_check_handle_preset.close()
+        }
+    })
+}
+
+// Shows the check handle preset window
+Bone.show_check_handle_preset = function()
+{
+    Bone.msg_check_handle_preset.show(function()
+    {
+        Bone.$('#check_handle_preset_container').focus()
+    })
 }
 
 // Checks preset name changes
@@ -143,7 +161,7 @@ Bone.check_handle_preset_update = function(name)
     if(name !== oname)
     {
         Bone.check_handle_preset_name = name
-        Bone.msg_check_handle_preset.show()
+        Bone.show_check_handle_preset()
     }
     
     else
@@ -178,9 +196,14 @@ Bone.do_handle_preset_update = function(name, rename=false)
         action = `Preset '${oname}' renamed to '${name}'`
     }
 
-    else
+    else if(name === oname)
     {
         action = `Preset '${name}' updated`
+    }
+    
+    else
+    {
+        action = `Preset '${name}' created`
     }
 
     Bone.update_presets()

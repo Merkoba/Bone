@@ -161,14 +161,14 @@
         </script>
 
         <script id='template_check_handle_preset' type='text/x-handlebars-template' class='template'>
-            <div id='check_handle_preset_container' class='unselectable separate_horizontal'>
-                <div id='check_handle_preset_new' class='generic_button action'>New Preset</div>
+            <div id='check_handle_preset_container' class='unselectable separate_horizontal noline' tabindex='0'>
                 <div id='check_handle_preset_rename' class='generic_button action'>Rename Preset</div>
+                <div id='check_handle_preset_new' class='generic_button action'>New Preset</div>
             </div>
         </script>
 
         <script id='template_open_preset' type='text/x-handlebars-template' class='template'>
-            <div id='open_preset_container' class='unselectable' tabindex='0'>
+            <div id='open_preset_container' class='unselectable noline' tabindex='0'>
                 <div class='separate_horizontal'>
                     <div id='open_preset_here' class='generic_button action inline'>Open Here</div>
                     <div id='open_preset_space' class='generic_button action inline'>New Space</div>
@@ -180,7 +180,7 @@
         </script>
 
         <script id='template_info' type='text/x-handlebars-template' class='template'>
-            <div id='info_container' tabindex='0'></div>
+            <div id='info_container' tabindex='0' class='noline'></div>
         </script>
 
         <script id='template_history' type='text/x-handlebars-template' class='template'>
@@ -282,7 +282,7 @@
         </script>
  
         <script id='template_handle_open_recent' type='text/x-handlebars-template' class='template'>
-            <div class='unselectable separate_horizontal'>
+            <div id='handle_open_recent_container' class='unselectable separate_horizontal noline' tabindex='0'>
                 <div id='handle_open_recent_here' class='generic_button inline action'>Open Here</div>
                 <div id='handle_open_recent_existing' class='generic_button inline action'>Go To Existing</div>
             </div>

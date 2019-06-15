@@ -240,6 +240,15 @@ Bone.setup_handle_open_recent = function()
         Bone.focus(Bone.handle_open_recent_num)
         Bone.close_all_windows()
     })
+
+    Bone.$('#handle_open_recent_container').addEventListener('keyup', function(e)
+    {
+        if(e.key === 'Enter')
+        {
+            Bone.change_url(Bone.handle_open_recent_url)
+            Bone.close_all_windows()
+        }
+    })
 }
 
 // Shows the handle open recent wi
@@ -248,5 +257,9 @@ Bone.show_handle_open_recent = function(num, space_num, url)
     Bone.handle_open_recent_num = num
     Bone.handle_open_recent_space_num = space_num
     Bone.handle_open_recent_url = url
-    Bone.msg_handle_open_recent.show()
+
+    Bone.msg_handle_open_recent.show(function()
+    {
+        Bone.$('#handle_open_recent_container').focus()
+    })
 }
