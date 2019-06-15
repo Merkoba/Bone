@@ -501,6 +501,12 @@ select
     padding: 8px;
 }
 
+.spaces_item:last-child
+{
+    cursor: pointer;
+    padding: 5px;
+}
+
 #autostart_container
 {
     max-width: 450px;
