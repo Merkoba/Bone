@@ -69,10 +69,22 @@ Bone.change_space = function(n, obj=false)
     Bone.check_titles()
 }
 
+// Gets spaces list ordered by order
+Bone.get_ordered_spaces = function()
+{
+    let spaces = Bone.get_spaces().slice(0).sort((a, b) =>
+    {
+        return a.order - b.order
+    })
+
+    return spaces
+}
+
 // Updates spaces in the top panel
 Bone.update_spaces = function()
 {
-    let spaces = Bone.get_spaces()
+    let spaces = Bone.get_ordered_spaces()
+
     let name = ''
     let c = Bone.$('#spaces')
     c.innerHTML = ''
@@ -147,6 +159,7 @@ Bone.create_space_from_object = function(obj, n=false)
     }
 
     space.num = n
+    space.order = n
     space.is_space = true
     return space
 }
@@ -154,7 +167,7 @@ Bone.create_space_from_object = function(obj, n=false)
 // Gets the space to the right of current space
 Bone.get_space_right = function(wrap=true)
 {
-    let spaces = Bone.get_spaces()
+    let spaces = Bone.get_ordered_spaces()
 
     if(spaces.length === 1)
     {
@@ -191,7 +204,7 @@ Bone.get_space_right = function(wrap=true)
 // Gets the space to the right of current space
 Bone.get_space_left = function(wrap=true)
 {
-    let spaces = Bone.get_spaces()
+    let spaces = Bone.get_ordered_spaces()
 
     if(spaces.length === 1)
     {
@@ -602,6 +615,9 @@ Bone.move_space_left = function(item)
         let el = item.parentNode.children[n]
         el.before(item)
     }
+
+    Bone.update_space_order()
+    Bone.update_spaces()
 }
 
 // Moves a space to the right in the panel
@@ -629,6 +645,24 @@ Bone.move_space_right = function(item)
         n = index + 1
         let el = item.parentNode.children[n]
         el.after(item)
+    }
+
+    Bone.update_space_order()
+    Bone.update_spaces()
+}
+
+// Updates the spaces order based on their top panel position
+Bone.update_space_order = function()
+{
+    let elements = Bone.$$('.spaces_item')
+    let n = 1
+
+    for(let el of elements)
+    {
+        let num = parseInt(el.dataset.num)
+        let space = Bone.space(num)
+        space.order = n
+        n += 1
     }
 }
 
