@@ -452,6 +452,7 @@ select
 .history_item
 {
     cursor: pointer;
+    font-size: 1.1rem;
 }
 
 .history_item:first-child
