@@ -497,13 +497,7 @@ select
 .spaces_item
 {
     cursor: pointer;
-    padding: 10px;
-}
-
-.spaces_item:last-child
-{
-    cursor: pointer;
-    padding-right: 5px;
+    padding: 8px;
 }
 
 #autostart_container
