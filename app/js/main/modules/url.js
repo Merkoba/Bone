@@ -344,7 +344,7 @@ Bone.change_url = function(url, num=false, space_num=false)
     Bone.remake_webview(num, space_num, url, false, false)
 }
 
-// Handles navigation changes
+// Handles navigation changes before they happen
 Bone.handle_navigation = function(wv, e)
 {
     if(!e.url)
@@ -353,6 +353,23 @@ Bone.handle_navigation = function(wv, e)
     }
 
     Bone.change_url(e.url, parseInt(wv.dataset.num), parseInt(wv.dataset.space))
+}
+
+// Handles completed navigations
+Bone.handle_did_navigation = function(wv, e)
+{
+    if(!e.url)
+    {
+        return false
+    }
+
+    let num = parseInt(wv.dataset.num)
+    let space_num = parseInt(wv.dataset.space)
+    Bone.push_to_history(wv, e.url)
+    Bone.swv(num, space_num).url = e.url
+    Bone.space_modified(space_num)
+    Bone.update_url(space_num)
+    Bone.add_to_global_history(e.url)
 }
 
 // Checks and prepares a url

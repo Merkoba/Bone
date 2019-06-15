@@ -29,28 +29,22 @@ Bone.create_webview = function(num, space_num)
         Bone.handle_navigation(this, e)
     })
 
+    wv.addEventListener('did-navigate', function(e)
+    {
+        Bone.handle_did_navigation(this, e)
+    })
+    
+    wv.addEventListener('did-navigate-in-page', function(e)
+    {
+        Bone.handle_did_navigation(this, e)
+    })
+    
     wv.addEventListener('found-in-page', function(e)
     {
         if(e.result.finalUpdate)
         {
             Bone.update_find_results(e.result)
         }
-    })
-
-    wv.addEventListener('did-navigate', function(e)
-    {
-        if(!e.url)
-        {
-            return false
-        }
-
-        let num = parseInt(wv.dataset.num)
-        let space_num = parseInt(wv.dataset.space)
-        Bone.push_to_history(wv, e.url)
-        Bone.swv(num, space_num).url = e.url
-        Bone.space_modified(space_num)
-        Bone.update_url(space_num)
-        Bone.add_to_global_history(e.url)
     })
 
     wv.addEventListener('context-menu', function(e)
