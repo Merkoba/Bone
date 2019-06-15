@@ -95,7 +95,7 @@ Bone.setup_menu = function()
         Bone.show_autostart_presets()
     })
 
-    Bone.$('#menu_save_preset').addEventListener('click', function()
+    Bone.$('#menu_create_preset').addEventListener('click', function()
     {
         Bone.show_create_preset()
     })

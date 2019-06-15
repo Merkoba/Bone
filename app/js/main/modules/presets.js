@@ -28,17 +28,17 @@ Bone.do_create_preset = function(name)
         return false
     }
 
-    Bone.update_presets()
     Bone.msg_create_preset.close()
     Bone.msg_handle_preset.close()
     Bone.info(`Preset '${obj.name}' created`)
 
-    if(obj.autostart)
+    let space = Bone.space()
+
+    if(!space.name)
     {
-        Bone.update_autostart_order()
+        space.name = obj.name
     }
 
-    Bone.space().name = obj.name
     Bone.space_modified()
     Bone.update_spaces()
 }
@@ -68,7 +68,6 @@ Bone.setup_handle_preset = function()
         {
             let name = Bone.handled_preset
             Bone.delete_preset(name)
-            Bone.update_presets()
             Bone.msg_handle_preset.close()
             Bone.info(`Preset '${name}' deleted`)
         }
@@ -170,18 +169,29 @@ Bone.check_handle_preset_update = function(name)
     }
 }
 
-// Does the edit preset action
+// Does the update preset action
 Bone.do_handle_preset_update = function(name, rename=false)
 {
     let oname = Bone.handled_preset
+    let preset = Bone.get_preset(oname)
     let warn = false
+    let obj = {name:name, autostart:false, autoupdate:false}
+
+    if(preset)
+    {
+        if(rename)
+        {
+            obj.autostart = preset.autostart
+            obj.autoupdate = preset.autoupdate
+        }
+    }
 
     if(rename)
     {
         warn = true
     }
 
-    let res = Bone.save_preset({name:name}, warn)
+    let res = Bone.save_preset(obj, warn)
 
     if(!res)
     {
@@ -204,9 +214,9 @@ Bone.do_handle_preset_update = function(name, rename=false)
     else
     {
         action = `Preset '${name}' created`
+        change_space = true
     }
 
-    Bone.update_presets()
     Bone.msg_handle_preset.close()
     Bone.info(action)
 }
@@ -264,15 +274,24 @@ Bone.save_preset = function(obj, warn_replace=true, space_num=false)
     }
     
     let preset = Bone.get_preset(obj.name)
-    let autostart = true
-    let autoupdate = true
-    let replace = false
+    let autostart, autoupdate
 
     if(preset)
     {
         autostart = preset.autostart
         autoupdate = preset.autoupdate
+    }
+    
+    else
+    {
+        autostart = obj.autostart || false
+        autoupdate = obj.autoupdate || false
+    }
 
+    let replace = false
+
+    if(preset)
+    {
         if(warn_replace)
         {
             if(!confirm('A preset with this name already exists. Are you sure you want to overwrite it?'))
@@ -312,6 +331,8 @@ Bone.save_preset = function(obj, warn_replace=true, space_num=false)
         Bone.storage.presets.push(prst)
     }
 
+    Bone.update_presets()
+    Bone.update_autostart_order()
     Bone.save_local_storage()
     return true
 }
@@ -371,7 +392,8 @@ Bone.delete_preset = function(name, replacement=false)
         Bone.update_spaces()
     }
     
-    Bone.update_autostart_presets()
+    Bone.update_presets()
+    Bone.update_autostart_order()
     Bone.save_local_storage()
 }
 

@@ -145,7 +145,7 @@ Bone.create_windows = function()
     Bone.msg_check_handle_preset.set(Bone.template_check_handle_preset())
     Bone.msg_handle_open_recent.set(Bone.template_handle_open_recent())
 
-    Bone.msg_create_preset.set_title('Save Preset')
+    Bone.msg_create_preset.set_title('Create Preset')
     Bone.msg_autostart.set_title('AutoStart Presets')
     Bone.msg_handle_preset.set_title('Handle Preset')
     Bone.msg_space_options.set_title('Space Options')
