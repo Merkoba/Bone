@@ -12,7 +12,7 @@
     "msg-modal": "~11.4.4"
   },
   "devDependencies": {
-    "electron": "~5.0.2",
+    "electron": "~6.0.0-beta.8",
     "electron-packager": "~13.1.1"
   },
   "scripts": {
