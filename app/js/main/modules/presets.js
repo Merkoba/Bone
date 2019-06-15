@@ -277,10 +277,10 @@ Bone.delete_preset = function(name)
         return false
     }
 
-    Bone.delete_preset(name)
-
+    Bone.do_delete_preset(name)
+    
     let changed = false
-
+    
     for(let space of Bone.get_spaces())
     {
         if(space.name === name)
@@ -289,11 +289,14 @@ Bone.delete_preset = function(name)
             changed = true
         }
     }
-
+    
     if(changed)
     {
         Bone.update_spaces()
     }
+    
+    Bone.update_autostart_presets()
+    Bone.save_local_storage()
 }
 
 // Shows and prepares the edit preset window
@@ -641,7 +644,7 @@ Bone.get_preset = function(name)
 }
 
 // Deletes a preset
-Bone.delete_preset = function(name)
+Bone.do_delete_preset = function(name)
 {
     for(let i=0; i<Bone.storage.presets.length; i++)
     {

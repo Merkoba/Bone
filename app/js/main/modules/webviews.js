@@ -78,7 +78,7 @@ Bone.create_webview = function(num, space_num)
         }
 
         let num = parseInt(wv.dataset.num)
-        let space_num = parseInt(wv.dataset.space_num)
+        let space_num = parseInt(wv.dataset.space)
         let swv = Bone.swv(num, space_num)
 
         if(swv.url.startsWith('https://'))
@@ -549,7 +549,7 @@ Bone.focus = function(num=false, space_num=false)
 Bone.focus_wv = function(wv)
 {
     let num = parseInt(wv.dataset.num)
-    let space_num = parseInt(wv.dataset.space_num)
+    let space_num = parseInt(wv.dataset.space)
     Bone.focus(num, space_num)
 }
 
@@ -738,7 +738,7 @@ Bone.check_ghost_webviews = function()
 // What to do when a webview gets focus
 Bone.on_webview_focus = function(wv)
 {
-    let space_num = parseInt(wv.dataset.space_num)
+    let space_num = parseInt(wv.dataset.space)
     let space = Bone.space(space_num)
     space.focused_webview = wv
     Bone.update_focused_webview()
