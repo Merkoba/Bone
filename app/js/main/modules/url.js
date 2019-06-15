@@ -100,6 +100,37 @@ Bone.setup_url_input = function()
 
         Bone.on_url_input_blur()
     })
+
+    url.addEventListener('wheel', function(e)
+    {
+        let half = Bone.$('#panel').clientWidth / 2
+
+        if(e.clientX <= half)
+        {
+            if(e.deltaY < 0)
+            {
+                Bone.cycle_webview('left')
+            }
+
+            else
+            {
+                Bone.cycle_webview('right')
+            }
+        }
+
+        else
+        {
+            if(e.deltaY < 0)
+            {
+                Bone.cycle_space('left')
+            }
+
+            else
+            {
+                Bone.cycle_space('right')
+            }
+        }
+    })
 }
 
 // Actions on url input blur
@@ -165,8 +196,14 @@ Bone.update_url = function(space_num=false)
         }
     }
 
+    let swv = Bone.swv()
     let input = Bone.$('#url')
-    input.value = Bone.swv().url
+    input.value = swv.url
+    
+    if(swv.title)
+    {
+        input.title = swv.title
+    }
 }
 
 // Setups the url suggestion box

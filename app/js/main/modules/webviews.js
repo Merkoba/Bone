@@ -66,7 +66,12 @@ Bone.create_webview = function(num, space_num)
 
     wv.addEventListener('page-title-updated', function(e)
     {
-        let swv = Bone.swv(parseInt(wv.dataset.num), parseInt(wv.dataset.space))
+        let num = parseInt(wv.dataset.num)
+        let space_num = parseInt(wv.dataset.space)
+        let swv = Bone.swv(num, space_num)
+        
+        swv.title = e.title
+        Bone.space_modified(space_num)
         Bone.update_title(swv.url, e.title)
     })
 
@@ -739,6 +744,12 @@ Bone.check_ghost_webviews = function()
 Bone.on_webview_focus = function(wv)
 {
     let space_num = parseInt(wv.dataset.space)
+
+    if(space_num !== Bone.current_space)
+    {
+        return false
+    }
+
     let space = Bone.space(space_num)
     space.focused_webview = wv
     Bone.update_focused_webview()
