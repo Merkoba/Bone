@@ -76,7 +76,7 @@ Bone.push_to_history = function(webview, url)
 {
     let num = parseInt(webview.dataset.num)
     let space_num = parseInt(webview.dataset.space_num)
-    let history = Bone.swv(num).history
+    let history = Bone.swv(num, space_num).history
         
     if(history.slice(-1)[0] === url)
     {
