@@ -116,6 +116,11 @@ Bone.create_windows = function()
         id: 'create_layout'
     }))
 
+    Bone.msg_check_handle_preset = Msg.factory(Object.assign({}, common,
+    {
+        id: 'check_handle_preset'
+    }))
+
     Bone.msg_menu.set(Bone.template_menu())
     Bone.msg_create_preset.set(Bone.template_create_preset())
     Bone.msg_handle_preset.set(Bone.template_handle_preset())
@@ -132,6 +137,7 @@ Bone.create_windows = function()
     Bone.msg_recent.set(Bone.template_recent())
     Bone.msg_handle_download.set(Bone.template_handle_download())
     Bone.msg_create_layout.set(Bone.template_create_layout())
+    Bone.msg_check_handle_preset.set(Bone.template_check_handle_preset())
 
     Bone.msg_create_preset.set_title('Save Preset')
     Bone.msg_autostart.set_title('AutoStart Presets')

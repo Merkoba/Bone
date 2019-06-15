@@ -54,7 +54,7 @@ Bone.setup_handle_preset = function()
 
     Bone.$('#handle_preset_submit').addEventListener('click', function()
     {
-        Bone.do_handle_preset_update(Bone.$('#handle_preset_name').value)
+        Bone.check_handle_preset_update(Bone.$('#handle_preset_name').value)
     })
 
     Bone.$('#handle_preset_save').addEventListener('click', function()
@@ -80,7 +80,7 @@ Bone.setup_handle_preset = function()
         {
             if(document.activeElement === Bone.$('#handle_preset_name'))
             {
-                Bone.do_handle_preset_update(Bone.$('#handle_preset_name').value)
+                Bone.check_handle_preset_update(Bone.$('#handle_preset_name').value)
             }
 
             else
@@ -119,20 +119,73 @@ Bone.setup_handle_preset = function()
     })
 }
 
-// Does the edit preset action
-Bone.do_handle_preset_update = function(name)
+// Setups the check handle preset window
+Bone.setup_check_handle_preset = function()
+{
+    Bone.$('#check_handle_preset_new').addEventListener('click', function()
+    {
+        Bone.do_handle_preset_update(Bone.check_handle_preset_name)
+        Bone.msg_check_handle_preset.close()
+    })
+    
+    Bone.$('#check_handle_preset_rename').addEventListener('click', function()
+    {
+        Bone.do_handle_preset_update(Bone.check_handle_preset_name, true)
+        Bone.msg_check_handle_preset.close()
+    })
+}
+
+// Checks preset name changes
+Bone.check_handle_preset_update = function(name)
 {
     let oname = Bone.handled_preset
-
+    
     if(name !== oname)
     {
-        Bone.replace_preset(oname, name)
+        Bone.check_handle_preset_name = name
+        Bone.msg_check_handle_preset.show()
+    }
+    
+    else
+    {
+        Bone.do_handle_preset_update(name)
+    }
+}
+
+// Does the edit preset action
+Bone.do_handle_preset_update = function(name, rename=false)
+{
+    let oname = Bone.handled_preset
+    let warn = false
+
+    if(rename)
+    {
+        warn = true
     }
 
-    Bone.save_preset({name:name}, false)
+    let res = Bone.save_preset({name:name}, warn)
+
+    if(!res)
+    {
+        return false
+    }
+
+    let action
+
+    if(rename)
+    {
+        Bone.delete_preset(oname, name)
+        action = `Preset '${oname}' renamed to '${name}'`
+    }
+
+    else
+    {
+        action = `Preset '${name}' updated`
+    }
+
     Bone.update_presets()
     Bone.msg_handle_preset.close()
-    Bone.info(`Preset '${name}' updated`)
+    Bone.info(action)
 }
 
 // Updates the presets container
@@ -268,7 +321,7 @@ Bone.open_preset = function(name, new_space=false)
 }
 
 // Deletes a preset
-Bone.delete_preset = function(name)
+Bone.delete_preset = function(name, replacement=false)
 {
     name = name.trim()
 
@@ -285,7 +338,7 @@ Bone.delete_preset = function(name)
     {
         if(space.name === name)
         {
-            space.name = ''
+            space.name = replacement || ''
             changed = true
         }
     }
@@ -560,28 +613,6 @@ Bone.show_create_preset = function()
     {
         Bone.$('#create_preset_name').focus()
     })
-}
-
-// Deletes a preset
-Bone.replace_preset = function(oname, name)
-{
-    Bone.get_preset(name)
-
-    let changed = false
-
-    for(let space of Bone.get_spaces())
-    {
-        if(space.name === oname)
-        {
-            space.name = name
-            changed = true
-        }
-    }
-
-    if(changed)
-    {
-        Bone.update_spaces()
-    }
 }
 
 // Disables all autostart presets from autostarting
