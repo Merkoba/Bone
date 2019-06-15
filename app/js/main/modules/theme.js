@@ -140,7 +140,7 @@ Bone.apply_theme = function()
     
     #main_container
     {
-        background-color: ${bg_color_3} !important;
+        background-color: ${bg_color_2} !important;
     }
     `
 
