@@ -141,6 +141,32 @@ Bone.change_recent_item_selected = function(item)
 // Uses the selected recent item to change the url
 Bone.submit_recent = function(url)
 {
+    url = url.trim()
+
+    let spaces = Bone.get_spaces()
+
+    for(let space of spaces)
+    {
+        if(space.num === Bone.current_space)
+        {
+            continue
+        }
+
+        let swvs = Bone.swvs(space.num)
+        let n = 1
+
+        for(let swv of swvs)
+        {
+            if(swv.url === url)
+            {
+                Bone.show_handle_open_recent(n, space.num, url)
+                return false
+            }
+
+            n += 1
+        }
+    }
+
     Bone.change_url(url)
     Bone.close_all_windows()
 }
@@ -197,4 +223,30 @@ Bone.update_recent = function(args)
     Bone.visible_recent_items = args.visible
     Bone.recent_item_index = 0
     Bone.change_recent_item_selected(Bone.visible_recent_items[0])
+}
+
+// Setups the handle open recent window
+Bone.setup_handle_open_recent = function()
+{
+    Bone.$('#handle_open_recent_here').addEventListener('click', function(e)
+    {
+        Bone.change_url(Bone.handle_open_recent_url)
+        Bone.close_all_windows()
+    })
+    
+    Bone.$('#handle_open_recent_existing').addEventListener('click', function(e)
+    {
+        Bone.change_space(Bone.handle_open_recent_space_num)
+        Bone.focus(Bone.handle_open_recent_num)
+        Bone.close_all_windows()
+    })
+}
+
+// Shows the handle open recent wi
+Bone.show_handle_open_recent = function(num, space_num, url)
+{
+    Bone.handle_open_recent_num = num
+    Bone.handle_open_recent_space_num = space_num
+    Bone.handle_open_recent_url = url
+    Bone.msg_handle_open_recent.show()
 }

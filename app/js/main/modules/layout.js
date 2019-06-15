@@ -12,10 +12,16 @@ Bone.apply_layout = function(space_num=false, reset_size=false)
     
     if(space.layout)
     {
+        let layout = Bone.generate_layout(space.layout, {mode:'webviews', space_num:space_num})
+        c.append(layout)
+
+        let wvs = Bone.wvs(space_num)
+        space.webviews = space.webviews.slice(0, wvs.length)
+        
         if(reset_size)
-        {
+        {    
             let swvs = Bone.swvs(space_num)
-            
+
             for(let swv of swvs)
             {
                 swv.size = 1
@@ -24,11 +30,6 @@ Bone.apply_layout = function(space_num=false, reset_size=false)
             space.container_sizes = {}
             Bone.space_modified(space_num)
         }
-        
-        let layout = Bone.generate_layout(space.layout, {mode:'webviews', space_num:space_num})
-        c.append(layout)
-        
-        let wvs = Bone.wvs(space_num)
         
         for(let wv of wvs)
         {
