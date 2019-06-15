@@ -768,6 +768,8 @@ select
     font-size: 1.1rem;
     padding: 0.25rem;
     text-align: center;
+    position: sticky;
+    top: 0;
 }
 
 .ghost_webview
