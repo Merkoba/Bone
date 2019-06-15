@@ -1,7 +1,7 @@
 // Applies css styles based on current theme
 Bone.apply_theme = function()
 {
-    let theme = Bone.storage.theme
+    let theme = Bone.storage.settings.theme
 
     if(theme.startsWith('#'))
     {

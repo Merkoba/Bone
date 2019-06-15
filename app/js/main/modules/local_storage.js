@@ -37,83 +37,92 @@ Bone.check_local_storage = function(obj)
 {
     let save = false
 
-    let theme_version = 1
     let presets_version = 1
+    let global_history_version = 1
+    let download_locations_version = 1
+    
+    let settings_version = 1
+    let theme_version = 1
     let auto_hide_panel_version = 1
     let resize_handle_size_version = 1
     let wrap_on_webview_cycle_version = 1
     let wrap_on_space_cycle_version = 1
-    let global_history_version = 1
-    let download_locations_version = 1
     let startpage_version = 1
     let searchpage_version = 1
 
-    if(obj.theme_version !== theme_version)
-    {
-        obj.theme = '#31343e'
-        obj.theme_version = theme_version
-        save = true
-    }
-
-    if(obj.presets_version !== presets_version)
+    if(obj.presets === undefined || obj.presets_version !== presets_version)
     {
         obj.presets = []
         obj.presets_version = presets_version
         save = true
     }
 
-    if(obj.auto_hide_panel_version !== auto_hide_panel_version)
-    {
-        obj.auto_hide_panel = false
-        obj.auto_hide_panel_version = auto_hide_panel_version
-        save = true
-    }
-
-    if(obj.resize_handle_size_version !== resize_handle_size_version)
-    {
-        obj.resize_handle_size = 8
-        obj.resize_handle_size_version = resize_handle_size_version
-        save = true
-    }
-
-    if(obj.wrap_on_webview_cycle_version !== wrap_on_webview_cycle_version)
-    {
-        obj.wrap_on_webview_cycle = true
-        obj.wrap_on_webview_cycle_version = wrap_on_webview_cycle_version
-        save = true
-    }
-
-    if(obj.wrap_on_space_cycle_version !== wrap_on_space_cycle_version)
-    {
-        obj.wrap_on_space_cycle = true
-        obj.wrap_on_space_cycle_version = wrap_on_space_cycle_version
-        save = true
-    }
-
-    if(obj.global_history_version !== global_history_version)
+    if(obj.global_history_version === undefined || obj.global_history_version !== global_history_version)
     {
         obj.global_history = []
         obj.global_history_version = global_history_version
         save = true
     }
 
-    if(obj.download_locations_version !== download_locations_version)
+    if(obj.download_locations_version === undefined || obj.download_locations_version !== download_locations_version)
     {
         obj.download_locations = []
         obj.download_locations_version = download_locations_version
         save = true
     }
 
-    if(obj.startpage_version !== startpage_version)
+    if(obj.settings === undefined || obj.settings_version !== settings_version)
     {
-        obj.startpage = 'https://www.startpage.com'
+        obj.settings = {}
+        obj.settings_version = settings_version
+        save = true
+    }
+
+    if(obj.settings.theme === undefined || obj.theme_version !== theme_version)
+    {
+        obj.settings.theme = '#31343e'
+        obj.theme_version = theme_version
+        save = true
+    }
+
+    if(obj.settings.auto_hide_panel === undefined || obj.auto_hide_panel_version !== auto_hide_panel_version)
+    {
+        obj.settings.auto_hide_panel = false
+        obj.auto_hide_panel_version = auto_hide_panel_version
+        save = true
+    }
+
+    if(obj.settings.resize_handle_size === undefined || obj.resize_handle_size_version !== resize_handle_size_version)
+    {
+        obj.settings.resize_handle_size = 8
+        obj.resize_handle_size_version = resize_handle_size_version
+        save = true
+    }
+
+    if(obj.settings.wrap_on_webview_cycle === undefined || obj.wrap_on_webview_cycle_version !== wrap_on_webview_cycle_version)
+    {
+        obj.settings.wrap_on_webview_cycle = true
+        obj.wrap_on_webview_cycle_version = wrap_on_webview_cycle_version
+        save = true
+    }
+
+    if(obj.settings.wrap_on_space_cycle === undefined || obj.wrap_on_space_cycle_version !== wrap_on_space_cycle_version)
+    {
+        obj.settings.wrap_on_space_cycle = true
+        obj.wrap_on_space_cycle_version = wrap_on_space_cycle_version
+        save = true
+    }
+
+    if(obj.settings.startpage === undefined || obj.startpage_version !== startpage_version)
+    {
+        obj.settings.startpage = 'https://www.startpage.com'
         obj.startpage_version = startpage_version
         save = true
     }
 
-    if(obj.searchpage_version !== searchpage_version)
+    if(obj.settings.searchpage === undefined || obj.searchpage_version !== searchpage_version)
     {
-        obj.searchpage = 'https://www.startpage.com/do/search?query='
+        obj.settings.searchpage = 'https://www.startpage.com/do/search?query='
         obj.searchpage_version = searchpage_version
         save = true
     }
@@ -128,14 +137,12 @@ Bone.save_local_storage = function()
 }
 
 // Resets storage object except presets
-Bone.reset_storage = function()
+Bone.reset_settings = function()
 {
-    let presets = Bone.clone_object(Bone.storage.presets)
-    localStorage.removeItem(Bone.ls_name)
-    Bone.get_local_storage()
-    Bone.storage.presets = presets
+    Bone.storage.settings = {}
+    Bone.check_local_storage(Bone.storage)
     Bone.save_local_storage()
-    Bone.call_menu_options_actions()
-    Bone.update_menu_options_widgets()
+    Bone.call_menu_settings_actions()
+    Bone.update_menu_settings_widgets()
     Bone.info('Settings resetted to defaults')
 }

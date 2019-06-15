@@ -468,12 +468,12 @@ Bone.update_resize_handle_style = function()
     let css = `
     .resize_handle_ew
     {
-        width: ${Bone.storage.resize_handle_size}px !important;
+        width: ${Bone.storage.settings.resize_handle_size}px !important;
     }
     
     .resize_handle_ns
     {
-        height: ${Bone.storage.resize_handle_size}px !important;
+        height: ${Bone.storage.settings.resize_handle_size}px !important;
     }
     `
 
@@ -633,12 +633,12 @@ Bone.cycle_webview = function(direction='right')
 
     if(direction === 'right')
     {
-        new_num = Bone.get_webview_right(num, Bone.storage.wrap_on_webview_cycle)
+        new_num = Bone.get_webview_right(num, Bone.storage.settings.wrap_on_webview_cycle)
     }
     
     else if(direction === 'left')
     {
-        new_num = Bone.get_webview_left(num, Bone.storage.wrap_on_webview_cycle)
+        new_num = Bone.get_webview_left(num, Bone.storage.settings.wrap_on_webview_cycle)
     }
     
     Bone.focus(new_num)

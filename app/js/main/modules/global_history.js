@@ -36,7 +36,7 @@ Bone.add_to_global_history = function(url)
 
     if(history.length > Bone.config.max_global_history_items)
     {
-        history = history.slice(0, Bone.config.max_global_history_items)
+        Bone.storage.global_history = history.slice(0, Bone.config.max_global_history_items)
     }
     
     Bone.save_local_storage()

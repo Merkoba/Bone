@@ -386,7 +386,7 @@ Bone.check_url = function(url)
 
             else
             {
-                url = Bone.storage.searchpage + url.replace(/\s+/g, '%20')
+                url = Bone.storage.settings.searchpage + url.replace(/\s+/g, '%20')
             }
         }
     }

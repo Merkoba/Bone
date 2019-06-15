@@ -152,7 +152,7 @@ Bone.create_space_from_object = function(obj, n=false)
 
     else
     {
-        space.webviews = [Bone.create_webview_object(1, Bone.storage.startpage)]
+        space.webviews = [Bone.create_webview_object(1, Bone.storage.settings.startpage)]
         space.container_sizes = {}
         space.layout = ''
         space.name = ''
@@ -252,7 +252,7 @@ Bone.cycle_space = function(direction='right')
 
     if(direction === 'right')
     {
-        new_space = Bone.get_space_right(Bone.storage.wrap_on_space_cycle)
+        new_space = Bone.get_space_right(Bone.storage.settings.wrap_on_space_cycle)
         
         if(!new_space)
         {
@@ -262,7 +262,7 @@ Bone.cycle_space = function(direction='right')
 
     else if(direction === 'left')
     {
-        new_space = Bone.get_space_left(Bone.storage.wrap_on_space_cycle)
+        new_space = Bone.get_space_left(Bone.storage.settings.wrap_on_space_cycle)
         
         if(!new_space)
         {

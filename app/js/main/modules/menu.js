@@ -1,5 +1,5 @@
-// Menu options object
-Bone.menu_options = 
+// Menu settings object
+Bone.menu_settings = 
 {
     'theme':
     {
@@ -32,6 +32,11 @@ Bone.menu_options =
         {
             let num = parseInt(value)
 
+            if(isNaN(num))
+            {
+                num = 8
+            }
+
             if(num < 0)
             {
                 num = 1
@@ -42,6 +47,7 @@ Bone.menu_options =
                 num = 100
             }
             
+            Bone.$('#menu_setting_resize_handle_size').value = num
             return num
         },
         action: (value) =>
@@ -72,7 +78,9 @@ Bone.menu_options =
         type: 'text',
         process: (value) =>
         {
-            return value.trim()
+            value = value.trim()
+            Bone.$('#menu_setting_startpage').value = value
+            return value
         },
         action: (value) => {}
     },
@@ -81,7 +89,9 @@ Bone.menu_options =
         type: 'text',
         process: (value) =>
         {
-            return value.trim()
+            value = value.trim()
+            Bone.$('#menu_setting_searchpage').value = value
+            return value
         },
         action: (value) => {}
     }
@@ -107,7 +117,7 @@ Bone.setup_menu = function()
 
     Bone.$('#menu_presets_select').addEventListener('change', function(e)
     {
-        let selected = this.options[this.selectedIndex]
+        let selected = this.settings[this.selectedIndex]
 
         if(!selected.value)
         {
@@ -134,23 +144,23 @@ Bone.setup_menu = function()
 
     Bone.$('#menu_reset').addEventListener('click', function()
     {
-        if(confirm('Are you sure you want to reset the settings? This will not delete saved presets.'))
+        if(confirm('Are you sure you want to reset the settings? This will not delete saved presets, history, or download locations.'))
         {
-            Bone.reset_storage()
+            Bone.reset_settings()
         }
     })
 
-    for(let option in Bone.menu_options)
+    for(let setting in Bone.menu_settings)
     {
-        let obj = Bone.menu_options[option]
-        let el = Bone.$(`#menu_option_${option}`)
+        let obj = Bone.menu_settings[setting]
+        let el = Bone.$(`#menu_setting_${setting}`)
 
         if(obj.type === 'text' || obj.type === 'number')
         {
             el.addEventListener('blur', function(e)
             {
                 let value = obj.process(this.value)
-                Bone.storage[option] = value
+                Bone.storage.settings[setting] = value
                 obj.action(value)
                 Bone.save_local_storage()
             })
@@ -161,7 +171,7 @@ Bone.setup_menu = function()
             el.addEventListener('change', function(e)
             {
                 let value = obj.process(this.value)
-                Bone.storage[option] = value
+                Bone.storage.settings[setting] = value
                 obj.action(value)
                 Bone.save_local_storage()
             })        
@@ -172,43 +182,43 @@ Bone.setup_menu = function()
             el.addEventListener('change', function(e)
             {
                 let value = obj.process(this.checked)
-                Bone.storage[option] = value
+                Bone.storage.settings[setting] = value
                 obj.action(value)
                 Bone.save_local_storage()
             })
         }
     }
 
-    Bone.update_menu_options_widgets()
+    Bone.update_menu_settings_widgets()
 }
 
 // Updates widgest in the menu window
-Bone.update_menu_options_widgets = function()
+Bone.update_menu_settings_widgets = function()
 {
-    for(let option in Bone.menu_options)
+    for(let setting in Bone.menu_settings)
     {
-        let obj = Bone.menu_options[option]
-        let el = Bone.$(`#menu_option_${option}`)
+        let obj = Bone.menu_settings[setting]
+        let el = Bone.$(`#menu_setting_${setting}`)
 
         if(obj.type === 'text' || obj.type === 'number' || obj.type === 'color')
         {
-            el.value = Bone.storage[option]
+            el.value = Bone.storage.settings[setting]
         }
 
         else if(obj.type === 'checkbox')
         {
-            el.checked = Bone.storage[option]
+            el.checked = Bone.storage.settings[setting]
         }
     }
 }
 
-// Calls the action function of every menu option
-Bone.call_menu_options_actions = function()
+// Calls the action function of every menu setting
+Bone.call_menu_settings_actions = function()
 {
-    for(let option in Bone.menu_options)
+    for(let setting in Bone.menu_settings)
     {
-        let obj = Bone.menu_options[option]
-        obj.action(Bone.storage[option])
+        let obj = Bone.menu_settings[setting]
+        obj.action(Bone.storage.settings[setting])
     }  
 }
 

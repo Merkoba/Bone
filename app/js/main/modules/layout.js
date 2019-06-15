@@ -39,7 +39,7 @@ Bone.apply_layout = function(space_num=false, reset_size=false)
             
             if(!swv)
             {
-                url = Bone.storage.startpage
+                url = Bone.storage.settings.startpage
                 space.webviews.push(Bone.create_webview_object(num, url))
             }
             
