@@ -123,7 +123,7 @@ Bone.setup_check_handle_preset = function()
 {
     Bone.$('#check_handle_preset_new').addEventListener('click', function()
     {
-        Bone.do_handle_preset_update(Bone.check_handle_preset_name)
+        Bone.show_create_preset(Bone.check_handle_preset_name)
         Bone.msg_check_handle_preset.close()
     })
     
@@ -649,14 +649,21 @@ Bone.show_open_preset = function()
 }
 
 // Shows the create preset window
-Bone.show_create_preset = function()
+Bone.show_create_preset = function(name=false)
 {
+    let name_input = Bone.$('#create_preset_name')
+
+    if(name)
+    {
+        name_input.value = name.trim()
+    }
+
     Bone.$('#create_preset_autostart').checked = true
     Bone.$('#create_preset_autoupdate').checked = true
 
     Bone.msg_create_preset.show(function()
     {
-        Bone.$('#create_preset_name').focus()
+        name_input.focus()
     })
 }
 
