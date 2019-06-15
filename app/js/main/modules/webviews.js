@@ -545,6 +545,14 @@ Bone.focus = function(num=false, space_num=false)
     }
 }
 
+// Receives the webview element to focus
+Bone.focus_wv = function(wv)
+{
+    let num = parseInt(wv.dataset.num)
+    let space_num = parseInt(wv.dataset.space_num)
+    Bone.focus(num, space_num)
+}
+
 // Gets a webview by its number
 Bone.wv = function(num=false, space_number=false)
 {

@@ -44,6 +44,7 @@ Bone.change_space = function(n, obj=false)
 
     Bone.current_space = n
 
+    let space = Bone.space()
     let wvs = Bone.wvs()
 
     if(wvs.length === 0)
@@ -52,7 +53,17 @@ Bone.change_space = function(n, obj=false)
     }
 
     Bone.update_spaces()
-    Bone.focus(1)
+
+    if(space.focused_webview)
+    {
+        Bone.focus_wv(space.focused_webview)
+    }
+
+    else
+    {
+        Bone.focus(1)
+    }
+
     Bone.update_focused_webview()
     Bone.check_ghost_webviews()
     Bone.check_titles()
