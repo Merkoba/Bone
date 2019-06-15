@@ -6,8 +6,14 @@ Bone.create_webview = function(num, space_num)
     el.innerHTML = h
     let wv = el.querySelector('webview')
     wv.id = `webview_${Date.now().toString().slice(-8)}_${Bone.random_sequence(4)}`
+    wv.classList.add('loading_webview')
     wv.dataset.num = num
     wv.dataset.space = space_num
+
+    wv.addEventListener('load-commit', function()
+    {
+        wv.classList.remove('loading_webview')
+    })
 
     wv.addEventListener('focus', function()
     {

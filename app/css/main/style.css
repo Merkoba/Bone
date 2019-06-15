@@ -897,3 +897,16 @@ select
     font-size: 1.4rem;
     cursor: pointer;
 }
+
+@keyframes spin_animation
+{ 
+    100% 
+    {
+        transform:rotate(360deg); 
+    } 
+}
+
+.spin
+{
+    animation: spin_animation 1s linear forwards;
+}

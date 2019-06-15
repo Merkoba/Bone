@@ -172,6 +172,7 @@ Bone.setup_panel = function()
     reload.addEventListener('click', function(e)
     {
         Bone.reload()
+        Bone.panel_reload_animation()
     })
 
     reload.addEventListener('auxclick', function(e)
@@ -179,6 +180,7 @@ Bone.setup_panel = function()
         if(e.which === 2)
         {
             Bone.hard_reload()
+            Bone.panel_reload_animation()
         }
     })
 
@@ -285,4 +287,16 @@ Bone.update_focused_webview = function()
 Bone.get_panel_top = function()
 {
     return Bone.storage.settings.auto_hide_panel ? Bone.config.panel_hidden_height : Bone.config.panel_height
+}
+
+// Animates the panel reload button
+Bone.panel_reload_animation = function()
+{
+    let reload = Bone.$('#panel_reload')
+    reload.classList.add('spin')
+        
+    setTimeout(function()
+    {
+        reload.classList.remove('spin')
+    }, 1100)
 }

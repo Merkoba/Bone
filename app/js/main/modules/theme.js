@@ -28,16 +28,10 @@ Bone.apply_theme = function()
         background-color: ${font_color_1_alpha} !important;
     }
 
-    .Msg-window
+    .Msg-window, .Msg-window-inner-x
     {
         background-color: ${bg_color_1} !important;
         color: ${font_color_1} !important;
-    }
-
-    .Msg-window-inner-x
-    {
-        background-color: ${bg_color_1} !important;
-        color: ${font_color_1};
     }
 
     .titlebar_inner_x
@@ -138,7 +132,7 @@ Bone.apply_theme = function()
         color: ${font_color_1} !important;
     }
     
-    #main_container
+    #main_container, .loading_webview
     {
         background-color: ${bg_color_2} !important;
     }
