@@ -147,7 +147,7 @@ Bone.create_windows = function()
     Bone.msg_handle_close_space.set_title('Close Space')
     Bone.msg_swap_webviews.set_title('Swap Webviews')
     Bone.msg_open_preset.set_title('Open Preset')
-    Bone.msg_recent.set_title('Recent Websites')
+    Bone.msg_recent.set_title('Recent History')
     Bone.msg_handle_download.set_title('Download Location')
     Bone.msg_create_layout.set_title('Create Layout')
 }

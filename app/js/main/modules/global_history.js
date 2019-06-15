@@ -65,12 +65,12 @@ Bone.sort_global_history = function()
     })
 }
 
-// Finds history urls that match a certain url
-Bone.find_global_history_matches = function(url, max=false)
+// Finds history urls that match a certain url or title
+Bone.find_global_history_matches = function(search_term, max=false, title=false)
 {
-    url = url.trim()
+    search_term = search_term.trim()
 
-    if(!url)
+    if(!search_term)
     {
         return []
     }
@@ -80,11 +80,30 @@ Bone.find_global_history_matches = function(url, max=false)
 
     for(let item of Bone.storage.global_history)
     {
-        if(url.includes(item.url) || item.url.includes(url))
+        let gottem = false
+
+        if(search_term.includes(item.url) || item.url.includes(search_term))
         {
             matches.push(item)
             found += 1
+            gottem = true
+        }
 
+        if(!gottem)
+        {
+            if(title && item.title)
+            {
+                if(search_term.includes(item.title) || item.title.includes(search_term))
+                {
+                    matches.push(item)
+                    found += 1
+                    gottem = true
+                }
+            }
+        }
+
+        if(gottem)
+        {
             if(max && found >= max)
             {
                 break

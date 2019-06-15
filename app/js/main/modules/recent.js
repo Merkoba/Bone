@@ -15,7 +15,7 @@ Bone.setup_recent = function()
         Bone.submit_recent(item.dataset.url)
     })
 
-    Bone.$('#recent_filter').addEventListener('keydown', function(e)
+    Bone.$('#recent_search').addEventListener('keydown', function(e)
     {
         if(e.key === 'Enter')
         {
@@ -42,34 +42,48 @@ Bone.setup_recent = function()
             return false
         }
     })
+
+    Bone.$('#recent_search').addEventListener('input', Bone.debounce(function(e)
+    {
+        Bone.generate_recent(this.value.trim())
+    }, 250))
 }
 
 // Shows the recent window
 Bone.show_recent = function()
 {
     Bone.generate_recent()
-    Bone.$('#recent_filter').value = ''
+    Bone.$('#recent_search').value = ''
 
     Bone.msg_recent.show(function()
     {
-        Bone.$('#recent_filter').focus()
+        Bone.$('#recent_search').focus()
     })
 }
 
 // Generates a list of global history items based on their weight
-Bone.generate_recent = function()
+Bone.generate_recent = function(search_term=false)
 {
     let c = Bone.$('#recent_container')
     c.innerHTML = ''
+    let items
 
-    for(let item of Bone.storage.global_history.slice(0, Bone.config.max_recent_items))
+    if(!search_term)
+    {
+        items = Bone.storage.global_history.slice(0, Bone.config.max_recent_items)
+    }
+
+    else
+    {
+        items = Bone.find_global_history_matches(search_term, Bone.config.max_recent_items, true)
+    }
+
+    for(let item of items)
     {
         let el = document.createElement('div')
         el.classList.add('recent_item')
-        el.classList.add('filter_item')
         el.classList.add('action')
         el.dataset.url = item.url
-        el.dataset.filter_content = item.title ? `${item.title} ${item.url}` : item.url
         el.title = item.url
 
         if(item.favicon_url)

@@ -761,7 +761,7 @@ select
     margin-bottom: 10px;
 }
 
-.filter_input
+.filter_input, .filter_input_2
 {
     width: 400px;
     margin-bottom: 20px;
