@@ -69,10 +69,11 @@ Bone.create_webview = function(num, space_num)
         let num = parseInt(wv.dataset.num)
         let space_num = parseInt(wv.dataset.space)
         let swv = Bone.swv(num, space_num)
-        
+
         swv.title = e.title
         Bone.space_modified(space_num)
         Bone.update_title(swv.url, e.title)
+        Bone.update_url(num, space_num)
     })
 
     wv.addEventListener('did-fail-load', function(e)

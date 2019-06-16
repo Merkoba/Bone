@@ -186,8 +186,16 @@ Bone.change_url_suggest_selected = function(item)
 }
 
 // Sets the url in the panel
-Bone.update_url = function(space_num=false)
+Bone.update_url = function(num=false, space_num=false)
 {
+    if(num)
+    {
+        if(num !== Bone.num())
+        {
+            return false
+        }
+    }
+
     if(space_num)
     {
         if(space_num !== Bone.current_space)
@@ -199,11 +207,7 @@ Bone.update_url = function(space_num=false)
     let swv = Bone.swv()
     let input = Bone.$('#url')
     input.value = swv.url
-    
-    if(swv.title)
-    {
-        input.title = swv.title
-    }
+    input.title = swv.title || ''
 }
 
 // Setups the url suggestion box
@@ -405,7 +409,7 @@ Bone.handle_did_navigation = function(wv, e)
     Bone.push_to_history(wv, e.url)
     Bone.swv(num, space_num).url = e.url
     Bone.space_modified(space_num)
-    Bone.update_url(space_num)
+    Bone.update_url(num, space_num)
     Bone.add_to_global_history(e.url)
 }
 
