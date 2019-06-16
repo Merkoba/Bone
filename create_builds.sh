@@ -2,4 +2,4 @@
 # Allowed Arquitectures: ia32, x64, armv7l, arm64, all
 # To use combinations separate them by commas
 
-electron-packager . --platform=linux,win32 --arch=x64
+electron-packager . --platform=linux,win32,darwin --arch=x64
