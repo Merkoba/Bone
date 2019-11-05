@@ -17,7 +17,7 @@ exports.create_window = function()
     {
         width: 800, 
         height: 600, 
-        frame:false,
+        frame: false,
         icon: __dirname + '/img/icon.png',
         webPreferences:
         {
@@ -27,7 +27,7 @@ exports.create_window = function()
         }
     })
 
-    win.maximize()
+    // win.maximize()
 
     // and load the index.html of the app.
     win.loadURL('file://' + path.join(__dirname, 'index.html'))

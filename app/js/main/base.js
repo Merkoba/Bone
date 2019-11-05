@@ -46,7 +46,7 @@ Bone.config =
     zoom_step: 0.1,
     zoom_default: 1,
     panel_height: 36,
-    panel_hidden_height: 4,
+    panel_hidden_height: 5.1,
     panel_auto_hide_delay: 1000,
     small_url_length: 50,
     small_title_length: 100,
