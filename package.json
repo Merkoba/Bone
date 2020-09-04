@@ -5,7 +5,7 @@
   "main": "app/index.js",
   "dependencies": {
     "electron-root-path": "~1.0.9",
-    "handlebars": "~4.1.2",
+    "handlebars": "~4.7.6",
     "hash-files": "~1.1.1",
     "mad-colorlib": "~1.0.1",
     "mad-separator": "~1.0.0",
